@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apivas - Quiz Level 1</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- AOS Animations -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+
+  <!-- ===== Main Container ===== -->
+  <div class="main-wrapper">
+    
+    <!-- Background Shapes -->
+    <div class="bg-shapes">
+      <span class="shape shape-1"></span>
+      <span class="shape shape-2"></span>
+      <span class="shape shape-3"></span>
+      <span class="grid-overlay"></span>
+    </div>
+
+    <!-- ===== Top Bar ===== -->
+    <div class="top-bar">
+      <div class="brand-logo">
+        <img src="media/logo.png" alt="Apivas" class="brand-logo-img" />
+      </div>
+      <div class="awareness-tag">
+        <i class="fas fa-circle-info"></i>
+        <span>Content for patient awareness</span>
+      </div>
+    </div>
+
+    <!-- ===== Quiz Header ===== -->
+    <div class="quiz-header text-center" data-aos="fade-down">
+      <div class="level-badge">Level 1 of 7</div>
+      <div class="progress-track">
+        <div class="progress-bar-fill" style="width: 14.2%;"></div>
+      </div>
+    </div>
+
+    <!-- ===== Quiz Content (3-Column Layout) ===== -->
+    <div class="quiz-content-wrapper">
+      
+      <!-- Left Side Info (Balance Loss) -->
+      <div class="balance-loss-card" data-aos="fade-right">
+        <div class="b-icon">B</div>
+        <div class="info-text">
+          <h4>BALANCE LOSS</h4>
+          <p>Sudden loss of balance, dizziness or coordination</p>
+        </div>
+      </div>
+
+      <!-- Center Video & Question -->
+      <div class="character-stage" data-aos="zoom-in" data-aos-delay="300">
+        
+        <!-- Question Text -->
+        <h2 class="quiz-question-title">
+          Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
+        </h2>
+
+        <!-- Video Container -->
+        <div class="video-stage">
+          <video id="balance-video" autoplay muted loop playsinline>
+            <source src="media/balance.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <!-- Right Side Options (Stacked Vertically) -->
+      <div class="quiz-actions" id="quizActions" data-aos="fade-left" data-aos-delay="500">
+        <button class="quiz-btn btn-green" id="btnAllGood">
+          <i class="fas fa-check-circle"></i>
+          <div class="btn-content">
+            <span class="btn-title">All good</span>
+            <span class="btn-subtext">Nothing wrong — carry on</span>
+          </div>
+        </button>
+        
+        <button class="quiz-btn btn-red" id="btnMedicalAttention">
+          <i class="fas fa-triangle-exclamation"></i>
+          <div class="btn-content">
+            <span class="btn-title">Need urgent medical attention</span>
+            <span class="btn-subtext">This person needs a hospital</span>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== Feedback Modal ===== -->
+  <div class="feedback-modal" id="feedbackModal">
+    <div class="modal-content-box">
+      
+      <!-- Success Icon (Checkmark) -->
+      <div class="modal-icon success" id="modalIcon" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      
+      <!-- Siren SVG Icon (for Incorrect Choice) -->
+      <div class="beacon-wrapper" id="beaconIcon">
+        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Radiating Lines -->
+          <g class="rays" stroke="#E11344" stroke-width="4" stroke-linecap="round">
+            <line x1="50" y1="5" x2="50" y2="20" />
+            <line x1="15" y1="35" x2="25" y2="45" />
+            <line x1="85" y1="35" x2="75" y2="45" />
+            <line x1="10" y1="60" x2="20" y2="60" />
+            <line x1="90" y1="60" x2="80" y2="60" />
+          </g>
+          <!-- Red Translucent Dome -->
+          <path d="M20 65 A30 30 0 0 1 80 65 Z" fill="rgba(225, 19, 68, 0.3)" stroke="#E11344" stroke-width="2" />
+          <!-- Inner Bulb -->
+          <circle cx="50" cy="65" r="12" fill="#E11344" class="bulb" />
+          <!-- Black Base -->
+          <rect x="15" y="65" width="70" height="20" rx="5" fill="#34495e" />
+          <rect x="10" y="85" width="80" height="10" rx="5" fill="#1a1a1a" />
+        </svg>
+      </div>
+
+      <h3 id="modalTitle"></h3>
+      <p id="modalText"></p>
+      <button class="btn-start-quiz" id="nextLevelBtn" style="margin-top: 20px;">
+        <span class="btn-text">Next Level</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script/quiz.js"></script>
+</body>
+</html>
