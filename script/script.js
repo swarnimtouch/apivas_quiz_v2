@@ -67,3 +67,41 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+
+// ===== Typewriter Effect for Hero Title (index.html) =====
+window.addEventListener('load', () => {
+  const line1El = document.getElementById('type-line1');
+  const line2El = document.getElementById('type-line2');
+  
+  if (!line1El || !line2El) return; // Only runs on index.html
+
+  const text1 = "Observe the situation.";
+  const text2 = "Choose the action.";
+  
+  let i = 0;
+  let j = 0;
+  const speed = 55; // Typing speed in milliseconds
+
+  function typeLine1() {
+    if (i < text1.length) {
+      line1El.textContent += text1.charAt(i);
+      i++;
+      setTimeout(typeLine1, speed);
+    } else {
+      // Small delay before starting line 2
+      setTimeout(typeLine2, 300);
+    }
+  }
+
+  function typeLine2() {
+    if (j < text2.length) {
+      line2El.textContent += text2.charAt(j);
+      j++;
+      setTimeout(typeLine2, speed);
+    }
+  }
+
+  // Start typing after preloader finishes
+  setTimeout(typeLine1, 800);
+});

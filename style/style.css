@@ -15,20 +15,22 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  overflow: hidden; /* Strongly blocks scroll on desktop */
+  width: 100%;
+  height: 100%;
   max-width: 100%;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  /* Applied gradient directly to body with fixed attachment to prevent bottom strip issue on scroll */
   background: linear-gradient(135deg, #FFF8F3 0%, #FFEFE5 50%, #FFE8E8 100%);
   background-attachment: fixed;
   color: var(--text-dark);
-  overflow-x: hidden;
+  overflow: hidden; /* Blocks scrolling globally for Desktop */
   width: 100%;
   max-width: 100%;
-  min-height: 100vh; 
+  height: 100vh;
+  height: 100dvh; /* For accurate viewports */
   display: flex;
   flex-direction: column;
 }
@@ -75,10 +77,12 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden; /* Stops AOS animations & shapes from creating horizontal scroll */
+  overflow: hidden; /* Strict no-scroll on desktop */
 }
 
 /* ===== Background Shapes ===== */
@@ -125,7 +129,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 3rem;
+  padding: clamp(0.8rem, 1.5vh, 1.2rem) clamp(1.5rem, 4vw, 3rem);
   position: relative;
   z-index: 2;
 }
@@ -164,7 +168,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem 3rem;
+  padding: clamp(0.5rem, 1.5vh, 1.5rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 2vh, 2rem);
   position: relative;
   z-index: 1;
 }
@@ -172,10 +176,10 @@ body {
 .hero-title {
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-size: clamp(2rem, 4.5vw, 3.8rem);
   line-height: 1.1;
   letter-spacing: -1.5px;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1rem, 2.5vh, 2rem);
   color: var(--text-dark);
 }
 .gradient-text {
@@ -185,34 +189,99 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* ===== Info Card ===== */
+/* ===== Typewriter Blinking Cursor ===== */
+/* .type-cursor {
+  display: inline-block;
+  color: var(--primary-red);
+  font-weight: 800;
+  animation: blinkCursor 0.8s infinite;
+  margin-left: 4px;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+} */
+
+/* ===== Info Card (with 50% Rotating Border) ===== */
 .info-card {
   background: var(--white);
   border-radius: 20px;
-  padding: 1.5rem 2.5rem;
+  padding: clamp(1rem, 2vh, 1.5rem) clamp(1.5rem, 4vw, 2.5rem);
   box-shadow: 0 15px 50px rgba(225, 19, 68, 0.12);
-  border: 1px solid rgba(225, 19, 68, 0.1);
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1rem, 2.5vh, 2rem);
   transition: var(--transition);
-}
-.info-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 60px rgba(225, 19, 68, 0.2);
-  border-color: rgba(225, 19, 68, 0.3);
+  position: relative;
+  overflow: hidden; /* Clips the rotating border to box rounded corners */
+  border: none; /* Removing static border */
 }
 
-.info-row { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(225, 19, 68, 0.25);
+}
+
+/* Rotating 50% Gradient Layer */
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1000px; /* Big enough so corners never clip during rotation */
+  height: 1000px;
+  background: conic-gradient(
+    transparent 0deg,
+    transparent 180deg, /* First 50% is completely invisible */
+    var(--primary-red) 180deg,
+    var(--orange-dots) 360deg /* Remaining 50% has colored border */
+  );
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: rotateBorder 4s linear infinite;
+  z-index: 0;
+}
+
+/* Inner White Card Mask */
+.info-card::after {
+  content: '';
+  position: absolute;
+  inset: 3px; /* 3px border thickness */
+  background: var(--white);
+  border-radius: 17px; /* Inner radius matching 20px outer */
+  z-index: 1;
+}
+
+@keyframes rotateBorder {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Make sure text stays above the inner white mask */
+.info-row { 
+  position: relative;
+  z-index: 2;
+  display: flex; 
+  align-items: center; 
+  gap: 1.5rem; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+}
 .info-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; min-width: 80px; }
 .info-num { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 2.5rem; color: var(--primary-red); line-height: 1; }
 .info-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-align: center; text-transform: uppercase; letter-spacing: 0.5px; }
 .divider { width: 1px; height: 40px; background: linear-gradient(transparent, rgba(225, 19, 68, 0.3), transparent); }
 
 /* ===== Disclaimer ===== */
-.disclaimer-text { font-size: 1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
+.disclaimer-text { 
+  font-size: clamp(0.85rem, 1.2vw, 1rem); 
+  color: var(--text-muted); 
+  max-width: 600px; 
+  margin: 0 auto clamp(1rem, 2.5vh, 2.2rem); 
+  line-height: 1.5; 
+}
 .disclaimer-text strong { color: var(--primary-red); }
 
 /* ===== CTA Button ===== */
-.cta-wrapper { margin-bottom: 2rem; }
+.cta-wrapper { margin-bottom: clamp(1rem, 2vh, 1.8rem); }
 
 .btn-start-quiz {
   background: var(--primary-red);
@@ -260,7 +329,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 3rem;
+  padding: clamp(0.6rem, 1.5vh, 1.2rem) clamp(1.5rem, 4vw, 3rem);
   border-top: 1px solid rgba(225, 19, 68, 0.1);
   position: relative;
   z-index: 2;
@@ -285,63 +354,83 @@ body {
 .progress-track { width: 100%; max-width: 500px; height: 6px; background: rgba(225, 19, 68, 0.1); border-radius: 10px; margin: 0 auto; overflow: hidden; }
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-red), var(--orange-dots)); border-radius: 10px; transition: width 0.5s ease; }
 
-/* 3-Column Grid Layout */
+/* 3-Column Grid Layout (No-Scroll Optimized for Desktop) */
 .quiz-content-wrapper {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr; /* Left, Center, Right */
-  gap: 2rem;
+  grid-template-columns: 1fr 1.2fr 1fr; /* Left, Center, Right */
+  gap: clamp(1rem, 2vw, 2.5rem);
   align-items: center;
-  padding: 2rem 4rem 3rem;
+  padding: clamp(0.5rem, 1.5vh, 1.5rem) clamp(1.5rem, 4vw, 4rem) clamp(1rem, 2vh, 2rem);
   position: relative;
   z-index: 1;
+  max-height: calc(100vh - 120px); /* Strictly fits inside visible height */
+  overflow: hidden;
+}
+
+/* Left Stage (Box + Video Stacked in ONE Column) */
+.left-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.5rem, 3vh, 2.5rem) !important; /* Space significantly increased for all desktop sizes */
+  justify-self: center;
 }
 
 .balance-loss-card {
   background: var(--white);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+  border-radius: 16px;
+  padding: clamp(1.2rem, 2vh, 1.8rem);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   border-left: 6px solid var(--primary-red);
-  max-width: 320px;
+  max-width: clamp(260px, 20vw, 340px); /* Scales larger on big screens */
+  width: 100%;
   transition: transform 0.3s ease;
-  justify-self: end;
 }
-.balance-loss-card:hover { transform: translateY(-5px); }
-.b-icon { width: 50px; height: 50px; background: var(--primary-red); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.5rem; margin-bottom: 1.5rem; }
-.balance-loss-card h4 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; color: var(--text-dark); margin-bottom: 0.5rem; letter-spacing: 0.5px; }
-.balance-loss-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 0; }
 
-.character-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.balance-loss-card:hover { transform: translateY(-5px); }
+.b-icon { width: 40px; height: 40px; background: var(--primary-red); color: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 0.8rem; }
+.balance-loss-card h4 { font-family: 'Poppins', sans-serif; font-size: 1.05rem; color: var(--text-dark); margin-bottom: 0.3rem; letter-spacing: 0.5px; }
+.balance-loss-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin: 0; }
+
+/* Center Stage (Question Centered Horizontally & Vertically) */
+.center-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .quiz-question-title { 
   font-family: 'Poppins', sans-serif; 
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem); 
+  font-size: clamp(1.1rem, 1.8vw, 1.9rem); 
   font-weight: 700; 
   color: var(--text-dark); 
   text-align: center; 
-  max-width: 600px; 
-  margin-bottom: 3.5rem; /* Added space between question and character */
+  max-width: 520px; 
+  margin: 0; 
   line-height: 1.4; 
 }
 
-/* Video Stage */
+/* Video Stage (Fluid Size so it never overflows small laptop screens) */
 .video-stage {
   position: relative;
-  width: 300px; /* Fixed width */
-  aspect-ratio: 9 / 16; /* Enforce 9:16 ratio */
-  background: var(--primary-red); /* Changed to red to match theme and hide black lines */
-  border: 5px solid var(--primary-red); /* Red border as per theme */
-  border-radius: 20px; /* Border radius */
+  width: clamp(170px, 25vh, 295px); /* Noticeably increased for large desktops/TVs */
+  aspect-ratio: 9 / 16;
+  background: var(--primary-red);
+  border: 4px solid var(--primary-red);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(225, 19, 68, 0.3); /* Reddish shadow */
+  box-shadow: 0 10px 30px rgba(225, 19, 68, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 #balance-video {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Changed to cover to remove black lines completely */
+  object-fit: cover;
 }
 
 /* Right Side Options Container */
@@ -395,13 +484,25 @@ body {
 
 /* ===== Responsive (Merged for Both Pages) ===== */
 @media (max-width: 992px) {
+  /* Allow Vertical Scrolling ONLY on Tablet & Mobile screens */
+  html, body, .main-wrapper {
+    overflow-y: auto;
+    height: auto;
+    max-height: none;
+  }
+
   .quiz-content-wrapper {
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding: 1rem 2rem 2rem;
+    padding: 1.5rem 1rem 3rem;
     justify-items: center;
+    max-height: none;
+    overflow: visible;
   }
-  .balance-loss-card { max-width: 100%; width: 100%; justify-self: center; }
+  
+  .left-stage { width: 100%; max-width: 400px; }
+  .balance-loss-card { max-width: 100%; width: 100%; }
+  .video-stage { width: 240px; }
   .quiz-actions { width: 100%; max-width: 400px; justify-self: center; }
 }
 
@@ -468,4 +569,39 @@ body {
 @media (max-width: 480px) {
   .btn-start-quiz { width: 100%; justify-content: center; }
   .emergency-info { flex-direction: column; text-align: center; gap: 0.4rem; padding: 1rem; border-radius: 15px; }
+}
+
+@media (max-width: 1366px) and (min-width: 993px), (max-height: 750px) and (min-width: 993px) {
+  /* Extra safeguard for small laptops on index.html */
+  .hero-title {
+    font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+    margin-bottom: 1rem;
+  }
+  
+  .info-card {
+    padding: 1rem 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .info-num {
+    font-size: 2rem;
+  }
+  
+  .disclaimer-text {
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .cta-wrapper {
+    margin-bottom: 1rem;
+  }
+  
+  .emergency-info {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
+  .video-stage {
+    width: clamp(160px, 20vh, 210px); /* Slightly tighter lock on small laptop heights to prevent cut-off */
+  }
 }

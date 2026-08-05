@@ -53,30 +53,29 @@
     <!-- ===== Quiz Content (3-Column Layout) ===== -->
     <div class="quiz-content-wrapper">
       
-      <!-- Left Side Info (Balance Loss) -->
-      <div class="balance-loss-card" data-aos="fade-right">
-        <div class="b-icon">B</div>
-        <div class="info-text">
-          <h4>BALANCE LOSS</h4>
-          <p>Sudden loss of balance, dizziness or coordination</p>
+      <!-- Left Side (Balance Loss Box + Video in same column) -->
+      <div class="left-stage" data-aos="fade-right">
+        <div class="balance-loss-card">
+          <div class="b-icon">B</div>
+          <div class="info-text">
+            <h4>BALANCE LOSS</h4>
+            <p>Sudden loss of balance, dizziness or coordination</p>
+          </div>
         </div>
-      </div>
 
-      <!-- Center Video & Question -->
-      <div class="character-stage" data-aos="zoom-in" data-aos-delay="300">
-        
-        <!-- Question Text -->
-        <h2 class="quiz-question-title">
-          Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
-        </h2>
-
-        <!-- Video Container -->
         <div class="video-stage">
           <video id="balance-video" autoplay muted loop playsinline>
             <source src="media/balance.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
+      </div>
+
+      <!-- Center (Question Text Centered Horizontally & Vertically) -->
+      <div class="center-stage" data-aos="zoom-in" data-aos-delay="300">
+        <h2 class="quiz-question-title">
+          Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
+        </h2>
       </div>
 
       <!-- Right Side Options (Stacked Vertically) -->
