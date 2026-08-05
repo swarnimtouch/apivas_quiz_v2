@@ -30,7 +30,7 @@ document.addEventListener('mousemove', (e) => {
 const startBtn = document.getElementById('startQuizBtn');
 
 if (startBtn) {
-  startBtn.addEventListener('click', function(e) {
+  startBtn.addEventListener('click', function (e) {
     // Ripple Creation
     const ripple = document.createElement('span');
     ripple.style.cssText = `
@@ -39,18 +39,22 @@ if (startBtn) {
       background: rgba(255,255,255,0.4);
       transform: scale(0);
       pointer-events: none;
-      width: 20px; height: 20px;
-      left: 50%; top: 50%;
-      margin-left: -10px; margin-top: -10px;
+      width: 20px;
+      height: 20px;
+      left: 50%;
+      top: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
       animation: rippleExpand 0.6s ease-out;
       z-index: 0;
     `;
+
     this.appendChild(ripple);
     setTimeout(() => ripple.remove(), 600);
 
-    // Temporary Alert (You can replace this with actual quiz redirection)
+    // Redirect to quiz page after ripple animation
     setTimeout(() => {
-      alert('Quiz starting... (Replace this with your redirect/next screen)');
+      window.location.href = "quiz.html";
     }, 400);
   });
 }
