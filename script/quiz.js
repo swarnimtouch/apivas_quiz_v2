@@ -50,10 +50,18 @@ btnAllGood.addEventListener('click', () => {
   if (isAnswered) return;
   isAnswered = true;
   
-  // Change video source to balance_2.mp4 and remove loop so it ends
+  // Stop current playback before switching source
+  balanceVideo.pause();
   balanceVideo.loop = false;
   balanceVideo.src = 'media/balance_2.mp4';
-  balanceVideo.play().catch(e => console.log("Play prevented:", e));
+  
+  // Mandatory for mobile browsers (iOS Safari / Android Chrome) to load the new video immediately
+  balanceVideo.load();
+  
+  const playPromise = balanceVideo.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(e => console.log("Play prevented:", e));
+  }
   
   // The 'ended' event listener in window.load will trigger the popup after video finishes
 });

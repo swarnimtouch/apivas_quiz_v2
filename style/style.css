@@ -13,7 +13,11 @@
 
 /* ===== Reset ===== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
+}
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -21,7 +25,9 @@ body {
   background: linear-gradient(135deg, #FFF8F3 0%, #FFEFE5 50%, #FFE8E8 100%);
   background-attachment: fixed;
   color: var(--text-dark);
-  overflow-x: hidden; /* Only on body to prevent double scrollbar */
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh; 
   display: flex;
   flex-direction: column;
@@ -69,8 +75,10 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* Removed background from here to avoid duplicate gradient cut-offs */
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* Stops AOS animations & shapes from creating horizontal scroll */
 }
 
 /* ===== Background Shapes ===== */
@@ -79,6 +87,9 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 .shape {
   position: absolute;
@@ -396,15 +407,27 @@ body {
 
 @media (max-width: 768px) {
   .top-bar { 
-    padding: 1rem 1.5rem; 
+    padding: 1rem; 
     flex-direction: column; 
-    gap: 1rem; 
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    gap: 0.8rem; 
+    text-align: center;
+  }
+
+  .brand-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
   
-  .hero-content { padding: 2rem 1rem; }
+  .hero-content { padding: 2rem 1rem; width: 100%; max-width: 100%; }
   
-  .info-card { padding: 1.2rem 1rem; }
-  .info-row { gap: 1rem; }
+  .info-card { padding: 1.2rem 1rem; width: 100%; max-width: 100%; }
+  .info-row { gap: 1rem; justify-content: center; }
   .info-num { font-size: 2rem; }
   .divider { display: none; }
   
@@ -412,16 +435,34 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     text-align: center;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    width: 100%;
+    max-width: 100%;
   }
   .footer-right { 
     text-align: center; 
     align-items: center;
+    width: 100%;
   }
   
   .disclaimer-text { font-size: 0.9rem; }
-  .video-stage { width: 250px; } /* Adjusted width for mobile */
+  .video-stage { width: 250px; max-width: 100%; } /* Adjusted width for mobile */
   .quiz-question-title { margin-bottom: 2rem; } /* Reduced space on mobile */
+
+  .quiz-content-wrapper {
+    padding: 1rem 1rem 2rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Fix for Issue #3: Prevent double-tap requirement on mobile touch screens */
+  .quiz-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .quiz-btn:active {
+    transform: scale(0.98);
+  }
 }
 
 @media (max-width: 480px) {
