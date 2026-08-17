@@ -488,6 +488,8 @@ body {
 
 .certificate-wrapper {
   justify-content: flex-start;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .certificate-content {
@@ -542,6 +544,8 @@ body {
 }
 
 .certificate-download-btn {
+  min-width: 280px;
+  justify-content: center;
   text-decoration: none;
 }
 
@@ -571,6 +575,19 @@ body {
   .balance-loss-card { max-width: 100%; width: 100%; }
   .video-stage { width: 240px; }
   .quiz-actions { width: 100%; max-width: 400px; justify-self: center; }
+
+  .certificate-wrapper {
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    overflow: hidden;
+  }
+
+  .certificate-content {
+    flex: 1;
+    justify-content: center;
+    padding: 1rem clamp(1rem, 5vw, 2rem) 2rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -635,6 +652,7 @@ body {
 
 @media (max-width: 480px) {
   .btn-start-quiz { width: 100%; justify-content: center; }
+  .certificate-download-btn { width: min(100%, 342px); }
   .emergency-info { flex-direction: column; text-align: center; gap: 0.4rem; padding: 1rem; border-radius: 15px; }
 }
 

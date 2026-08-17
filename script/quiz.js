@@ -94,6 +94,8 @@ function renderLevel(index) {
   questionTitle.innerText = level.question;
 
   quizVideo.pause();
+  quizVideo.muted = false;
+  quizVideo.volume = 1;
   quizVideo.loop = true;
   quizVideo.src = level.video;
   quizVideo.load();
