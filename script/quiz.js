@@ -33,7 +33,7 @@ const quizLevels = [
     title: 'ARMS PAIN',
     text: 'Sudden weakness, numbness or pain in one or both arms',
     video: 'media/arm pain.mp4',
-    question: 'Mrs Sandhya noticed weakness, numbness or pain in one arm this morning',
+    question: 'Mr Raj noticed weakness, numbness or pain in one arm this morning',
     incorrectText: 'Sudden weakness, numbness or pain in one arm can be a warning sign of stroke.',
     successText: 'You correctly identified that sudden arm weakness, numbness or pain can need urgent medical attention.'
   },
@@ -42,7 +42,7 @@ const quizLevels = [
     title: 'INABILITY TO SPEAK',
     text: 'Sudden trouble speaking or understanding speech',
     video: 'media/uneven speak.mp4',
-    question: 'Mr Raj suddenly experienced difficulty in speaking or understanding what others were saying.',
+    question: 'Mrs Sandhya suddenly experienced difficulty in speaking or understanding what others were saying.',
     incorrectText: 'Sudden difficulty speaking or understanding others may be a sign of stroke.',
     successText: 'You correctly identified that sudden difficulty speaking or understanding others can be a sign of stroke.'
   }
