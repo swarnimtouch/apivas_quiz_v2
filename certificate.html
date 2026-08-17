@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apivas - Quiz Completed</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- AOS Animations -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+
+  <!-- ===== Main Container ===== -->
+  <div class="main-wrapper certificate-wrapper">
+
+    <!-- Background Shapes -->
+    <div class="bg-shapes">
+      <span class="shape shape-1"></span>
+      <span class="shape shape-2"></span>
+      <span class="shape shape-3"></span>
+      <span class="grid-overlay"></span>
+    </div>
+
+    <!-- ===== Top Bar ===== -->
+    <div class="top-bar">
+      <div class="brand-logo">
+        <img src="media/logo.png" alt="Apivas" class="brand-logo-img" />
+      </div>
+      <div class="awareness-tag">
+        <i class="fas fa-circle-info"></i>
+        <span>Content for patient awareness</span>
+      </div>
+    </div>
+
+    <!-- ===== Certificate Content ===== -->
+    <main class="certificate-content text-center">
+      <div class="certificate-complete-icon" data-aos="zoom-in">
+        <i class="fas fa-check"></i>
+      </div>
+
+      <h1 class="certificate-title" data-aos="fade-up" data-aos-delay="150">
+        Quiz completed
+      </h1>
+
+      <p class="certificate-text" data-aos="fade-up" data-aos-delay="250">
+        You have completed the stroke awareness quiz.
+      </p>
+
+      <div class="certificate-actions" data-aos="fade-up" data-aos-delay="350">
+        <a class="btn-start-quiz certificate-download-btn" href="media/certificate.png" download="stroke-awareness-certificate.png">
+          <span class="btn-text">Download Certificate</span>
+          <i class="fas fa-download"></i>
+        </a>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script/certificate.js"></script>
+</body>
+</html>
