@@ -237,19 +237,20 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
 }
 
 @media (max-width: 767px) {
-  .modal-content-box { width: min(94vw, 520px); min-height: auto; padding: 8.2rem 1.15rem 1.45rem; border-radius: 28px; }
-  .modal-content-box::before { inset: 0; border-width: 6px; border-radius: 28px; clip-path: polygon(4% 5%, 50% 8%, 96% 5%, 100% 18%, 97% 90%, 86% 90%, 82% 98%, 50% 96%, 18% 98%, 14% 91%, 4% 91%, 0 20%); }
-  .modal-content-box::after { right: 1rem; bottom: 4.7rem; font-size: 1rem; letter-spacing: 0.6rem; opacity: 0.55; }
-  .modal-beacon { width: 82px; height: 82px; top: 8%; transform: translate(-50%, -68%); }
-  .modal-character-img { left: -1.2rem; bottom: 1rem; width: 120px; opacity: 0.42; }
-  .modal-ribbon { left: 1rem; right: 1rem; top: 3rem; min-height: 56px; padding: 0 2.5rem 0 1.6rem; border-radius: 10px; }
-  .modal-ribbon h3 { font-size: clamp(1.35rem, 8vw, 2rem); text-shadow: 0 3px 0 rgba(74,0,22,0.25); }
-  .modal-icon { right: 0.45rem; width: 38px; font-size: 1.45rem; }
-  .modal-message-wrap { max-width: 100%; margin-top: 1rem; }
-  .modal-message-wrap p { font-size: clamp(0.95rem, 4.2vw, 1.08rem); line-height: 1.45; }
-  .modal-next-btn { min-width: min(100%, 280px); padding-inline: 1.2rem 0.55rem; }
-  .modal-next-btn .btn-text { font-size: clamp(1.05rem, 6vw, 1.45rem); }
-  .modal-shield { right: -0.15rem; bottom: 0.1rem; width: 62px; font-size: 1.8rem; }
+  .feedback-modal { padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left)); }
+  .modal-content-box { width: min(91vw, 410px); min-height: 350px; padding: 7rem 0.95rem 1.15rem; border-radius: 24px; }
+  .modal-content-box::before { inset: 0; border-width: 5px; border-radius: 24px; box-shadow: 0 0 0 6px var(--modal-main), inset 0 0 0 2px rgba(255,255,255,0.65), inset 0 0 0 12px color-mix(in srgb, var(--modal-main) 6%, transparent); clip-path: polygon(4% 5%, 50% 8%, 96% 5%, 100% 18%, 97% 90%, 86% 90%, 82% 98%, 50% 96%, 18% 98%, 14% 91%, 4% 91%, 0 20%); }
+  .modal-content-box::after { right: 0.8rem; bottom: 4rem; font-size: 0.82rem; letter-spacing: 0.5rem; opacity: 0.42; }
+  .modal-beacon { width: 68px; height: 68px; top: 8%; transform: translate(-50%, -67%); }
+  .modal-character-img { left: -0.7rem; bottom: 0.8rem; width: 92px; opacity: 1; z-index: 3; }
+  .modal-ribbon { left: 0.9rem; right: 0.9rem; top: 2.75rem; min-height: 46px; padding: 0 1.8rem 0 1.25rem; border-radius: 9px; }
+  .modal-ribbon h3 { font-size: clamp(1.08rem, 6.5vw, 1.52rem); text-shadow: 0 2px 0 rgba(74,0,22,0.25); }
+  .modal-icon { right: 0.38rem; width: 32px; font-size: 1.25rem; }
+  .modal-message-wrap { max-width: 100%; margin-top: 0.7rem; margin-bottom: 0.82rem; padding-inline: 0.2rem; }
+  .modal-message-wrap p { font-size: clamp(0.78rem, 3.55vw, 0.91rem); line-height: 1.38; }
+  .modal-next-btn { min-width: min(100%, 214px); min-height: 48px; padding: 0.32rem 0.5rem 0.32rem 0.82rem; }
+  .modal-next-btn .btn-text { font-size: clamp(0.92rem, 4.75vw, 1.16rem); }
+  .modal-shield { right: -0.1rem; bottom: 0.05rem; width: 50px; font-size: 1.45rem; }
 }
 
 .certificate-wrapper { justify-content: flex-start; min-height: 100vh; min-height: 100svh; min-height: 100dvh; min-height: var(--app-height); }
