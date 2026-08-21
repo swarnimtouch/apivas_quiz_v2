@@ -273,6 +273,13 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
 @media (max-width: 767px) {
   html, body, .main-wrapper { overflow-y: auto; height: auto; max-height: none; }
   .quiz-content-wrapper { grid-template-columns: 1fr; gap: 1.35rem; padding: 0.85rem max(1rem, env(safe-area-inset-right)) max(1.7rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); justify-items: center; max-height: none; overflow: visible; width: 100%; max-width: 100%; }
+  .quiz-page .top-bar { display: none; }
+  .center-stage { display: contents; }
+  .quiz-header { order: -3; justify-self: center; width: min(calc(100vw - 2rem), 360px); margin-bottom: 0.25rem; }
+  .quiz-stepper { width: min(calc(100vw - 2rem), 330px); }
+  .left-stage { order: 1; }
+  .video-stage { order: 2; justify-self: center; }
+  .quiz-actions { order: 3; }
   .left-stage { width: 100%; max-width: 330px; align-items: center; justify-self: center; }
   .balance-loss-card { max-width: 100%; width: 100%; }
   .quiz-pad-card { width: min(100%, 320px); margin-inline: auto; padding: 2.7rem 1.05rem 0.95rem; border-radius: 22px; border-width: 2px; box-shadow: -9px 9px 0 #d80b3c, -14px 18px 24px rgba(225,19,68,0.14), 0 18px 28px rgba(225,19,68,0.18), inset 0 0 0 5px rgba(255, 226, 225, 0.72), inset 0 0 0 8px rgba(255,255,255,0.78); transform: perspective(900px) rotateZ(-1.8deg) rotateY(3deg); }
@@ -343,10 +350,15 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
 /* Tablet */
 @media (min-width: 768px) and (max-width: 1024px) {
   html, body, .main-wrapper { overflow-y: auto; height: auto; max-height: none; }
-  .quiz-content-wrapper { grid-template-columns: 1fr; gap: 1.75rem; padding: 1.15rem 1.25rem 2.6rem; justify-items: center; max-height: none; overflow: visible; }
-  .left-stage { width: 100%; max-width: 455px; align-items: center; justify-self: center; }
+  .quiz-content-wrapper { grid-template-columns: auto auto; justify-content: center; column-gap: clamp(1rem, 3vw, 1.8rem); row-gap: 1.75rem; padding: 1.15rem 1.25rem 2.6rem; justify-items: center; align-items: center; max-height: none; overflow: visible; }
+  .center-stage { display: contents; }
+  .quiz-header { order: -3; grid-column: 1 / -1; justify-self: center; width: min(calc(100vw - 2rem), 520px); margin-bottom: 0.15rem; }
+  .quiz-stepper { width: min(calc(100vw - 2rem), 500px); }
+  .left-stage { order: 1; grid-column: 1; width: clamp(320px, 42vw, 390px); max-width: 100%; align-items: center; justify-self: center; }
+  .video-stage { order: 2; grid-column: 2; justify-self: center; }
+  .quiz-actions { order: 3; grid-column: 1 / -1; }
   .balance-loss-card { max-width: 100%; width: 100%; }
-  .quiz-pad-card { width: min(100%, 430px); margin-inline: auto; padding: 3.2rem 1.45rem 1.15rem; border-radius: 26px; }
+  .quiz-pad-card { width: min(100%, 390px); margin-inline: auto; padding: 3.2rem 1.45rem 1.15rem; border-radius: 26px; }
   .pad-clip { top: -25px; width: 126px; height: 50px; }
   .b-icon { width: 58px; height: 58px; font-size: 1.85rem; margin-bottom: 0.7rem; }
   .balance-loss-card h4 { font-size: 1.38rem; margin-bottom: 0.48rem; line-height: 1.14; }
@@ -354,8 +366,8 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   .balance-loss-card p { font-size: 0.95rem; line-height: 1.38; max-width: 285px; }
   .question-card { margin-top: 0.95rem; padding: 0.82rem 0.9rem; border-radius: 16px; }
   .quiz-question-title { font-size: 0.88rem; line-height: 1.28; margin-bottom: 0; }
-  .video-stage { width: clamp(250px, 32vw, 310px); }
-  .quiz-actions { width: 100%; max-width: 450px; justify-self: center; padding-top: 50px; overflow: visible; gap: 0.9rem; }
+  .video-stage { width: clamp(240px, 32vw, 300px); }
+  .quiz-actions { width: 100%; max-width: 520px; justify-self: center; padding-top: 50px; overflow: visible; gap: 0.9rem; }
   .options-prompt-banner { top: 0; bottom: auto; left: 50%; width: min(calc(100% - 58px), 335px); min-width: 0; height: 38px; padding: 0 1.05rem; border-radius: 10px; font-size: clamp(0.92rem, 2.8vw, 1.18rem); letter-spacing: 0.35px; }
   .options-prompt-banner::after { right: -27px; width: 24px; height: 31px; }
   .options-prompt-banner i { left: -42px; bottom: -4px; width: 40px; font-size: 1.95rem; }
