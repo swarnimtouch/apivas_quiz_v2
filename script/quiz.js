@@ -238,6 +238,6 @@ nextLevelBtn.addEventListener('click', () => {
       return;
     }
 
-    window.location.href = 'certificate.html';
+    window.location.href = 'thanks.html';
   }, 300);
 });

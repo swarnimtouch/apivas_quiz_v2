@@ -18,7 +18,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style/style.css" />
 </head>
-<body>
+<body class="certificate-page">
 
   <!-- ===== Main Container ===== -->
   <div class="main-wrapper certificate-wrapper">
@@ -44,24 +44,31 @@
 
     <!-- ===== Certificate Content ===== -->
     <main class="certificate-content text-center">
-      <div class="certificate-complete-icon" data-aos="zoom-in">
-        <i class="fas fa-check"></i>
+      <div class="certificate-confetti" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
       </div>
 
-      <h1 class="certificate-title" data-aos="fade-up" data-aos-delay="150">
-        Quiz completed
+      <h1 class="certificate-title" data-aos="fade-up">
+        Quiz Completed!
       </h1>
 
-      <p class="certificate-text" data-aos="fade-up" data-aos-delay="250">
-        You have completed the stroke awareness quiz.
-      </p>
+      <img src="media/thank.png" alt="" class="certificate-thank-img" data-aos="zoom-in" data-aos-delay="120" aria-hidden="true" />
 
-      <div class="certificate-actions" data-aos="fade-up" data-aos-delay="350">
-        <a class="btn-start-quiz certificate-download-btn" href="media/certificate.png" download="stroke-awareness-certificate.png">
-          <span class="btn-text">Download Certificate</span>
-          <i class="fas fa-download"></i>
+      <div class="certificate-actions" data-aos="fade-up" data-aos-delay="220">
+        <a class="certificate-download-btn" href="media/certificate.png" download="stroke-awareness-certificate.png">
+          <span class="certificate-btn-icon"><i class="fas fa-download"></i></span>
+          <span class="certificate-btn-copy">
+            <strong>Download Certificate</strong>
+            <small>Celebrate your achievement!</small>
+          </span>
+          <span class="certificate-btn-badge"><i class="fas fa-award"></i></span>
         </a>
       </div>
+
+      <a href="index.html" class="certificate-home-btn" data-aos="fade-up" data-aos-delay="300">
+        <i class="fas fa-house"></i>
+        <span>Back To Home</span>
+      </a>
     </main>
 
   </div>
