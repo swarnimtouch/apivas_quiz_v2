@@ -99,6 +99,12 @@ window.addEventListener('load', () => {
       line2El.textContent += text2.charAt(j);
       j++;
       setTimeout(typeLine2, speed);
+    } else {
+      // NAYA: Jab typewriter ka text khatam ho jaye, tab Plus Icon ko show karein
+      const plusIcon = document.querySelector('.bg-icon-plus');
+      if (plusIcon) {
+        plusIcon.classList.add('show-icon');
+      }
     }
   }
 

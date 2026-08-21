@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Apivas - Stroke Awareness Quiz</title>
 
   <!-- Bootstrap 5 -->
@@ -42,24 +42,45 @@
       </div>
     </div>
 
-    <!-- ===== Quiz Header ===== -->
-    <div class="quiz-header text-center" data-aos="fade-down">
-      <div class="level-badge" id="levelBadge">Level 1 of 5</div>
-      <div class="progress-track">
-        <div class="progress-bar-fill" id="progressBarFill" style="width: 20%;"></div>
-      </div>
-    </div>
-
     <!-- ===== Quiz Content (3-Column Layout) ===== -->
     <div class="quiz-content-wrapper">
       
-      <!-- Left Side (Balance Loss Box + Video in same column) -->
+      <!-- Left Side (Symptom + Question) -->
       <div class="left-stage" data-aos="fade-right">
-        <div class="balance-loss-card" id="symptomCard">
-          <div class="b-icon" id="symptomIcon">B</div>
-          <div class="info-text">
-            <h4 id="symptomTitle">BALANCE LOSS</h4>
-            <p id="symptomText">Sudden loss of balance, dizziness or coordination</p>
+        <div class="quiz-pad-card">
+          <span class="pad-clip" aria-hidden="true"></span>
+
+          <div class="balance-loss-card" id="symptomCard">
+            <div class="b-icon" id="symptomIcon">B</div>
+            <div class="info-text">
+              <h4 id="symptomTitle">BALANCE LOSS</h4>
+              <span class="pad-divider" aria-hidden="true"></span>
+              <p id="symptomText">Sudden loss of balance, dizziness or coordination</p>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h2 class="quiz-question-title" id="questionTitle">
+              Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center (Video) -->
+      <div class="center-stage" data-aos="zoom-in" data-aos-delay="300">
+        <!-- ===== Quiz Header ===== -->
+        <div class="quiz-header text-center" data-aos="fade-down">
+          <div class="level-badge quiz-level-ribbon" id="levelBadge">Level 1 of 5</div>
+          <div class="quiz-stepper" id="quizStepper" aria-label="Quiz progress">
+            <span class="step-dot active">1</span>
+            <span class="step-dot">2</span>
+            <span class="step-dot">3</span>
+            <span class="step-dot">4</span>
+            <span class="step-dot">5</span>
+          </div>
+          <div class="progress-track quiz-progress-track">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 20%;"></div>
           </div>
         </div>
 
@@ -71,21 +92,22 @@
         </div>
       </div>
 
-      <!-- Center (Question Text Centered Horizontally & Vertically) -->
-      <div class="center-stage" data-aos="zoom-in" data-aos-delay="300">
-        <h2 class="quiz-question-title" id="questionTitle">
-          Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
-        </h2>
-      </div>
-
       <!-- Right Side Options (Stacked Vertically) -->
       <div class="quiz-actions" id="quizActions" data-aos="fade-left" data-aos-delay="500">
+        <div class="options-prompt-banner" aria-hidden="true">
+          <i class="fas fa-bullhorn"></i>
+          <span>What will you do?</span>
+        </div>
+
         <button class="quiz-btn btn-green" id="btnAllGood">
           <i class="fas fa-check-circle"></i>
           <div class="btn-content">
             <span class="btn-title">All good</span>
             <span class="btn-subtext">Nothing wrong — carry on</span>
           </div>
+          <span class="option-character-wrap" aria-hidden="true">
+            <img src="media/green.png" alt="" class="option-character-img" />
+          </span>
         </button>
         
         <button class="quiz-btn btn-red" id="btnMedicalAttention">
@@ -94,6 +116,9 @@
             <span class="btn-title">Need urgent medical attention</span>
             <span class="btn-subtext">This person needs a hospital</span>
           </div>
+          <span class="option-character-wrap" aria-hidden="true">
+            <img src="media/red.png" alt="" class="option-character-img" />
+          </span>
         </button>
       </div>
 
@@ -103,45 +128,38 @@
   <!-- ===== Feedback Modal ===== -->
   <div class="feedback-modal" id="feedbackModal">
     <div class="modal-content-box">
-      
-      <!-- Success Icon (Checkmark) -->
-      <div class="modal-icon success" id="modalIcon" style="display: none;">
-        <i class="fas fa-check-circle"></i>
-      </div>
-      
-      <!-- Siren SVG Icon (for Incorrect Choice) -->
-      <div class="beacon-wrapper" id="beaconIcon">
-        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <!-- Radiating Lines -->
-          <g class="rays" stroke="#E11344" stroke-width="4" stroke-linecap="round">
-            <line x1="50" y1="5" x2="50" y2="20" />
-            <line x1="15" y1="35" x2="25" y2="45" />
-            <line x1="85" y1="35" x2="75" y2="45" />
-            <line x1="10" y1="60" x2="20" y2="60" />
-            <line x1="90" y1="60" x2="80" y2="60" />
-          </g>
-          <!-- Red Translucent Dome -->
-          <path d="M20 65 A30 30 0 0 1 80 65 Z" fill="rgba(225, 19, 68, 0.3)" stroke="#E11344" stroke-width="2" />
-          <!-- Inner Bulb -->
-          <circle cx="50" cy="65" r="12" fill="#E11344" class="bulb" />
-          <!-- Black Base -->
-          <rect x="15" y="65" width="70" height="20" rx="5" fill="#34495e" />
-          <rect x="10" y="85" width="80" height="10" rx="5" fill="#1a1a1a" />
-        </svg>
+      <div class="modal-beacon" id="beaconIcon" aria-hidden="true">
+        <span></span>
       </div>
 
-      <h3 id="modalTitle"></h3>
-      <p id="modalText"></p>
-      <button class="btn-start-quiz" id="nextLevelBtn" style="margin-top: 20px;">
+      <img src="media/popup.png" alt="" class="modal-character-img" aria-hidden="true" />
+
+      <div class="modal-ribbon">
+        <h3 id="modalTitle"></h3>
+        <div class="modal-icon" id="modalIcon" aria-hidden="true">
+          <i class="fas fa-xmark"></i>
+        </div>
+      </div>
+
+      <div class="modal-message-wrap">
+        <p id="modalText"></p>
+      </div>
+
+      <button class="btn-start-quiz modal-next-btn" id="nextLevelBtn">
         <span class="btn-text">Next Level</span>
         <i class="fas fa-arrow-right"></i>
       </button>
+
+      <div class="modal-shield" aria-hidden="true">
+        <i class="fas fa-xmark"></i>
+      </div>
     </div>
   </div>
 
   <!-- Scripts -->
+  <script src="script/viewport.js"></script>
+  <script src="script/quiz.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="script/quiz.js"></script>
 </body>
 </html>

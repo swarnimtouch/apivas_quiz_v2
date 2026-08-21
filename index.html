@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Apivas - Stroke Awareness Quiz</title>
 
   <!-- Bootstrap 5 -->
@@ -10,7 +11,9 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <!-- AOS Animations -->
@@ -18,8 +21,8 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style/style.css" />
 </head>
-<body>
 
+<body>
   <!-- ===== Preloader ===== -->
   <div class="preloader" id="preloader">
     <div class="loader-logo-wrapper">
@@ -29,13 +32,18 @@
 
   <!-- ===== Main Container ===== -->
   <div class="main-wrapper">
-    
     <!-- Background Shapes -->
     <div class="bg-shapes">
       <span class="shape shape-1"></span>
       <span class="shape shape-2"></span>
       <span class="shape shape-3"></span>
       <span class="grid-overlay"></span>
+      
+      <!-- Right side vertically centered heart -->
+      <img src="media/heart.png" alt="Heart Background" class="side-heart" />
+      
+      <!-- NAYA: Left side vertically centered brain -->
+      <img src="media/brain.png" alt="Brain Background" class="side-brain" />
     </div>
 
     <!-- ===== Top Bar ===== -->
@@ -50,53 +58,132 @@
     </div>
 
     <!-- ===== Hero Content ===== -->
-      <div class="hero-content text-center">
-        
-        <h1 class="hero-title">
-          <span id="type-line1"></span><br />
-          <span id="type-line2" class="gradient-text"></span>
-          <!-- <span class="type-cursor">|</span> -->
-        </h1>
+    <!-- ===== Hero Content ===== -->
+    <!-- ===== Hero Content ===== -->
+    <div class="hero-content text-center">
+      
+      <!-- NAYA: Sirf Mobile view ke liye chote Brain aur Heart (Desktop pe hide rahenge) -->
+      <div class="mobile-organs-row">
+        <img src="media/brain.png" alt="Brain" class="mobile-organ-img" />
+        <img src="media/heart.png" alt="Heart" class="mobile-organ-img" />
+      </div>
 
-        <!-- Central Info Box -->
-        <div class="info-card" data-aos="zoom-in" data-aos-delay="300">
+      <!-- NAYA: Health Hero Quiz Ribbon -->
+      <div class="quiz-ribbon-wrapper" data-aos="fade-down" data-aos-delay="150">
+        <!-- Golden Sparkles (Left) -->
+        <div class="sparkle-left"><i class="fas fa-star"></i></div>
+        
+        <!-- Overlapping Gamepad Icon (AB YE BAHAR HAI, toh cut nahi hoga!) -->
+        <div class="ribbon-icon">
+          <i class="fas fa-gamepad"></i>
+        </div>
+
+        <div class="quiz-ribbon">
+          <!-- Ribbon Text -->
+          <span class="ribbon-text">HEALTH HERO QUIZ</span>
+        </div>
+        
+        <!-- Golden Sparkles (Right) -->
+        <div class="sparkle-right"><i class="fas fa-star"></i></div>
+      </div>
+
+      <h1 class="hero-title">
+        <!-- NAYA: Background Plus Icon SVG (Thick Rounded Cross) -->
+        <svg class="bg-icon-plus" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 10h-5V5a2 2 0 0 0-4 0v5H5a2 2 0 0 0 0 4h5v5a2 2 0 0 0 4 0v-5h5a2 2 0 0 0 0-4z" fill="#E11344"/>
+        </svg>
+        
+        <span id="type-line1"></span><br />
+        <span id="type-line2" class="gradient-text"></span>
+      </h1>
+
+      <!-- Central Info Box -->
+      <!-- Central Info Box -->
+      <!-- Central Info Box -->
+      <div class="info-card" data-aos="zoom-in" data-aos-delay="300">
+        <!-- NAYA: Background Wave SVGs -->
+        <svg class="bg-wave bg-wave-left" viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 20 L20 20 L30 5 L50 35 L60 10 L70 20 L100 20" stroke="rgba(225, 19, 68, 0.15)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        
+        <svg class="bg-wave bg-wave-right" viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 20 L20 20 L30 5 L50 35 L60 10 L70 20 L100 20" stroke="rgba(225, 19, 68, 0.15)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+
+        <!-- NAYA: Background layer jo sirf animated border handle karega -->
+        <div class="animated-bg-layer"></div>
+        
         <div class="info-row">
+          
+          <!-- Item 1 -->
           <div class="info-item">
             <span class="info-num">5</span>
-            <span class="info-label">Situations</span>
+            <span class="info-label">SITUATIONS</span>
+            <div class="badge-wrapper">
+              <div class="bottom-badge icon-pink">
+                <i class="fas fa-book-open"></i>
+              </div>
+            </div>
           </div>
+            
+          <!-- First Divider -->
           <span class="divider"></span>
+
+          <!-- Item 2 -->
           <div class="info-item">
             <span class="info-num">2</span>
-            <span class="info-label">Choices</span>
+            <span class="info-label">CHOICES</span>
+            <div class="badge-wrapper multi-badge">
+              <div class="bottom-badge icon-green">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="bottom-badge icon-red">
+                <i class="fas fa-xmark"></i>
+              </div>
+            </div>
           </div>
+
+          <!-- Second Divider -->
           <span class="divider"></span>
+
+          <!-- Item 3 -->
           <div class="info-item">
             <span class="info-num"><i class="fas fa-xmark"></i></span>
-            <span class="info-label">Medical knowledge required</span>
+            <span class="info-label">MEDICAL KNOWLEDGE<br />REQUIRED</span>
+            <div class="badge-wrapper">
+              <div class="bottom-badge icon-purple">
+                <i class="fas fa-brain"></i>
+              </div>
+            </div>
           </div>
+
         </div>
+        
       </div>
 
       <!-- Disclaimer Text -->
       <p class="disclaimer-text" data-aos="fade-up" data-aos-delay="500">
-        This public awareness game is used to identify emergency situations but does <strong>not</strong> make medical diagnoses.
+        This public awareness game is used to identify emergency situations
+        but does <strong>not</strong> make medical diagnoses.
       </p>
 
       <!-- CTA Button -->
       <div class="cta-wrapper" data-aos="fade-up" data-aos-delay="700">
         <button class="btn-start-quiz" id="startQuizBtn">
-          <span class="btn-text">Start Quiz</span>
-          <i class="fas fa-arrow-right"></i>
+          <span class="btn-text">PLAY QUIZ</span>
+          <!-- NAYA: Play icon ek circle me wrapped hai screenshot jaisa -->
+          <div class="icon-circle">
+            <i class="fas fa-play"></i>
+          </div>
         </button>
       </div>
 
       <!-- Emergency Info -->
       <div class="emergency-info" data-aos="fade-up" data-aos-delay="900">
         <i class="fas fa-phone-volume"></i>
-        <span>In case of emergency in India, dial <strong>108</strong> or <strong>112</strong></span>
+        <span>In case of emergency in India, dial <strong>108</strong> or
+          <strong>112</strong></span>
       </div>
-
     </div>
 
     <!-- ===== Footer ===== -->
@@ -115,12 +202,13 @@
         <img src="media/logo.png" alt="Apivas" class="footer-logo-img" />
       </div>
     </footer>
-
   </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script/viewport.js"></script>
   <script src="script/script.js"></script>
 </body>
+
 </html>

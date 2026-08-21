@@ -5,7 +5,6 @@ const quizLevels = [
     title: 'BALANCE LOSS',
     text: 'Sudden loss of balance, dizziness or coordination',
     video: 'media/balance.mp4',
-    followupVideo: 'media/balance_2.mp4',
     question: 'Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.',
     incorrectText: 'Look again. Sudden loss of balance, dizziness or poor coordination can be a warning sign of stroke. Seek urgent medical attention.',
     successText: 'You correctly identified the stroke symptom. Acting fast in such situations can save lives and prevent brain damage.'
@@ -49,17 +48,26 @@ const quizLevels = [
 ];
 
 // ===== AOS Init =====
-AOS.init({
-  duration: 800,
-  easing: 'ease-out-cubic',
-  once: true,
-  offset: 50
-});
+function initAOS() {
+  if (!window.AOS) return;
+
+  AOS.init({
+    duration: 800,
+    easing: 'ease-out-cubic',
+    once: true,
+    offset: 50
+  });
+}
+
+initAOS();
+window.addEventListener('load', initAOS, { once: true });
 
 // ===== Element Selectors =====
 const quizVideo = document.getElementById('quizVideo');
+const quizVideoSource = document.getElementById('quizVideoSource');
 const levelBadge = document.getElementById('levelBadge');
 const progressBarFill = document.getElementById('progressBarFill');
+const stepDots = document.querySelectorAll('.step-dot');
 const symptomIcon = document.getElementById('symptomIcon');
 const symptomTitle = document.getElementById('symptomTitle');
 const symptomText = document.getElementById('symptomText');
@@ -69,6 +77,9 @@ const btnMedicalAttention = document.getElementById('btnMedicalAttention');
 const feedbackModal = document.getElementById('feedbackModal');
 const modalIcon = document.getElementById('modalIcon');
 const beaconIcon = document.getElementById('beaconIcon');
+const modalIconGlyph = modalIcon.querySelector('i');
+const modalShieldIcon = document.querySelector('.modal-shield i');
+const modalCharacterImg = document.querySelector('.modal-character-img'); // Naya selector add kiya hai
 const modalTitle = document.getElementById('modalTitle');
 const modalText = document.getElementById('modalText');
 const nextLevelBtn = document.getElementById('nextLevelBtn');
@@ -76,7 +87,7 @@ const nextLevelText = nextLevelBtn.querySelector('.btn-text');
 
 let currentLevelIndex = 0;
 let isAnswered = false;
-let waitingForFollowupVideo = false;
+let videoUnlockBound = false;
 
 // ===== Render Current Question =====
 function renderLevel(index) {
@@ -84,44 +95,78 @@ function renderLevel(index) {
 
   currentLevelIndex = index;
   isAnswered = false;
-  waitingForFollowupVideo = false;
 
   levelBadge.innerText = `Level ${index + 1} of ${quizLevels.length}`;
   progressBarFill.style.width = `${((index + 1) / quizLevels.length) * 100}%`;
+  stepDots.forEach((dot, dotIndex) => {
+    dot.classList.toggle('active', dotIndex === index);
+    dot.classList.toggle('completed', dotIndex < index);
+  });
   symptomIcon.innerText = level.icon;
   symptomTitle.innerText = level.title;
   symptomText.innerText = level.text;
   questionTitle.innerText = level.question;
 
-  quizVideo.pause();
-  quizVideo.muted = false;
-  quizVideo.volume = 1;
-  quizVideo.loop = true;
-  quizVideo.src = level.video;
-  quizVideo.load();
-  playQuizVideo();
+  loadQuestionVideo(level.video);
 
   nextLevelText.innerText = index === quizLevels.length - 1 ? 'Finish' : 'Next Level';
+}
+
+function loadQuestionVideo(videoSrc) {
+  quizVideo.pause();
+  quizVideo.autoplay = true;
+  quizVideo.loop = true;
+  quizVideo.muted = false;
+  quizVideo.defaultMuted = false;
+  quizVideo.volume = 1;
+  quizVideo.setAttribute('autoplay', '');
+  quizVideo.setAttribute('loop', '');
+  quizVideo.setAttribute('playsinline', '');
+  quizVideo.removeAttribute('muted');
+
+  if (quizVideoSource) {
+    quizVideoSource.src = videoSrc;
+    quizVideo.removeAttribute('src');
+  } else {
+    quizVideo.src = videoSrc;
+  }
+
+  quizVideo.load();
+  quizVideo.addEventListener('canplay', playQuizVideo, { once: true });
+  playQuizVideo();
 }
 
 function playQuizVideo() {
   const playPromise = quizVideo.play();
   if (playPromise !== undefined) {
-    playPromise.catch(e => console.log('Autoplay prevented:', e));
+    playPromise.catch(e => {
+      console.log('Autoplay prevented:', e);
+      bindVideoUnlock();
+    });
   }
 }
 
-// ===== Autoplay Video on Load =====
-window.addEventListener('load', () => {
+function bindVideoUnlock() {
+  if (videoUnlockBound) return;
+  videoUnlockBound = true;
+
+  const unlockVideo = () => {
+    quizVideo.muted = false;
+    quizVideo.volume = 1;
+    playQuizVideo();
+    videoUnlockBound = false;
+  };
+
+  document.addEventListener('pointerdown', unlockVideo, { once: true, capture: true });
+  document.addEventListener('keydown', unlockVideo, { once: true, capture: true });
+}
+
+// ===== Autoplay Video on DOM Ready =====
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => renderLevel(0), { once: true });
+} else {
   renderLevel(0);
-
-  quizVideo.addEventListener('ended', () => {
-    if (!waitingForFollowupVideo) return;
-
-    waitingForFollowupVideo = false;
-    showModal('error', 'Incorrect Choice!', quizLevels[currentLevelIndex].incorrectText);
-  });
-});
+}
 
 // ===== Parallax Mouse Movement on Background Shapes =====
 const shapes = document.querySelectorAll('.shape');
@@ -141,16 +186,6 @@ btnAllGood.addEventListener('click', () => {
 
   const level = quizLevels[currentLevelIndex];
 
-  if (level.followupVideo) {
-    quizVideo.pause();
-    quizVideo.loop = false;
-    quizVideo.src = level.followupVideo;
-    quizVideo.load();
-    waitingForFollowupVideo = true;
-    playQuizVideo();
-    return;
-  }
-
   quizVideo.pause();
   quizVideo.removeAttribute('loop');
   showModal('error', 'Incorrect Choice!', level.incorrectText);
@@ -167,12 +202,23 @@ btnMedicalAttention.addEventListener('click', () => {
 
 // ===== Modal Controls =====
 function showModal(type, title, text) {
-  if (type === 'success') {
-    modalIcon.style.display = 'flex';
-    beaconIcon.style.display = 'none';
+  const isSuccess = type === 'success';
+  const iconClass = isSuccess ? 'fa-check' : 'fa-xmark';
+
+  feedbackModal.classList.remove('modal-success', 'modal-error');
+  feedbackModal.classList.add(isSuccess ? 'modal-success' : 'modal-error');
+  modalIconGlyph.className = `fas ${iconClass}`;
+  modalShieldIcon.className = `fas ${iconClass}`;
+  
+  // 1 & 2: Title ke right side wale icon ko hide kar diya (flex se none karke)
+  modalIcon.style.display = 'none'; 
+  beaconIcon.style.display = 'block';
+
+  // 3: Popup image change karne ki condition
+  if (isSuccess) {
+    modalCharacterImg.src = 'media/popup_correct.png';
   } else {
-    modalIcon.style.display = 'none';
-    beaconIcon.style.display = 'flex';
+    modalCharacterImg.src = 'media/popup.png';
   }
 
   modalTitle.innerText = title;
@@ -184,6 +230,8 @@ nextLevelBtn.addEventListener('click', () => {
   feedbackModal.classList.remove('show');
 
   setTimeout(() => {
+    feedbackModal.classList.remove('modal-success', 'modal-error');
+
     const nextIndex = currentLevelIndex + 1;
     if (nextIndex < quizLevels.length) {
       renderLevel(nextIndex);
