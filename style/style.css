@@ -282,7 +282,7 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   .quiz-actions { order: 3; }
   .left-stage { width: 100%; max-width: 330px; align-items: center; justify-self: center; }
   .balance-loss-card { max-width: 100%; width: 100%; }
-  .quiz-pad-card { width: min(100%, 320px); margin-inline: auto; padding: 2.7rem 1.05rem 0.95rem; border-radius: 22px; border-width: 2px; box-shadow: -9px 9px 0 #d80b3c, -14px 18px 24px rgba(225,19,68,0.14), 0 18px 28px rgba(225,19,68,0.18), inset 0 0 0 5px rgba(255, 226, 225, 0.72), inset 0 0 0 8px rgba(255,255,255,0.78); transform: perspective(900px) rotateZ(-1.8deg) rotateY(3deg); }
+  .quiz-pad-card { width: min(100%, 320px); margin-inline: auto; padding: 2.7rem 1.05rem 0.95rem; border-radius: 22px; border-width: 2px; box-shadow: -6px 9px 0 #d80b3c, -10px 18px 24px rgba(225,19,68,0.14), 0 18px 28px rgba(225,19,68,0.18), inset 0 0 0 5px rgba(255, 226, 225, 0.72), inset 0 0 0 8px rgba(255,255,255,0.78); transform: translateX(6px) perspective(900px) rotateZ(-1.8deg) rotateY(3deg); }
   .quiz-pad-card::before { inset: 9px; border-radius: 18px; }
   .quiz-pad-card::after { left: 14px; right: 14px; bottom: 8px; height: 9px; }
   .pad-clip { top: -21px; width: 104px; height: 42px; border-radius: 17px 17px 12px 12px; }
@@ -324,12 +324,13 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   .quiz-question-title { margin-bottom: 0; font-size: 0.76rem; line-height: 1.24; text-align: left; }
   .quiz-btn:hover { transform: none; box-shadow: inset 0 5px 7px rgba(255,255,255,0.26), inset 0 -7px 12px rgba(0,0,0,0.14); }
   .quiz-btn:active { transform: scale(0.98); }
-  .quiz-btn { gap: 0.55rem; padding: 0.75rem 0.55rem 0.75rem 0.78rem; min-height: 84px; border-radius: 18px; }
-  .quiz-btn::before { left: 11px; right: 11px; top: 7px; height: 24%; border-radius: 14px 14px 45% 45%; }
-  .quiz-btn i { width: 40px; border-radius: 13px; font-size: 1.35rem; }
-  .option-character-wrap { width: clamp(58px, 18vw, 72px); border-width: 4px; }
-  .btn-title { font-size: clamp(0.95rem, 4.1vw, 1.15rem); }
-  .btn-subtext { font-size: clamp(0.76rem, 3.4vw, 0.9rem); }
+  .quiz-btn { grid-template-columns: 40px minmax(0, 1fr) clamp(58px, 18vw, 72px); gap: 0.55rem; padding: 0.75rem 0.55rem 0.75rem 0.78rem; min-height: 84px; border-radius: 18px; overflow: visible; isolation: isolate; transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .quiz-btn::before { left: 11px; right: 11px; top: 7px; height: 24%; border-radius: 14px 14px 45% 45%; z-index: 0; }
+  .quiz-btn i { z-index: 2; width: 40px; border-radius: 13px; font-size: 1.35rem; }
+  .btn-content { z-index: 2; display: flex !important; visibility: visible; opacity: 1; color: #fff; transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .option-character-wrap { z-index: 2; width: clamp(58px, 18vw, 72px); border-width: 4px; }
+  .btn-title { display: block; visibility: visible; opacity: 1; color: #fff; font-size: clamp(0.95rem, 4.1vw, 1.15rem); }
+  .btn-subtext { display: block; visibility: visible; opacity: 0.96; color: #fff; font-size: clamp(0.76rem, 3.4vw, 0.9rem); }
   .awareness-tag { font-size: 0.7rem; padding: 0.4rem 0.8rem; }
   .hero-title { font-size: 1.6rem; margin-bottom: 1rem; }
   .btn-start-quiz { padding: 0.5rem 0.6rem 0.5rem 1.5rem; gap: 1rem; }
