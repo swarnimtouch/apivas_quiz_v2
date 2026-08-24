@@ -32,6 +32,7 @@ const quizLevels = [
     title: 'ARMS PAIN',
     text: 'Sudden weakness, numbness or pain in one or both arms',
     video: 'media/arm pain.mp4',
+    muted: true,
     question: 'Mr Raj noticed weakness, numbness or pain in one arm this morning',
     incorrectText: 'Sudden weakness, numbness or pain in one arm can be a warning sign of stroke.',
     successText: 'You correctly identified that sudden arm weakness, numbness or pain can need urgent medical attention.'
@@ -88,6 +89,7 @@ const nextLevelText = nextLevelBtn.querySelector('.btn-text');
 let currentLevelIndex = 0;
 let isAnswered = false;
 let videoUnlockBound = false;
+let currentVideoMuted = false;
 
 // ===== Render Current Question =====
 function renderLevel(index) {
@@ -107,22 +109,27 @@ function renderLevel(index) {
   symptomText.innerText = level.text;
   questionTitle.innerText = level.question;
 
-  loadQuestionVideo(level.video);
+  loadQuestionVideo(level.video, level.muted === true);
 
   nextLevelText.innerText = index === quizLevels.length - 1 ? 'Finish' : 'Next Level';
 }
 
-function loadQuestionVideo(videoSrc) {
+function loadQuestionVideo(videoSrc, shouldMute = false) {
   quizVideo.pause();
+  currentVideoMuted = shouldMute;
   quizVideo.autoplay = true;
   quizVideo.loop = true;
-  quizVideo.muted = false;
-  quizVideo.defaultMuted = false;
-  quizVideo.volume = 1;
+  quizVideo.muted = shouldMute;
+  quizVideo.defaultMuted = shouldMute;
+  quizVideo.volume = shouldMute ? 0 : 1;
   quizVideo.setAttribute('autoplay', '');
   quizVideo.setAttribute('loop', '');
   quizVideo.setAttribute('playsinline', '');
-  quizVideo.removeAttribute('muted');
+  if (shouldMute) {
+    quizVideo.setAttribute('muted', '');
+  } else {
+    quizVideo.removeAttribute('muted');
+  }
 
   if (quizVideoSource) {
     quizVideoSource.src = videoSrc;
@@ -151,8 +158,8 @@ function bindVideoUnlock() {
   videoUnlockBound = true;
 
   const unlockVideo = () => {
-    quizVideo.muted = false;
-    quizVideo.volume = 1;
+    quizVideo.muted = currentVideoMuted;
+    quizVideo.volume = currentVideoMuted ? 0 : 1;
     playQuizVideo();
     videoUnlockBound = false;
   };
