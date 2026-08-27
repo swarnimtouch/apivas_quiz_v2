@@ -26,7 +26,7 @@
   <!-- ===== Preloader ===== -->
   <div class="preloader" id="preloader">
     <div class="loader-logo-wrapper">
-      <img src="media/logo.png" alt="Apivas Logo" class="loader-logo" />
+      <img src="media/microlab.png" alt="Micro Labs Logo" class="loader-logo" />
     </div>
   </div>
 
@@ -43,8 +43,8 @@
       <img src="media/heart.png" alt="Heart Background" class="side-heart" />
       -->
       
-      <!-- NAYA: Left side vertically centered brain -->
-      <img src="media/brain.png" alt="Brain Background" class="side-brain" />
+      <!-- Left side vertically centered clock -->
+      <img src="media/clock.png" alt="Clock Background" class="side-brain" />
     </div>
 
     <!-- ===== Top Bar ===== -->
@@ -55,14 +55,44 @@
       </div>
     </div>
 
+    <!-- ===== Language Selection Screen ===== -->
+    <div class="lang-screen-overlay" id="langScreenOverlay">
+      <div class="lang-card" data-aos="zoom-in">
+        <div class="lang-card-header">
+          <div class="lang-logo-wrap">
+            <img src="media/microlab.png" alt="Micro Labs" class="lang-logo-img" />
+          </div>
+          <h2 class="lang-title">Select Language</h2>
+        </div>
+
+        <div class="lang-selector-wrap">
+          <div class="custom-lang-select-box">
+            <select id="languageSelect" class="form-select lang-dropdown" aria-label="Select Language">
+              <option value="en" selected>English</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="gu">ગુજરાતી (Gujarati)</option>
+            </select>
+            <i class="fas fa-chevron-down select-chevron"></i>
+          </div>
+        </div>
+
+        <div class="lang-actions">
+          <button type="button" class="btn-start-quiz lang-confirm-btn" id="confirmLangBtn">
+            <span class="btn-text">CONTINUE</span>
+            <div class="icon-circle">
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== Hero Content ===== -->
-    <!-- ===== Hero Content ===== -->
-    <!-- ===== Hero Content ===== -->
-    <div class="hero-content text-center">
+    <div class="hero-content text-center hero-pending" id="heroContent">
       
-      <!-- NAYA: Sirf Mobile view ke liye chote Brain aur Heart (Desktop pe hide rahenge) -->
+      <!-- Sirf Mobile view ke liye chota Clock (Desktop pe hide rahega) -->
       <div class="mobile-organs-row">
-        <img src="media/brain.png" alt="Brain" class="mobile-organ-img" />
+        <img src="media/clock.png" alt="Clock" class="mobile-organ-img" />
         <!-- <img src="media/heart.png" alt="Heart" class="mobile-organ-img" /> -->
       </div>
 
@@ -95,8 +125,6 @@
         <span id="type-line2" class="gradient-text"></span>
       </h1>
 
-      <!-- Central Info Box -->
-      <!-- Central Info Box -->
       <!-- Central Info Box -->
       <div class="info-card" data-aos="zoom-in" data-aos-delay="300">
         <!-- NAYA: Background Wave SVGs -->
@@ -141,28 +169,13 @@
             </div>
           </div>
 
-          <!-- Second Divider -->
-          <span class="divider"></span>
-
-          <!-- Item 3 -->
-          <div class="info-item">
-            <span class="info-num"><i class="fas fa-xmark"></i></span>
-            <span class="info-label">MEDICAL KNOWLEDGE<br />REQUIRED</span>
-            <div class="badge-wrapper">
-              <div class="bottom-badge icon-purple">
-                <i class="fas fa-brain"></i>
-              </div>
-            </div>
-          </div>
-
         </div>
         
       </div>
 
       <!-- Disclaimer Text -->
       <p class="disclaimer-text" data-aos="fade-up" data-aos-delay="500">
-        This public awareness game is used to identify emergency situations
-        but does <strong>not</strong> make medical diagnoses.
+        This is a public awareness tool that helps to recognize, when emergency action may be needed. It does not provide a medical diagnosis. During an emergency situation immediately call <strong>112/108</strong>.
       </p>
 
       <!-- CTA Button -->
@@ -176,28 +189,13 @@
         </button>
       </div>
 
-      <!-- Emergency Info -->
-      <div class="emergency-info" data-aos="fade-up" data-aos-delay="900">
-        <i class="fas fa-phone-volume"></i>
-        <span>In case of emergency in India, dial <strong>108</strong> or
-          <strong>112</strong></span>
-      </div>
     </div>
 
     <!-- ===== Footer ===== -->
     <footer class="footer-section">
-      <div class="footer-left">
-        <div class="footer-heart-icon">
-          <i class="fas fa-heart-pulse"></i>
-        </div>
-        <div class="footer-text">
-          <h5>Stroke Awareness Initiative</h5>
-          <p>Contains information about Apixaban</p>
-        </div>
-      </div>
-      <div class="footer-right">
+      <div class="footer-center">
         <span>Initiated by</span>
-        <img src="media/logo.png" alt="Apivas" class="footer-logo-img" />
+        <img src="media/microlab.png" alt="Micro Labs" class="footer-logo-img" />
       </div>
     </footer>
   </div>

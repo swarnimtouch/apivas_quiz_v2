@@ -34,7 +34,7 @@
     <!-- ===== Top Bar ===== -->
     <div class="top-bar">
       <div class="brand-logo">
-        <img src="media/logo.png" alt="Apivas" class="brand-logo-img" />
+        <img src="media/microlab.png" alt="Micro Labs" class="brand-logo-img" />
       </div>
       <div class="awareness-tag">
         <i class="fas fa-circle-info"></i>
@@ -45,24 +45,28 @@
     <!-- ===== Quiz Content (3-Column Layout) ===== -->
     <div class="quiz-content-wrapper">
       
-      <!-- Left Side (Symptom + Question) -->
+      <!-- Left Side (Question on Top + Symptom at Bottom) -->
       <div class="left-stage" data-aos="fade-right">
         <div class="quiz-pad-card">
           <span class="pad-clip" aria-hidden="true"></span>
 
-          <div class="balance-loss-card" id="symptomCard">
-            <div class="b-icon" id="symptomIcon">B</div>
-            <div class="info-text">
-              <h4 id="symptomTitle">BALANCE LOSS</h4>
-              <span class="pad-divider" aria-hidden="true"></span>
-              <p id="symptomText">Sudden loss of balance, dizziness or coordination</p>
-            </div>
-          </div>
-
+          <!-- Question Card Moved to Top -->
           <div class="question-card">
             <h2 class="quiz-question-title" id="questionTitle">
-              Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
+              Mr X. suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.
             </h2>
+          </div>
+
+          <!-- Symptom Card (Middle: Description, Bottom: Icon & Title) -->
+          <div class="balance-loss-card" id="symptomCard">
+            <div class="symptom-desc-wrap">
+              <p id="symptomText">Sudden loss of balance, dizziness or coordination</p>
+              <span class="pad-divider" aria-hidden="true"></span>
+            </div>
+            <div class="symptom-badge-wrap">
+              <div class="b-icon" id="symptomIcon">B</div>
+              <h4 id="symptomTitle">BALANCE LOSS</h4>
+            </div>
           </div>
         </div>
       </div>
@@ -71,16 +75,17 @@
       <div class="center-stage" data-aos="zoom-in" data-aos-delay="300">
         <!-- ===== Quiz Header ===== -->
         <div class="quiz-header text-center" data-aos="fade-down">
-          <div class="level-badge quiz-level-ribbon" id="levelBadge">Level 1 of 5</div>
+          <div class="level-badge quiz-level-ribbon" id="levelBadge">Level 1 of 6</div>
           <div class="quiz-stepper" id="quizStepper" aria-label="Quiz progress">
             <span class="step-dot active">1</span>
             <span class="step-dot">2</span>
             <span class="step-dot">3</span>
             <span class="step-dot">4</span>
             <span class="step-dot">5</span>
+            <span class="step-dot">6</span>
           </div>
           <div class="progress-track quiz-progress-track">
-            <div class="progress-bar-fill" id="progressBarFill" style="width: 20%;"></div>
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 16.66%;"></div>
           </div>
         </div>
 
@@ -89,6 +94,7 @@
             <source id="quizVideoSource" src="media/balance.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <img src="media/emergency.png" alt="Emergency service awareness" class="emergency-main-img" id="emergencyImage" hidden />
         </div>
       </div>
 
@@ -96,30 +102,32 @@
       <div class="quiz-actions" id="quizActions" data-aos="fade-left" data-aos-delay="500">
         <div class="options-prompt-banner" aria-hidden="true">
           <i class="fas fa-bullhorn"></i>
-          <span>What will you do?</span>
+          <span class="prompt-text">Need Urgent<br />Medical Attention?</span>
         </div>
 
-        <button class="quiz-btn btn-green" id="btnAllGood">
-          <i class="fas fa-check-circle"></i>
-          <div class="btn-content">
-            <span class="btn-title">All good</span>
-            <span class="btn-subtext">Nothing wrong — carry on</span>
+        <!-- Superhero Character Options (yesno.png with Dialogue Box Buttons) -->
+        <div class="character-options-container" id="characterOptions">
+          <img src="media/yesno.png" alt="Quiz Options Character" class="yesno-character-img" />
+          <div class="speech-bubble-overlay">
+            <button class="speech-bubble-btn btn-bubble-yes" id="btnYes" type="button" aria-label="Yes - Needs Urgent Medical Attention">
+              <i class="fas fa-check-circle"></i>
+              <span class="btn-bubble-text">Yes</span>
+            </button>
+            <button class="speech-bubble-btn btn-bubble-no" id="btnNo" type="button" aria-label="No - No Urgent Medical Attention">
+              <i class="fas fa-times-circle"></i>
+              <span class="btn-bubble-text">No</span>
+            </button>
           </div>
-          <span class="option-character-wrap" aria-hidden="true">
-            <img src="media/green.png" alt="" class="option-character-img" />
-          </span>
-        </button>
-        
-        <button class="quiz-btn btn-red" id="btnMedicalAttention">
-          <i class="fas fa-triangle-exclamation"></i>
-          <div class="btn-content">
-            <span class="btn-title">Need urgent medical attention</span>
-            <span class="btn-subtext">This person needs a hospital</span>
-          </div>
-          <span class="option-character-wrap" aria-hidden="true">
-            <img src="media/red.png" alt="" class="option-character-img" />
-          </span>
-        </button>
+        </div>
+
+        <div class="emergency-message-card" id="emergencyMessageCard" hidden>
+          <p id="emergencyMessageText">Every minute matters. Recognize even one sign of stroke and call <strong>112/108</strong> immediately. The sooner treatment begins, the greater the chance of survival and the lower the risk of lasting disability.</p>
+        </div>
+
+        <a href="thanks.html" class="btn-start-quiz emergency-continue-btn" id="finishEmergencyBtn" hidden>
+          <span class="btn-text">Finish</span>
+          <span class="icon-circle"><i class="fas fa-arrow-right"></i></span>
+        </a>
       </div>
 
     </div>
@@ -149,6 +157,34 @@
         <span class="btn-text">Next Level</span>
         <i class="fas fa-arrow-right"></i>
       </button>
+
+      <!-- BE-FAST 6-Sign Indicator Row inside Popup below Next Level button -->
+      <div class="modal-befast-row" id="modalBefastRow" aria-label="BEFAST stroke awareness signs">
+        <div class="modal-befast-item" data-index="0">
+          <div class="modal-befast-letter befast-blue">B</div>
+          <span class="modal-befast-name">Balance Loss</span>
+        </div>
+        <div class="modal-befast-item" data-index="1">
+          <div class="modal-befast-letter befast-red">E</div>
+          <span class="modal-befast-name">Eye (Vision)<br />Changes</span>
+        </div>
+        <div class="modal-befast-item" data-index="2">
+          <div class="modal-befast-letter befast-blue">F</div>
+          <span class="modal-befast-name">Face drooping</span>
+        </div>
+        <div class="modal-befast-item" data-index="3">
+          <div class="modal-befast-letter befast-red">A</div>
+          <span class="modal-befast-name">Arm Weakness</span>
+        </div>
+        <div class="modal-befast-item" data-index="4">
+          <div class="modal-befast-letter befast-blue">S</div>
+          <span class="modal-befast-name">Speech<br />Difficulty</span>
+        </div>
+        <div class="modal-befast-item" data-index="5">
+          <div class="modal-befast-letter befast-red">T</div>
+          <span class="modal-befast-name">Time to call<br />emergency service<br />(112/108)</span>
+        </div>
+      </div>
 
       <div class="modal-shield" aria-hidden="true">
         <i class="fas fa-xmark"></i>

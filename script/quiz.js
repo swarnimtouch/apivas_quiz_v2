@@ -5,46 +5,56 @@ const quizLevels = [
     title: 'BALANCE LOSS',
     text: 'Sudden loss of balance, dizziness or coordination',
     video: 'media/balance.mp4',
-    question: 'Mr Ramesh suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.',
-    incorrectText: 'Look again. Sudden loss of balance, dizziness or poor coordination can be a warning sign of stroke. Seek urgent medical attention.',
+    question: 'Mr X. suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.',
+    incorrectText: 'Look again. Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke. Look for urgent medical attention',
     successText: 'You correctly identified the stroke symptom. Acting fast in such situations can save lives and prevent brain damage.'
   },
   {
     icon: 'E',
-    title: 'BLURRED VISION',
+    title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
     video: 'media/trouble in seeing.mp4',
-    question: 'Mrs Meena suddenly experienced blurred vision or difficulty seeing through one or both eyes.',
-    incorrectText: 'Sudden blurred vision or difficulty seeing can be a warning sign of stroke.',
+    question: 'Mrs. Y suddenly experienced blurred/double vision or difficulty seeing through one or both eyes.',
+    incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke.',
     successText: 'You correctly identified that sudden trouble seeing can need urgent medical attention.'
   },
   {
     icon: 'F',
     title: 'FACE DROOPING',
-    text: 'Sudden weakness or numbness of the face. Is the face uneven?',
+    text: 'Sudden weakness or numbness of the face or uneven face.',
     video: 'media/weakness on face.mp4',
-    question: "Mr Rajesh's face appears uneven on one sided.",
-    incorrectText: 'This situation needs immediate medical attention. Drooping on one side of the face can be a sign of stroke. Call Doctor or reach the nearest hospital immediately.',
+    question: "Mr. Z face appears uneven on one sided.",
+    incorrectText: 'This situation needs immediate medical attention. Drooping downward on one side of the face can be a sign of stroke. Call Doctor or reach the nearest hospital immediately.',
     successText: 'You correctly identified that face drooping can be a sign of stroke.'
   },
   {
     icon: 'A',
-    title: 'ARMS PAIN',
-    text: 'Sudden weakness, numbness or pain in one or both arms',
+    title: 'ARM WEAKNESS',
+    text: 'Sudden weakness numbness in one or both arms',
     video: 'media/arm pain.mp4',
     muted: true,
-    question: 'Mr Raj noticed weakness, numbness or pain in one arm this morning',
-    incorrectText: 'Sudden weakness, numbness or pain in one arm can be a warning sign of stroke.',
+    question: 'Mr. A noticed weakness or numbness in one arm this morning',
+    incorrectText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke.',
     successText: 'You correctly identified that sudden arm weakness, numbness or pain can need urgent medical attention.'
   },
   {
     icon: 'S',
-    title: 'INABILITY TO SPEAK',
-    text: 'Sudden trouble speaking or understanding speech',
+    title: 'SPEECH DIFFICULTY',
+    text: 'Difficulty in Speaking or slurring of speech',
     video: 'media/uneven speak.mp4',
-    question: 'Mrs Sandhya suddenly experienced difficulty in speaking or understanding what others were saying.',
-    incorrectText: 'Sudden difficulty speaking or understanding others may be a sign of stroke.',
+    question: 'Mrs. R suddenly experienced difficulty in speaking or slurring of speech',
+    incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke',
     successText: 'You correctly identified that sudden difficulty speaking or understanding others can be a sign of stroke.'
+  },
+  {
+    type: 'emergency',
+    icon: 'T',
+    title: 'TIME TO CALL EMERGENCY SERVICE',
+    text: '',
+    image: 'media/emergency.png',
+    prompt: 'Act fast',
+    question: 'Time is Gold.\nCall emergency services immediately.',
+    message: 'Every minute matters. Recognize even one sign of stroke and call 112/108 immediately. The sooner treatment begins, the greater the chance of survival and the lower the risk of lasting disability.'
   }
 ];
 
@@ -73,8 +83,16 @@ const symptomIcon = document.getElementById('symptomIcon');
 const symptomTitle = document.getElementById('symptomTitle');
 const symptomText = document.getElementById('symptomText');
 const questionTitle = document.getElementById('questionTitle');
-const btnAllGood = document.getElementById('btnAllGood');
-const btnMedicalAttention = document.getElementById('btnMedicalAttention');
+const questionCard = questionTitle.closest('.question-card');
+const characterOptions = document.getElementById('characterOptions');
+const btnYes = document.getElementById('btnYes');
+const btnNo = document.getElementById('btnNo');
+const modalBefastItems = document.querySelectorAll('.modal-befast-item');
+const promptBannerText = document.querySelector('.options-prompt-banner span');
+const emergencyImage = document.getElementById('emergencyImage');
+const emergencyMessageCard = document.getElementById('emergencyMessageCard');
+const emergencyMessageText = document.getElementById('emergencyMessageText');
+const finishEmergencyBtn = document.getElementById('finishEmergencyBtn');
 const feedbackModal = document.getElementById('feedbackModal');
 const modalIcon = document.getElementById('modalIcon');
 const beaconIcon = document.getElementById('beaconIcon');
@@ -90,16 +108,19 @@ let currentLevelIndex = 0;
 let isAnswered = false;
 let videoUnlockBound = false;
 let currentVideoMuted = false;
+const totalSteps = quizLevels.length;
 
 // ===== Render Current Question =====
 function renderLevel(index) {
   const level = quizLevels[index];
+  const isEmergencyLevel = level.type === 'emergency';
 
   currentLevelIndex = index;
   isAnswered = false;
+  document.body.classList.toggle('emergency-active', isEmergencyLevel);
 
-  levelBadge.innerText = `Level ${index + 1} of ${quizLevels.length}`;
-  progressBarFill.style.width = `${((index + 1) / quizLevels.length) * 100}%`;
+  levelBadge.innerText = `Level ${index + 1} of ${totalSteps}`;
+  progressBarFill.style.width = `${((index + 1) / totalSteps) * 100}%`;
   stepDots.forEach((dot, dotIndex) => {
     dot.classList.toggle('active', dotIndex === index);
     dot.classList.toggle('completed', dotIndex < index);
@@ -107,11 +128,33 @@ function renderLevel(index) {
   symptomIcon.innerText = level.icon;
   symptomTitle.innerText = level.title;
   symptomText.innerText = level.text;
-  questionTitle.innerText = level.question;
+  questionTitle.innerText = level.question || '';
+  questionCard.hidden = false;
+  if (characterOptions) characterOptions.hidden = isEmergencyLevel;
+  emergencyMessageCard.hidden = !isEmergencyLevel;
+  finishEmergencyBtn.hidden = !isEmergencyLevel;
+  promptBannerText.innerHTML = level.prompt ? level.prompt : 'Need Urgent<br />Medical Attention?';
 
-  loadQuestionVideo(level.video, level.muted === true);
+  if (isEmergencyLevel) {
+    loadEmergencyImage(level.image);
+  } else {
+    emergencyImage.hidden = true;
+    quizVideo.hidden = false;
+    loadQuestionVideo(level.video, level.muted === true);
+  }
 
-  nextLevelText.innerText = index === quizLevels.length - 1 ? 'Finish' : 'Next Level';
+  nextLevelText.innerText = 'Next Level';
+}
+
+function loadEmergencyImage(imageSrc) {
+  quizVideo.pause();
+  quizVideo.hidden = true;
+  quizVideo.removeAttribute('loop');
+  currentVideoMuted = false;
+  if (emergencyImage) {
+    emergencyImage.src = imageSrc;
+    emergencyImage.hidden = false;
+  }
 }
 
 function loadQuestionVideo(videoSrc, shouldMute = false) {
@@ -186,51 +229,71 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
-// ===== Click Handlers =====
-btnAllGood.addEventListener('click', () => {
-  if (isAnswered) return;
-  isAnswered = true;
+// ===== Click Handlers for Superhero Dialogue Options =====
+if (btnYes) {
+  btnYes.addEventListener('click', () => {
+    if (isAnswered) return;
+    if (quizLevels[currentLevelIndex].type === 'emergency') return;
+    isAnswered = true;
 
-  const level = quizLevels[currentLevelIndex];
+    quizVideo.pause();
+    quizVideo.removeAttribute('loop');
+    // Yes -> Correct choice (stroke symptoms need urgent medical attention)
+    showModal('success', 'Absolutely Right!', quizLevels[currentLevelIndex].successText);
+  });
+}
 
-  quizVideo.pause();
-  quizVideo.removeAttribute('loop');
-  showModal('error', 'Incorrect Choice!', level.incorrectText);
-});
+if (btnNo) {
+  btnNo.addEventListener('click', () => {
+    if (isAnswered) return;
+    if (quizLevels[currentLevelIndex].type === 'emergency') return;
+    isAnswered = true;
 
-btnMedicalAttention.addEventListener('click', () => {
-  if (isAnswered) return;
-  isAnswered = true;
-
-  quizVideo.pause();
-  quizVideo.removeAttribute('loop');
-  showModal('success', 'Absolutely Right!', quizLevels[currentLevelIndex].successText);
-});
+    const level = quizLevels[currentLevelIndex];
+    quizVideo.pause();
+    quizVideo.removeAttribute('loop');
+    // No -> Incorrect choice (stroke symptoms must not be ignored)
+    showModal('error', 'Incorrect Choice!', level.incorrectText);
+  });
+}
 
 // ===== Modal Controls =====
 function showModal(type, title, text) {
   const isSuccess = type === 'success';
   const iconClass = isSuccess ? 'fa-check' : 'fa-xmark';
 
-  feedbackModal.classList.remove('modal-success', 'modal-error');
-  feedbackModal.classList.add(isSuccess ? 'modal-success' : 'modal-error');
-  modalIconGlyph.className = `fas ${iconClass}`;
-  modalShieldIcon.className = `fas ${iconClass}`;
-  
-  // 1 & 2: Title ke right side wale icon ko hide kar diya (flex se none karke)
-  modalIcon.style.display = 'none'; 
-  beaconIcon.style.display = 'block';
-
-  // 3: Popup image change karne ki condition
-  if (isSuccess) {
-    modalCharacterImg.src = 'media/popup_correct.png';
-  } else {
-    modalCharacterImg.src = 'media/popup.png';
+  if (feedbackModal) {
+    feedbackModal.classList.remove('modal-success', 'modal-error');
+    feedbackModal.classList.add(isSuccess ? 'modal-success' : 'modal-error');
   }
 
-  modalTitle.innerText = title;
-  modalText.innerText = text;
-  feedbackModal.classList.add('show');
+  const glyph = modalIcon ? modalIcon.querySelector('i') : null;
+  if (glyph) glyph.className = `fas ${iconClass}`;
+
+  const shield = document.querySelector('.modal-shield i');
+  if (shield) shield.className = `fas ${iconClass}`;
+  
+  if (modalIcon) modalIcon.style.display = 'none'; 
+  if (beaconIcon) beaconIcon.style.display = 'block';
+
+  const charImg = document.querySelector('.modal-character-img');
+  if (charImg) {
+    charImg.src = isSuccess ? 'media/clock.png' : 'media/popup.png';
+  }
+
+  // Highlight the active BEFAST sign for current question level
+  const befastItems = document.querySelectorAll('.modal-befast-item');
+  befastItems.forEach((item, idx) => {
+    if (idx === currentLevelIndex) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+
+  if (modalTitle) modalTitle.innerText = title || '';
+  if (modalText) modalText.innerText = text || '';
+  if (feedbackModal) feedbackModal.classList.add('show');
 }
 
 nextLevelBtn.addEventListener('click', () => {
