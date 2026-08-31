@@ -5,46 +5,50 @@ const quizLevels = [
     title: 'BALANCE LOSS',
     text: 'Sudden loss of balance, dizziness or coordination',
     video: 'media/balance.mp4',
-    question: 'Mr X. suddenly experienced loss of balance, dizziness or difficulty coordinating his movements.',
-    incorrectText: 'Look again. Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke. Look for urgent medical attention',
-    successText: 'You correctly identified the stroke symptom. Acting fast in such situations can save lives and prevent brain damage.'
+    questionLead: 'Mr. Ramesh suddenly experienced ',
+    questionEmphasis: 'loss of balance, dizziness or difficulty coordinating his movements.',
+    incorrectText: 'Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke. Look for urgent medical attention',
+    successText: 'Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke.'
   },
   {
     icon: 'E',
     title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
     video: 'media/trouble in seeing.mp4',
-    question: 'Mrs. Y suddenly experienced blurred/double vision or difficulty seeing through one or both eyes.',
-    incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke.',
-    successText: 'You correctly identified that sudden trouble seeing can need urgent medical attention.'
+    questionLead: 'Mrs. Meena suddenly experienced ',
+    questionEmphasis: 'blurred or double vision, or difficulty seeing through one or both eyes.',
+    incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke. Look for urgent medical attention',
+    successText: 'Sudden blurred or double vision, or difficulty seeing in one or both eyes can be a warning sign of stroke.'
   },
   {
     icon: 'F',
     title: 'FACE DROOPING',
     text: 'Sudden weakness or numbness of the face or uneven face.',
     video: 'media/weakness on face.mp4',
-    question: "Mr. Z face appears uneven on one sided.",
-    incorrectText: 'This situation needs immediate medical attention. Drooping downward on one side of the face can be a sign of stroke. Call Doctor or reach the nearest hospital immediately.',
-    successText: 'You correctly identified that face drooping can be a sign of stroke.'
+    questionLead: "Mr. Rajesh's face suddenly appeared ",
+    questionEmphasis: 'uneven on one side.',
+    incorrectText: 'This situation needs immediate medical attention. Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention',
+    successText: 'Sudden drooping or weakness on one side of the face can be a warning sign of stroke.'
   },
   {
     icon: 'A',
     title: 'ARM WEAKNESS',
     text: 'Sudden weakness numbness in one or both arms',
     video: 'media/arm pain.mp4',
-    muted: true,
-    question: 'Mr. A noticed weakness or numbness in one arm this morning',
-    incorrectText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke.',
-    successText: 'You correctly identified that sudden arm weakness, numbness or pain can need urgent medical attention.'
+    questionLead: 'Mr. Raj noticed ',
+    questionEmphasis: 'weakness or numbness in one arm this morning.',
+    incorrectText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke. Look for urgent medical attention',
+    successText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke.'
   },
   {
     icon: 'S',
     title: 'SPEECH DIFFICULTY',
     text: 'Difficulty in Speaking or slurring of speech',
     video: 'media/uneven speak.mp4',
-    question: 'Mrs. R suddenly experienced difficulty in speaking or slurring of speech',
-    incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke',
-    successText: 'You correctly identified that sudden difficulty speaking or understanding others can be a sign of stroke.'
+    questionLead: 'Mrs. Sandhya suddenly experienced ',
+    questionEmphasis: 'difficulty speaking or slurred speech.',
+    incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention',
+    successText: 'Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.'
   },
   {
     type: 'emergency',
@@ -128,7 +132,7 @@ function renderLevel(index) {
   symptomIcon.innerText = level.icon;
   symptomTitle.innerText = level.title;
   symptomText.innerText = level.text;
-  questionTitle.innerText = level.question || '';
+  renderQuestion(level);
   questionCard.hidden = false;
   if (characterOptions) characterOptions.hidden = isEmergencyLevel;
   emergencyMessageCard.hidden = !isEmergencyLevel;
@@ -144,6 +148,23 @@ function renderLevel(index) {
   }
 
   nextLevelText.innerText = 'Next Level';
+}
+
+function renderQuestion(level) {
+  questionTitle.replaceChildren();
+
+  if (level.questionLead || level.questionEmphasis) {
+    questionTitle.append(document.createTextNode(level.questionLead || ''));
+
+    if (level.questionEmphasis) {
+      const emphasis = document.createElement('strong');
+      emphasis.textContent = level.questionEmphasis;
+      questionTitle.append(emphasis);
+    }
+    return;
+  }
+
+  questionTitle.textContent = level.question || '';
 }
 
 function loadEmergencyImage(imageSrc) {
@@ -282,12 +303,14 @@ function showModal(type, title, text) {
   }
 
   // Highlight the active BEFAST sign for current question level
-  const befastItems = document.querySelectorAll('.modal-befast-item');
-  befastItems.forEach((item, idx) => {
-    if (idx === currentLevelIndex) {
-      item.classList.add('active');
+  modalBefastItems.forEach((item, idx) => {
+    const isActiveSign = idx === currentLevelIndex;
+    item.classList.toggle('active', isActiveSign);
+
+    if (isActiveSign) {
+      item.setAttribute('aria-current', 'true');
     } else {
-      item.classList.remove('active');
+      item.removeAttribute('aria-current');
     }
   });
 
