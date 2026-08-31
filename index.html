@@ -43,8 +43,11 @@
       <img src="media/heart.png" alt="Heart Background" class="side-heart" />
       -->
       
-      <!-- Left side vertically centered clock -->
-      <img src="media/clock.png" alt="Clock Background" class="side-brain" />
+      <!-- Left side vertically centered stopwatch video -->
+      <video class="side-brain index-stopwatch-video" id="indexStopwatchDesktop" loop playsinline preload="auto" aria-label="Stopwatch animation">
+        <source src="media/stopwatch_sample.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
 
     <!-- ===== Top Bar ===== -->
@@ -90,9 +93,12 @@
     <!-- ===== Hero Content ===== -->
     <div class="hero-content text-center hero-pending" id="heroContent">
       
-      <!-- Sirf Mobile view ke liye chota Clock (Desktop pe hide rahega) -->
+      <!-- Sirf Mobile view ke liye chota Stopwatch (Desktop pe hide rahega) -->
       <div class="mobile-organs-row">
-        <img src="media/clock.png" alt="Clock" class="mobile-organ-img" />
+        <video class="mobile-organ-img index-stopwatch-video" id="indexStopwatchMobile" loop playsinline preload="auto" aria-label="Stopwatch animation" hidden>
+          <source src="media/stopwatch_sample.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <!-- <img src="media/heart.png" alt="Heart" class="mobile-organ-img" /> -->
       </div>
 

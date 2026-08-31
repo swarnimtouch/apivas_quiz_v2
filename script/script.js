@@ -68,6 +68,70 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// ===== Index Stopwatch Video (Immediate Audio Playback + Loop) =====
+const indexStopwatchDesktop = document.getElementById('indexStopwatchDesktop');
+const indexStopwatchMobile = document.getElementById('indexStopwatchMobile');
+const indexStopwatchVideos = [indexStopwatchDesktop, indexStopwatchMobile].filter(Boolean);
+const indexMobileViewport = window.matchMedia('(max-width: 767px)');
+let indexStopwatchUnlockBound = false;
+
+function getActiveIndexStopwatch() {
+  return indexMobileViewport.matches ? indexStopwatchMobile : indexStopwatchDesktop;
+}
+
+function playIndexStopwatch(video) {
+  if (!video) return;
+
+  video.loop = true;
+  video.muted = false;
+  video.defaultMuted = false;
+  video.volume = 1;
+
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log('Index stopwatch autoplay with audio was prevented:', error);
+      bindIndexStopwatchUnlock();
+    });
+  }
+}
+
+function syncIndexStopwatchVideo() {
+  const activeVideo = getActiveIndexStopwatch();
+
+  indexStopwatchVideos.forEach(video => {
+    const isActiveVideo = video === activeVideo;
+    video.hidden = !isActiveVideo;
+
+    if (isActiveVideo) {
+      playIndexStopwatch(video);
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+  });
+}
+
+function unlockIndexStopwatchPlayback() {
+  indexStopwatchUnlockBound = false;
+  playIndexStopwatch(getActiveIndexStopwatch());
+}
+
+function bindIndexStopwatchUnlock() {
+  if (indexStopwatchUnlockBound) return;
+  indexStopwatchUnlockBound = true;
+  document.addEventListener('pointerdown', unlockIndexStopwatchPlayback, { once: true, capture: true });
+  document.addEventListener('keydown', unlockIndexStopwatchPlayback, { once: true, capture: true });
+}
+
+syncIndexStopwatchVideo();
+
+if (typeof indexMobileViewport.addEventListener === 'function') {
+  indexMobileViewport.addEventListener('change', syncIndexStopwatchVideo);
+} else {
+  indexMobileViewport.addListener(syncIndexStopwatchVideo);
+}
+
 
 // ===== Language Selection & Typewriter Flow (index.html) =====
 window.addEventListener('load', () => {

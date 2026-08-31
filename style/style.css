@@ -65,6 +65,7 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
 
 .side-heart { position: absolute; right: 150px; top: 50%; transform: translateY(-50%); max-width: 320px; z-index: 1; opacity: 0.8; pointer-events: none; }
 .side-brain { position: absolute; left: 150px; top: 50%; transform: translateY(-50%); max-width: 320px; z-index: 1; opacity: 0.8; pointer-events: none; }
+.index-stopwatch-video { height: auto; aspect-ratio: 1 / 1; object-fit: contain; border-radius: 18px; pointer-events: none; }
 
 .top-bar { display: flex; justify-content: space-between; align-items: center; padding: max(var(--shell-pad-y), env(safe-area-inset-top)) max(var(--shell-pad-x), env(safe-area-inset-right)) var(--shell-pad-y) max(var(--shell-pad-x), env(safe-area-inset-left)); position: relative; z-index: 2; min-width: 0; }
 .home-page .top-bar { justify-content: center; }
@@ -486,7 +487,7 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   display: block;
 }
 
-/* ===== Superhero Character Options (yesno.png with Dialogue Box Buttons) ===== */
+/* ===== Question Option Media with Dialogue Box Buttons ===== */
 .character-options-container {
   position: relative;
   width: 100%;
@@ -495,13 +496,129 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   user-select: none;
 }
 
-.yesno-character-img {
+.yesno-character-img,
+.stopwatch-options-video {
   width: 100%;
   height: auto;
+  aspect-ratio: 1 / 1;
   display: block;
+  object-fit: contain;
   filter: drop-shadow(0 14px 28px rgba(225, 19, 68, 0.16));
   pointer-events: none;
   user-select: none;
+}
+
+.stopwatch-options-video {
+  border-radius: 18px;
+}
+
+.coded-stopwatch-scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 18px;
+  background: transparent;
+  filter: drop-shadow(0 14px 28px rgba(225, 19, 68, 0.16));
+  pointer-events: none;
+  user-select: none;
+}
+
+.coded-stopwatch-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.coded-stopwatch-needle {
+  transform-box: view-box;
+  transform-origin: 222px 424px;
+  animation: codedNeedleSweep 12s linear forwards;
+}
+
+.coded-needle-hand {
+  animation: codedNeedleColor 12s linear forwards;
+}
+
+.coded-happy-brow,
+.coded-happy-mouth {
+  animation: codedHappyMoodFade 12s linear forwards;
+}
+
+.coded-sad-face {
+  opacity: 0;
+  animation: codedSadMoodBuild 12s linear forwards;
+}
+
+.coded-original-board-arm {
+  display: none;
+}
+
+.coded-stopwatch-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: codedEyeBlink 4.6s ease-in-out infinite;
+}
+
+.coded-cape {
+  transform-box: fill-box;
+  transform-origin: right center;
+  animation: codedCapeWave 2.8s ease-in-out infinite;
+}
+
+.coded-board-shine {
+  animation: codedBoardShine 3.2s ease-in-out infinite;
+}
+
+.coded-stopwatch-scene:not([hidden]) {
+  animation: codedSceneArrive 0.55s cubic-bezier(0.2, 0.85, 0.3, 1.15) both;
+}
+
+@keyframes codedNeedleSweep {
+  0% { transform: rotate(-78deg); }
+  25% { transform: rotate(-35deg); }
+  50% { transform: rotate(9deg); }
+  75% { transform: rotate(53deg); }
+  100% { transform: rotate(96deg); }
+}
+
+@keyframes codedNeedleColor {
+  0%, 18% { stroke: #159b38; }
+  36% { stroke: #ef9413; }
+  68% { stroke: #df1738; }
+  100% { stroke: #741327; }
+}
+
+@keyframes codedHappyMoodFade {
+  0%, 18% { opacity: 1; }
+  58% { opacity: 0.55; }
+  100% { opacity: 0; }
+}
+
+@keyframes codedSadMoodBuild {
+  0%, 18% { opacity: 0; }
+  58% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes codedEyeBlink {
+  0%, 44%, 48%, 100% { transform: scaleY(1); }
+  46% { transform: scaleY(0.08); }
+}
+
+@keyframes codedCapeWave {
+  0%, 100% { transform: rotate(-1.5deg) scaleX(0.98); }
+  50% { transform: rotate(2deg) scaleX(1.04); }
+}
+
+@keyframes codedBoardShine {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes codedSceneArrive {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .speech-bubble-overlay {
@@ -520,6 +637,34 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   z-index: 25;
   box-sizing: border-box;
   pointer-events: auto;
+}
+
+.character-options-container.stopwatch-options-active .speech-bubble-overlay {
+  top: 27.8%;
+}
+
+.character-options-container.coded-stopwatch-active .speech-bubble-overlay {
+  left: 71.1%;
+  top: 25.6%;
+  width: 52%;
+  height: 38%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coded-stopwatch-needle,
+  .coded-needle-hand,
+  .coded-happy-brow,
+  .coded-happy-mouth,
+  .coded-sad-face,
+  .coded-stopwatch-eyes,
+  .coded-cape,
+  .coded-board-shine,
+  .coded-stopwatch-scene:not([hidden]) {
+    animation: none;
+  }
+
+  .coded-stopwatch-needle { transform: rotate(-78deg); }
+  .coded-sad-face { opacity: 0; }
 }
 
 .speech-bubble-btn {

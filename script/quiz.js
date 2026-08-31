@@ -5,6 +5,9 @@ const quizLevels = [
     title: 'BALANCE LOSS',
     text: 'Sudden loss of balance, dizziness or coordination',
     video: 'media/balance.mp4',
+    optionsVideo: 'media/stopwatch_sample.mp4',
+    optionsVideoDelayMs: 1000,
+    autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mr. Ramesh suddenly experienced ',
     questionEmphasis: 'loss of balance, dizziness or difficulty coordinating his movements.',
     incorrectText: 'Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke. Look for urgent medical attention',
@@ -15,6 +18,8 @@ const quizLevels = [
     title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
     video: 'media/trouble in seeing.mp4',
+    optionsComponent: 'coded-stopwatch',
+    autoAdvanceAfterCodedStopwatch: true,
     questionLead: 'Mrs. Meena suddenly experienced ',
     questionEmphasis: 'blurred or double vision, or difficulty seeing through one or both eyes.',
     incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke. Look for urgent medical attention',
@@ -89,6 +94,10 @@ const symptomText = document.getElementById('symptomText');
 const questionTitle = document.getElementById('questionTitle');
 const questionCard = questionTitle.closest('.question-card');
 const characterOptions = document.getElementById('characterOptions');
+const optionsCharacterImage = document.getElementById('optionsCharacterImage');
+const optionsStopwatchVideo = document.getElementById('optionsStopwatchVideo');
+const codedStopwatchScene = document.getElementById('codedStopwatchScene');
+const codedStopwatchNeedle = codedStopwatchScene.querySelector('.coded-stopwatch-needle');
 const btnYes = document.getElementById('btnYes');
 const btnNo = document.getElementById('btnNo');
 const modalBefastItems = document.querySelectorAll('.modal-befast-item');
@@ -112,6 +121,8 @@ let currentLevelIndex = 0;
 let isAnswered = false;
 let videoUnlockBound = false;
 let currentVideoMuted = false;
+let optionsVideoStartTimer = null;
+let optionsVideoUnlockBound = false;
 const totalSteps = quizLevels.length;
 
 // ===== Render Current Question =====
@@ -135,6 +146,7 @@ function renderLevel(index) {
   renderQuestion(level);
   questionCard.hidden = false;
   if (characterOptions) characterOptions.hidden = isEmergencyLevel;
+  renderOptionsMedia(level, index, isEmergencyLevel);
   emergencyMessageCard.hidden = !isEmergencyLevel;
   finishEmergencyBtn.hidden = !isEmergencyLevel;
   promptBannerText.innerHTML = level.prompt ? level.prompt : 'Need Urgent<br />Medical Attention?';
@@ -166,6 +178,98 @@ function renderQuestion(level) {
 
   questionTitle.textContent = level.question || '';
 }
+
+function renderOptionsMedia(level, index, isEmergencyLevel) {
+  stopOptionsVideoPlayback();
+
+  const showStopwatchVideo = !isEmergencyLevel && Boolean(level.optionsVideo);
+  const showCodedStopwatch = !isEmergencyLevel && level.optionsComponent === 'coded-stopwatch';
+  characterOptions.classList.toggle('stopwatch-options-active', showStopwatchVideo);
+  characterOptions.classList.toggle('coded-stopwatch-active', showCodedStopwatch);
+  optionsCharacterImage.hidden = showStopwatchVideo || showCodedStopwatch;
+  optionsStopwatchVideo.hidden = !showStopwatchVideo;
+  codedStopwatchScene.hidden = !showCodedStopwatch;
+
+  if (!showStopwatchVideo) return;
+
+  optionsStopwatchVideo.src = level.optionsVideo;
+  optionsStopwatchVideo.loop = false;
+  optionsStopwatchVideo.muted = false;
+  optionsStopwatchVideo.defaultMuted = false;
+  optionsStopwatchVideo.volume = 1;
+  optionsStopwatchVideo.currentTime = 0;
+  optionsStopwatchVideo.load();
+
+  const delayMs = Number.isFinite(level.optionsVideoDelayMs) ? level.optionsVideoDelayMs : 1000;
+  optionsVideoStartTimer = window.setTimeout(() => {
+    optionsVideoStartTimer = null;
+    if (currentLevelIndex !== index || isAnswered || optionsStopwatchVideo.hidden) return;
+    playOptionsVideo();
+  }, delayMs);
+}
+
+function playOptionsVideo() {
+  optionsStopwatchVideo.muted = false;
+  optionsStopwatchVideo.defaultMuted = false;
+  optionsStopwatchVideo.volume = 1;
+
+  const playPromise = optionsStopwatchVideo.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log('Stopwatch autoplay with audio was prevented:', error);
+      bindOptionsVideoUnlock();
+    });
+  }
+}
+
+function bindOptionsVideoUnlock() {
+  if (optionsVideoUnlockBound) return;
+  optionsVideoUnlockBound = true;
+  document.addEventListener('pointerdown', unlockOptionsVideoPlayback, { once: true, capture: true });
+  document.addEventListener('keydown', unlockOptionsVideoPlayback, { once: true, capture: true });
+}
+
+function unlockOptionsVideoPlayback() {
+  optionsVideoUnlockBound = false;
+  if (currentLevelIndex !== 0 || isAnswered || optionsStopwatchVideo.hidden) return;
+  playOptionsVideo();
+}
+
+function stopOptionsVideoPlayback(resetTime = true) {
+  if (optionsVideoStartTimer !== null) {
+    window.clearTimeout(optionsVideoStartTimer);
+    optionsVideoStartTimer = null;
+  }
+
+  document.removeEventListener('pointerdown', unlockOptionsVideoPlayback, true);
+  document.removeEventListener('keydown', unlockOptionsVideoPlayback, true);
+  optionsVideoUnlockBound = false;
+  optionsStopwatchVideo.pause();
+
+  if (resetTime) optionsStopwatchVideo.currentTime = 0;
+}
+
+function handleOptionsVideoEnded() {
+  const level = quizLevels[currentLevelIndex];
+  if (!level || !level.autoAdvanceAfterOptionsVideo || isAnswered) return;
+
+  const nextIndex = currentLevelIndex + 1;
+  if (nextIndex < quizLevels.length) renderLevel(nextIndex);
+}
+
+optionsStopwatchVideo.addEventListener('ended', handleOptionsVideoEnded);
+
+function handleCodedStopwatchEnded(event) {
+  if (event.animationName !== 'codedNeedleSweep') return;
+
+  const level = quizLevels[currentLevelIndex];
+  if (!level || !level.autoAdvanceAfterCodedStopwatch || isAnswered || codedStopwatchScene.hidden) return;
+
+  const nextIndex = currentLevelIndex + 1;
+  if (nextIndex < quizLevels.length) renderLevel(nextIndex);
+}
+
+codedStopwatchNeedle.addEventListener('animationend', handleCodedStopwatchEnded);
 
 function loadEmergencyImage(imageSrc) {
   quizVideo.pause();
@@ -256,6 +360,7 @@ if (btnYes) {
     if (isAnswered) return;
     if (quizLevels[currentLevelIndex].type === 'emergency') return;
     isAnswered = true;
+    stopOptionsVideoPlayback(false);
 
     quizVideo.pause();
     quizVideo.removeAttribute('loop');
@@ -269,6 +374,7 @@ if (btnNo) {
     if (isAnswered) return;
     if (quizLevels[currentLevelIndex].type === 'emergency') return;
     isAnswered = true;
+    stopOptionsVideoPlayback(false);
 
     const level = quizLevels[currentLevelIndex];
     quizVideo.pause();

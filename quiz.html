@@ -105,9 +105,174 @@
           <span class="prompt-text">Need Urgent<br />Medical Attention?</span>
         </div>
 
-        <!-- Superhero Character Options (yesno.png with Dialogue Box Buttons) -->
+        <!-- Question-specific option media with the existing Yes/No overlay -->
         <div class="character-options-container" id="characterOptions">
-          <img src="media/yesno.png" alt="Quiz Options Character" class="yesno-character-img" />
+          <img src="media/yesno.png" alt="Quiz Options Character" class="yesno-character-img" id="optionsCharacterImage" hidden />
+          <video class="stopwatch-options-video" id="optionsStopwatchVideo" playsinline preload="auto" aria-label="Stopwatch animation">
+            <source src="media/stopwatch_sample.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="coded-stopwatch-scene" id="codedStopwatchScene" aria-hidden="true" hidden>
+            <svg class="coded-stopwatch-svg" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated stopwatch mascot holding a whiteboard">
+              <defs>
+                <linearGradient id="codedRedMetal" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ff6a78" />
+                  <stop offset="0.34" stop-color="#ee1738" />
+                  <stop offset="0.72" stop-color="#c90028" />
+                  <stop offset="1" stop-color="#860018" />
+                </linearGradient>
+                <linearGradient id="codedDarkRed" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#d90b30" />
+                  <stop offset="1" stop-color="#760016" />
+                </linearGradient>
+                <radialGradient id="codedClockRim" cx="34%" cy="24%" r="72%">
+                  <stop offset="0" stop-color="#ff7180" />
+                  <stop offset="0.48" stop-color="#ee1738" />
+                  <stop offset="1" stop-color="#9e001e" />
+                </radialGradient>
+                <radialGradient id="codedDial" cx="43%" cy="32%" r="72%">
+                  <stop offset="0" stop-color="#ffffff" />
+                  <stop offset="0.78" stop-color="#fffaf7" />
+                  <stop offset="1" stop-color="#e8ddd8" />
+                </radialGradient>
+                <linearGradient id="codedWhiteboard" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffffff" />
+                  <stop offset="1" stop-color="#fff8f4" />
+                </linearGradient>
+                <linearGradient id="codedGlove" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ffffff" />
+                  <stop offset="0.7" stop-color="#f6efec" />
+                  <stop offset="1" stop-color="#cfc4c0" />
+                </linearGradient>
+                <linearGradient id="codedShoe" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffffff" />
+                  <stop offset="0.48" stop-color="#f8f4f2" />
+                  <stop offset="0.5" stop-color="#ec183b" />
+                  <stop offset="1" stop-color="#b50023" />
+                </linearGradient>
+                <filter id="codedSoftShadow" x="-35%" y="-35%" width="170%" height="180%">
+                  <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#6f0018" flood-opacity="0.28" />
+                </filter>
+                <filter id="codedSmallShadow" x="-40%" y="-40%" width="180%" height="190%">
+                  <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#4d0010" flood-opacity="0.3" />
+                </filter>
+                <clipPath id="codedDialClip">
+                  <circle cx="222" cy="424" r="106" />
+                </clipPath>
+              </defs>
+
+              <g class="coded-board-group" filter="url(#codedSoftShadow)">
+                <rect x="514" y="334" width="31" height="280" rx="15" fill="url(#codedDarkRed)" />
+                <rect x="527" y="344" width="7" height="252" rx="3.5" fill="#ff6573" opacity="0.58" />
+                <rect x="308" y="16" width="408" height="335" rx="35" fill="url(#codedRedMetal)" stroke="#91001b" stroke-width="7" />
+                <rect x="322" y="30" width="380" height="307" rx="28" fill="none" stroke="#ff8d96" stroke-width="5" opacity="0.8" />
+                <rect x="331" y="42" width="362" height="284" rx="23" fill="url(#codedWhiteboard)" stroke="#a71929" stroke-width="5" />
+                <path class="coded-board-shine" d="M353 58h305c11 0 18 7 18 18v17c-98-18-211-16-343 4V76c0-11 7-18 20-18Z" fill="#ffffff" opacity="0.58" />
+              </g>
+
+              <g class="coded-board-arm" filter="url(#codedSmallShadow)">
+                <path d="M276 455C365 466 445 440 518 400" fill="none" stroke="url(#codedRedMetal)" stroke-width="30" stroke-linecap="round" />
+                <g transform="translate(521 398)">
+                  <ellipse cx="0" cy="0" rx="27" ry="34" fill="url(#codedGlove)" stroke="#b9aaa6" stroke-width="4" />
+                  <rect x="9" y="-28" width="21" height="57" rx="10" fill="url(#codedGlove)" stroke="#b9aaa6" stroke-width="4" />
+                  <path d="M-16-8c10-7 21-6 30 1M-15 4c10-6 19-5 28 2M-10 15c8-4 16-3 23 2" fill="none" stroke="#d2c7c3" stroke-width="4" stroke-linecap="round" />
+                </g>
+              </g>
+
+              <g class="coded-character-group" transform="translate(12 130) scale(.78)">
+              <g class="coded-cape" filter="url(#codedSmallShadow)">
+                <path d="M115 416C59 448 45 535 39 605c38-31 81-45 133-28 28-58 24-119-5-163Z" fill="url(#codedDarkRed)" />
+                <path d="M103 441c-28 42-37 90-35 133 22-15 45-23 69-21 20-45 22-82 8-111Z" fill="#f21a3e" opacity="0.72" />
+              </g>
+
+              <g class="coded-legs" filter="url(#codedSmallShadow)">
+                <path d="M172 551c-5 40-3 70 5 91" fill="none" stroke="url(#codedRedMetal)" stroke-width="31" stroke-linecap="round" />
+                <path d="M265 552c9 38 12 67 9 89" fill="none" stroke="url(#codedRedMetal)" stroke-width="31" stroke-linecap="round" />
+                <path d="M143 635c25-17 56-15 76 4 8 8 5 25-8 28-27 7-61 6-87-1-12-4-11-20-2-26 6-3 13-5 21-5Z" fill="url(#codedShoe)" stroke="#93001c" stroke-width="5" />
+                <path d="M246 638c24-18 57-17 79 2 9 8 7 24-5 28-28 9-62 8-89 1-13-3-14-19-4-26 6-3 12-5 19-5Z" fill="url(#codedShoe)" stroke="#93001c" stroke-width="5" />
+                <path d="M139 647h72M245 649h73" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="0.92" />
+              </g>
+
+              <g class="coded-arms" filter="url(#codedSmallShadow)">
+                <path d="M116 438C72 455 66 493 87 520" fill="none" stroke="url(#codedRedMetal)" stroke-width="34" stroke-linecap="round" />
+                <g transform="translate(74 505) rotate(-22)">
+                  <ellipse cx="0" cy="0" rx="28" ry="34" fill="url(#codedGlove)" stroke="#b9aaa6" stroke-width="4" />
+                  <path d="M-18-3c10-8 20-7 30 0M-17 9c10-7 20-6 29 1" fill="none" stroke="#d2c7c3" stroke-width="4" stroke-linecap="round" />
+                </g>
+                <path class="coded-original-board-arm" d="M324 432C390 438 433 411 477 374" fill="none" stroke="url(#codedRedMetal)" stroke-width="35" stroke-linecap="round" />
+                <g class="coded-original-board-arm" transform="translate(480 371)">
+                  <ellipse cx="0" cy="0" rx="31" ry="38" fill="url(#codedGlove)" stroke="#b9aaa6" stroke-width="4" />
+                  <rect x="10" y="-31" width="23" height="62" rx="11" fill="url(#codedGlove)" stroke="#b9aaa6" stroke-width="4" />
+                  <path d="M-18-9c11-7 23-6 33 1M-17 4c11-7 21-5 31 2M-12 17c9-5 18-4 26 2" fill="none" stroke="#d2c7c3" stroke-width="4" stroke-linecap="round" />
+                </g>
+              </g>
+
+              <g class="coded-stopwatch-body" filter="url(#codedSoftShadow)">
+                <rect x="185" y="245" width="75" height="43" rx="15" fill="url(#codedRedMetal)" stroke="#8b001a" stroke-width="5" />
+                <rect x="197" y="226" width="51" height="31" rx="10" fill="url(#codedRedMetal)" stroke="#8b001a" stroke-width="5" />
+                <path d="M204 235h38" stroke="#ff8a94" stroke-width="5" stroke-linecap="round" opacity="0.65" />
+                <circle cx="222" cy="424" r="151" fill="url(#codedClockRim)" stroke="#850019" stroke-width="8" />
+                <circle cx="222" cy="424" r="132" fill="#ff5468" stroke="#ff9fa7" stroke-width="5" opacity="0.96" />
+                <circle cx="222" cy="424" r="116" fill="url(#codedDial)" stroke="#9b001c" stroke-width="6" />
+                <g clip-path="url(#codedDialClip)">
+                  <path d="M126 365A106 106 0 0 1 202 321" fill="none" stroke="#12a43a" stroke-width="17" />
+                  <path d="M209 319A106 106 0 0 1 292 357" fill="none" stroke="#ff991c" stroke-width="17" />
+                  <path d="M296 365A106 106 0 0 1 313 474" fill="none" stroke="#e8223f" stroke-width="17" stroke-linecap="round" />
+                  <path d="M313 474A106 106 0 0 1 266 517" fill="none" stroke="#8d142b" stroke-width="17" stroke-linecap="round" />
+                </g>
+
+                <g class="coded-dial-ticks" stroke="#23191b" stroke-width="5" stroke-linecap="round">
+                  <path d="M222 326v13" /><path d="M271 339l-7 12" /><path d="M307 375l-12 7" />
+                  <path d="M320 424h-13" /><path d="M307 473l-12-7" /><path d="M271 509l-7-12" />
+                  <path d="M222 522v-13" /><path d="M173 509l7-12" /><path d="M137 473l12-7" />
+                  <path d="M124 424h13" /><path d="M137 375l12 7" /><path d="M173 339l7 12" />
+                </g>
+
+                <g font-family="Poppins, sans-serif" font-weight="800" font-size="13" text-anchor="middle">
+                  <text x="165" y="372" fill="#13832c">0–1 HR</text>
+                  <text x="270" y="369" fill="#e87500">1–2 HR</text>
+                  <text x="292" y="435" fill="#d20a31">2–3 HR</text>
+                  <text x="270" y="492" fill="#731228">3–3.5 HR</text>
+                </g>
+
+                <g class="coded-stopwatch-face">
+                  <path class="coded-happy-brow" d="M159 398c10-12 25-12 36 0" fill="none" stroke="#3a2025" stroke-width="7" stroke-linecap="round" />
+                  <path class="coded-happy-brow" d="M246 398c10-12 25-12 36 0" fill="none" stroke="#3a2025" stroke-width="7" stroke-linecap="round" />
+                  <g class="coded-stopwatch-eyes">
+                    <ellipse cx="177" cy="419" rx="17" ry="24" fill="#ffffff" stroke="#351d22" stroke-width="4" />
+                    <ellipse cx="264" cy="419" rx="17" ry="24" fill="#ffffff" stroke="#351d22" stroke-width="4" />
+                    <ellipse cx="181" cy="424" rx="9" ry="14" fill="#d60b30" />
+                    <ellipse cx="260" cy="424" rx="9" ry="14" fill="#d60b30" />
+                    <circle cx="181" cy="426" r="5" fill="#1b1012" /><circle cx="260" cy="426" r="5" fill="#1b1012" />
+                    <circle cx="185" cy="420" r="3" fill="#ffffff" /><circle cx="264" cy="420" r="3" fill="#ffffff" />
+                  </g>
+                  <g class="coded-happy-mouth">
+                    <path d="M171 460c15 39 81 40 101 0-28 13-67 13-101 0Z" fill="#57101e" stroke="#341016" stroke-width="4" />
+                    <path d="M190 470c17 14 44 17 63 1-18-5-42-5-63-1Z" fill="#ff5265" />
+                    <path d="M180 460c23 8 57 8 82 0" stroke="#ffffff" stroke-width="8" stroke-linecap="round" />
+                  </g>
+                  <g class="coded-sad-face">
+                    <path d="M157 398c11 9 25 10 38 2" fill="none" stroke="#3a2025" stroke-width="7" stroke-linecap="round" />
+                    <path d="M246 400c12 8 25 7 37-2" fill="none" stroke="#3a2025" stroke-width="7" stroke-linecap="round" />
+                    <path d="M177 489c23-33 66-34 91-1" fill="none" stroke="#111111" stroke-width="10" stroke-linecap="round" />
+                  </g>
+                </g>
+
+                <g class="coded-stopwatch-needle">
+                  <path class="coded-needle-hand" d="M222 424L287 352" stroke="#159b38" stroke-width="10" stroke-linecap="round" />
+                  <path d="M222 424L201 448" stroke="#8b001a" stroke-width="7" stroke-linecap="round" />
+                  <circle cx="222" cy="424" r="14" fill="#f41d40" stroke="#8c001a" stroke-width="5" />
+                  <circle cx="217" cy="419" r="4" fill="#ff98a1" />
+                </g>
+
+                <circle cx="222" cy="545" r="32" fill="url(#codedRedMetal)" stroke="#870019" stroke-width="5" />
+                <path d="M238 535a18 18 0 1 0 0 20" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" />
+                <circle cx="245" cy="545" r="6" fill="#ffffff" />
+                <path d="M132 337c21-33 54-51 91-55" fill="none" stroke="#ff9da6" stroke-width="9" stroke-linecap="round" opacity="0.48" />
+              </g>
+              </g>
+            </svg>
+          </div>
           <div class="speech-bubble-overlay">
             <button class="speech-bubble-btn btn-bubble-yes" id="btnYes" type="button" aria-label="Yes - Needs Urgent Medical Attention">
               <i class="fas fa-check-circle"></i>
