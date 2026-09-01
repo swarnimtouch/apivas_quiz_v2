@@ -18,10 +18,12 @@ const quizLevels = [
     title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
     video: 'media/trouble in seeing.mp4',
+    muted: true,
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mrs. Meena suddenly experienced ',
-    questionEmphasis: 'blurred or double vision, or difficulty seeing through one or both eyes.',
+    questionEmphasis: 'blurred or double vision, or difficulty seeing',
+    questionTail: ' through one or both eyes.',
     incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke. Look for urgent medical attention',
     successText: 'Sudden blurred or double vision, or difficulty seeing in one or both eyes can be a warning sign of stroke.'
   },
@@ -32,9 +34,9 @@ const quizLevels = [
     video: 'media/weakness on face.mp4',
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
-    questionLead: "Mr. Rajesh's face suddenly appeared ",
-    questionEmphasis: 'uneven on one side.',
-    incorrectText: 'This situation needs immediate medical attention. Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention',
+    questionLead: "Mr. Rajesh face appears ",
+    questionEmphasis: 'uneven on one sided.',
+    incorrectText: 'Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention',
     successText: 'Sudden drooping or weakness on one side of the face can be a warning sign of stroke.'
   },
   {
@@ -126,7 +128,7 @@ let videoUnlockBound = false;
 let currentVideoMuted = false;
 let optionsVideoStartTimer = null;
 let optionsVideoUnlockBound = false;
-const OPTIONS_VIDEO_PLAYBACK_RATE = 0.5;
+const OPTIONS_VIDEO_PLAYBACK_RATE = 0.35;
 const totalSteps = quizLevels.length;
 
 // ===== Render Current Question =====
@@ -176,6 +178,10 @@ function renderQuestion(level) {
       const emphasis = document.createElement('strong');
       emphasis.textContent = level.questionEmphasis;
       questionTitle.append(emphasis);
+    }
+
+    if (level.questionTail) {
+      questionTitle.append(document.createTextNode(level.questionTail));
     }
     return;
   }
