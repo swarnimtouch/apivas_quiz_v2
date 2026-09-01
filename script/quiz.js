@@ -18,8 +18,8 @@ const quizLevels = [
     title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
     video: 'media/trouble in seeing.mp4',
-    optionsComponent: 'coded-stopwatch',
-    autoAdvanceAfterCodedStopwatch: true,
+    optionsVideo: 'media/stopwatch_sample.mp4',
+    autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mrs. Meena suddenly experienced ',
     questionEmphasis: 'blurred or double vision, or difficulty seeing through one or both eyes.',
     incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke. Look for urgent medical attention',
@@ -30,6 +30,8 @@ const quizLevels = [
     title: 'FACE DROOPING',
     text: 'Sudden weakness or numbness of the face or uneven face.',
     video: 'media/weakness on face.mp4',
+    optionsVideo: 'media/stopwatch_sample.mp4',
+    autoAdvanceAfterOptionsVideo: true,
     questionLead: "Mr. Rajesh's face suddenly appeared ",
     questionEmphasis: 'uneven on one side.',
     incorrectText: 'This situation needs immediate medical attention. Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention',
@@ -40,6 +42,8 @@ const quizLevels = [
     title: 'ARM WEAKNESS',
     text: 'Sudden weakness numbness in one or both arms',
     video: 'media/arm pain.mp4',
+    optionsVideo: 'media/stopwatch_sample.mp4',
+    autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mr. Raj noticed ',
     questionEmphasis: 'weakness or numbness in one arm this morning.',
     incorrectText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke. Look for urgent medical attention',
@@ -50,6 +54,8 @@ const quizLevels = [
     title: 'SPEECH DIFFICULTY',
     text: 'Difficulty in Speaking or slurring of speech',
     video: 'media/uneven speak.mp4',
+    optionsVideo: 'media/stopwatch_sample.mp4',
+    autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mrs. Sandhya suddenly experienced ',
     questionEmphasis: 'difficulty speaking or slurred speech.',
     incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention',
@@ -94,10 +100,7 @@ const symptomText = document.getElementById('symptomText');
 const questionTitle = document.getElementById('questionTitle');
 const questionCard = questionTitle.closest('.question-card');
 const characterOptions = document.getElementById('characterOptions');
-const optionsCharacterImage = document.getElementById('optionsCharacterImage');
 const optionsStopwatchVideo = document.getElementById('optionsStopwatchVideo');
-const codedStopwatchScene = document.getElementById('codedStopwatchScene');
-const codedStopwatchNeedle = codedStopwatchScene.querySelector('.coded-stopwatch-needle');
 const btnYes = document.getElementById('btnYes');
 const btnNo = document.getElementById('btnNo');
 const modalBefastItems = document.querySelectorAll('.modal-befast-item');
@@ -123,6 +126,7 @@ let videoUnlockBound = false;
 let currentVideoMuted = false;
 let optionsVideoStartTimer = null;
 let optionsVideoUnlockBound = false;
+const OPTIONS_VIDEO_PLAYBACK_RATE = 0.5;
 const totalSteps = quizLevels.length;
 
 // ===== Render Current Question =====
@@ -183,12 +187,8 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
   stopOptionsVideoPlayback();
 
   const showStopwatchVideo = !isEmergencyLevel && Boolean(level.optionsVideo);
-  const showCodedStopwatch = !isEmergencyLevel && level.optionsComponent === 'coded-stopwatch';
   characterOptions.classList.toggle('stopwatch-options-active', showStopwatchVideo);
-  characterOptions.classList.toggle('coded-stopwatch-active', showCodedStopwatch);
-  optionsCharacterImage.hidden = showStopwatchVideo || showCodedStopwatch;
   optionsStopwatchVideo.hidden = !showStopwatchVideo;
-  codedStopwatchScene.hidden = !showCodedStopwatch;
 
   if (!showStopwatchVideo) return;
 
@@ -197,6 +197,8 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
   optionsStopwatchVideo.muted = false;
   optionsStopwatchVideo.defaultMuted = false;
   optionsStopwatchVideo.volume = 1;
+  optionsStopwatchVideo.defaultPlaybackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
+  optionsStopwatchVideo.playbackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
   optionsStopwatchVideo.currentTime = 0;
   optionsStopwatchVideo.load();
 
@@ -212,6 +214,7 @@ function playOptionsVideo() {
   optionsStopwatchVideo.muted = false;
   optionsStopwatchVideo.defaultMuted = false;
   optionsStopwatchVideo.volume = 1;
+  optionsStopwatchVideo.playbackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
 
   const playPromise = optionsStopwatchVideo.play();
   if (playPromise !== undefined) {
@@ -231,7 +234,7 @@ function bindOptionsVideoUnlock() {
 
 function unlockOptionsVideoPlayback() {
   optionsVideoUnlockBound = false;
-  if (currentLevelIndex !== 0 || isAnswered || optionsStopwatchVideo.hidden) return;
+  if (isAnswered || optionsStopwatchVideo.hidden) return;
   playOptionsVideo();
 }
 
@@ -258,18 +261,6 @@ function handleOptionsVideoEnded() {
 }
 
 optionsStopwatchVideo.addEventListener('ended', handleOptionsVideoEnded);
-
-function handleCodedStopwatchEnded(event) {
-  if (event.animationName !== 'codedNeedleSweep') return;
-
-  const level = quizLevels[currentLevelIndex];
-  if (!level || !level.autoAdvanceAfterCodedStopwatch || isAnswered || codedStopwatchScene.hidden) return;
-
-  const nextIndex = currentLevelIndex + 1;
-  if (nextIndex < quizLevels.length) renderLevel(nextIndex);
-}
-
-codedStopwatchNeedle.addEventListener('animationend', handleCodedStopwatchEnded);
 
 function loadEmergencyImage(imageSrc) {
   quizVideo.pause();
