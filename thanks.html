@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="script/translation-bootstrap.js"></script>
   <title>Apivas - Thanks for Participation</title>
   <link rel="icon" href="media/microlab.ico" type="image/x-icon" />
 
@@ -53,25 +54,25 @@
 
         <div class="befast-row" aria-label="BEFAST stroke awareness signs">
           <article class="befast-item">
-            <div class="befast-letter befast-blue">B</div>
+            <div class="befast-letter befast-blue notranslate" translate="no" lang="en">B</div>
             <h2>B - Balance Loss</h2>
             <span class="befast-icon"><i class="fas fa-person-falling"></i></span>
           </article>
 
           <article class="befast-item">
-            <div class="befast-letter befast-red">E</div>
+            <div class="befast-letter befast-red notranslate" translate="no" lang="en">E</div>
             <h2>E - Eye (Vision)<br />Changes</h2>
             <span class="befast-icon befast-soft-red"><i class="fas fa-eye"></i></span>
           </article>
 
           <article class="befast-item">
-            <div class="befast-letter befast-blue">F</div>
+            <div class="befast-letter befast-blue notranslate" translate="no" lang="en">F</div>
             <h2>F - Face drooping</h2>
             <span class="befast-icon"><i class="fas fa-face-frown"></i></span>
           </article>
 
           <article class="befast-item">
-            <div class="befast-letter befast-red">A</div>
+            <div class="befast-letter befast-red notranslate" translate="no" lang="en">A</div>
             <h2>A - Arm Weakness</h2>
             <span class="befast-icon befast-soft-red">
               <img src="media/arm-bandage-svgrepo-com.svg" alt="" class="befast-svg-icon" />
@@ -79,13 +80,13 @@
           </article>
 
           <article class="befast-item">
-            <div class="befast-letter befast-blue">S</div>
+            <div class="befast-letter befast-blue notranslate" translate="no" lang="en">S</div>
             <h2>S - Speech<br />Difficulty</h2>
             <span class="befast-icon"><i class="fas fa-comment-dots"></i></span>
           </article>
 
           <article class="befast-item">
-            <div class="befast-letter befast-red">T</div>
+            <div class="befast-letter befast-red notranslate" translate="no" lang="en">T</div>
             <h2>Time to call<br />emergency service<br />(112/108)</h2>
             <span class="befast-icon befast-soft-red"><i class="fas fa-phone"></i></span>
           </article>
@@ -108,16 +109,20 @@
         <span>[Accessed on: 12th Aug 2026]</span>
       </section>
 
-      <a href="index.html" class="btn-start-quiz thanks-home-btn" data-aos="fade-up" data-aos-delay="220">
+      <a href="index.html" class="btn-start-quiz thanks-home-btn" id="backToHomeBtn" data-aos="fade-up" data-aos-delay="220">
         <span class="btn-text">Back To Home</span>
         <span class="icon-circle"><i class="fas fa-house"></i></span>
       </a>
     </main>
   </div>
 
+  <div id="google_translate_element" class="google-translate-host" aria-hidden="true"></div>
+
   <script src="script/viewport.js"></script>
+  <script src="script/translator.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script async src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <script>
     AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
     const shapes = document.querySelectorAll('.shape');

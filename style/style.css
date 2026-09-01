@@ -33,6 +33,50 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
 .preloader { position: fixed; inset: 0; background: var(--bg-cream); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.6s ease, visibility 0.6s ease; }
 .preloader.hidden { opacity: 0; visibility: hidden; }
 
+/* Covers the source-language paint until Google finishes the selected translation. */
+html[data-translation-pending="true"],
+html[data-translation-pending="true"] body {
+  overflow: hidden !important;
+}
+
+html[data-translation-pending="true"] body::before,
+html[data-translation-pending="true"] body::after {
+  content: '';
+  position: fixed;
+  pointer-events: auto;
+}
+
+html[data-translation-pending="true"] body::before {
+  inset: 0;
+  z-index: 2147483000;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(225, 19, 68, 0.08), transparent 27%),
+    linear-gradient(135deg, #fff8f3 0%, #ffefe5 50%, #ffe8e8 100%);
+}
+
+html[data-translation-pending="true"] body::after {
+  z-index: 2147483001;
+  left: 50%;
+  top: 50%;
+  width: clamp(150px, 20vw, 220px);
+  height: clamp(75px, 10vw, 110px);
+  background: url('../media/microlab.png') center / contain no-repeat;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 12px 22px rgba(225, 19, 68, 0.18));
+  animation: translation-logo-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes translation-logo-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+  50% { transform: translate(-50%, -50%) scale(1.07); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-translation-pending="true"] body::after {
+    animation: none;
+  }
+}
+
 .loader-logo-wrapper { width: 180px; height: 90px; display: flex; align-items: center; justify-content: center; animation: heartbeat 1.2s ease-in-out infinite; }
 .loader-logo { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: none; }
 
@@ -374,6 +418,51 @@ button, input, select, textarea { max-width: 100%; font: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.google-translate-host {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Keep Google Website Translator's injected chrome out of the app UI. */
+.google-translate-host,
+.google-translate-host * {
+  visibility: hidden !important;
+}
+
+html {
+  margin-top: 0 !important;
+}
+
+html body {
+  top: 0 !important;
+}
+
+iframe.goog-te-banner-frame,
+.goog-te-banner-frame,
+iframe.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.VIpgJd-yAWNEb-L7lbkb,
+.goog-te-spinner-pos,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+}
+
+.goog-text-highlight,
+.VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 .b-icon {
   width: clamp(56px, 4.8vw, 74px);

@@ -107,12 +107,28 @@ window.addEventListener('load', () => {
       if (plusIcon) {
         plusIcon.classList.add('show-icon');
       }
+      if (window.refreshGoogleWebsiteTranslation) {
+        window.refreshGoogleWebsiteTranslation();
+      }
     }
   }
 
   function triggerTypewriter() {
     if (typewriterStarted) return;
     typewriterStarted = true;
+
+    const selectedLanguage = langSelect ? langSelect.value : 'en';
+    if (selectedLanguage !== 'en') {
+      line1El.textContent = text1;
+      line2El.textContent = text2;
+      const plusIcon = document.querySelector('.bg-icon-plus');
+      if (plusIcon) plusIcon.classList.add('show-icon');
+      if (window.refreshGoogleWebsiteTranslation) {
+        window.refreshGoogleWebsiteTranslation();
+      }
+      return;
+    }
+
     setTimeout(typeLine1, 400);
   }
 

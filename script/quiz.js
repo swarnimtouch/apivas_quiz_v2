@@ -166,6 +166,10 @@ function renderLevel(index) {
   }
 
   nextLevelText.innerText = 'Next Level';
+
+  if (window.refreshGoogleWebsiteTranslation) {
+    window.refreshGoogleWebsiteTranslation();
+  }
 }
 
 function renderQuestion(level) {
@@ -420,6 +424,10 @@ function showModal(type, title, text) {
   if (modalTitle) modalTitle.innerText = title || '';
   if (modalText) modalText.innerText = text || '';
   if (feedbackModal) feedbackModal.classList.add('show');
+
+  if (window.refreshGoogleWebsiteTranslation) {
+    window.refreshGoogleWebsiteTranslation();
+  }
 }
 
 nextLevelBtn.addEventListener('click', () => {

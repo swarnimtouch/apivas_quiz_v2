@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="script/translation-bootstrap.js"></script>
   <title>Apivas - Stroke Awareness Quiz</title>
   <link rel="icon" href="media/microlab.ico" type="image/x-icon" />
 
@@ -61,7 +62,7 @@
           <!-- Symptom Card (Middle: Icon & Title, Bottom: Description) -->
           <div class="balance-loss-card" id="symptomCard">
             <div class="symptom-badge-wrap">
-              <div class="b-icon" id="symptomIcon">B</div>
+              <div class="b-icon notranslate" id="symptomIcon" translate="no" lang="en">B</div>
               <h4 id="symptomTitle">BALANCE LOSS</h4>
             </div>
             <div class="symptom-desc-wrap">
@@ -165,27 +166,27 @@
       <!-- BE-FAST 6-Sign Indicator Row inside Popup below Next Level button -->
       <div class="modal-befast-row" id="modalBefastRow" aria-label="BEFAST stroke awareness signs">
         <div class="modal-befast-item" data-index="0">
-          <div class="modal-befast-letter befast-blue">B</div>
+          <div class="modal-befast-letter befast-blue notranslate" translate="no" lang="en">B</div>
           <span class="modal-befast-name">Balance Loss</span>
         </div>
         <div class="modal-befast-item" data-index="1">
-          <div class="modal-befast-letter befast-red">E</div>
+          <div class="modal-befast-letter befast-red notranslate" translate="no" lang="en">E</div>
           <span class="modal-befast-name">Eye (Vision)<br />Changes</span>
         </div>
         <div class="modal-befast-item" data-index="2">
-          <div class="modal-befast-letter befast-blue">F</div>
+          <div class="modal-befast-letter befast-blue notranslate" translate="no" lang="en">F</div>
           <span class="modal-befast-name">Face drooping</span>
         </div>
         <div class="modal-befast-item" data-index="3">
-          <div class="modal-befast-letter befast-red">A</div>
+          <div class="modal-befast-letter befast-red notranslate" translate="no" lang="en">A</div>
           <span class="modal-befast-name">Arm Weakness</span>
         </div>
         <div class="modal-befast-item" data-index="4">
-          <div class="modal-befast-letter befast-blue">S</div>
+          <div class="modal-befast-letter befast-blue notranslate" translate="no" lang="en">S</div>
           <span class="modal-befast-name">Speech<br />Difficulty</span>
         </div>
         <div class="modal-befast-item" data-index="5">
-          <div class="modal-befast-letter befast-red">T</div>
+          <div class="modal-befast-letter befast-red notranslate" translate="no" lang="en">T</div>
           <span class="modal-befast-name">Time to call<br />emergency service<br />(112/108)</span>
         </div>
       </div>
@@ -196,10 +197,14 @@
     </div>
   </div>
 
+  <div id="google_translate_element" class="google-translate-host" aria-hidden="true"></div>
+
   <!-- Scripts -->
   <script src="script/viewport.js"></script>
+  <script src="script/translator.js"></script>
   <script src="script/quiz.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script async src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
