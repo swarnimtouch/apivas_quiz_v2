@@ -1134,6 +1134,16 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
 }
 
 @media (max-width: 767px) {
+  html[data-page="quiz"] {
+    background: #fff0eb;
+  }
+  body.quiz-page,
+  body.quiz-page .main-wrapper {
+    background: #fff0eb !important;
+  }
+  body.quiz-page .bg-shapes {
+    display: none;
+  }
   html, body, .main-wrapper { overflow-y: auto; height: auto; max-height: none; }
   .quiz-content-wrapper { grid-template-columns: 1fr; gap: 1.35rem; padding: 0.85rem max(1rem, env(safe-area-inset-right)) max(1.7rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); justify-items: center; max-height: none; overflow: visible; width: 100%; max-width: 100%; }
   .quiz-page .top-bar { display: none; }
@@ -1187,12 +1197,30 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .certificate-content { flex: 1; justify-content: center; padding: 1rem clamp(1rem, 5vw, 2rem) 2rem; }
   .top-bar { padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 1rem max(1rem, env(safe-area-inset-left)); flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 100%; gap: 0.8rem; text-align: center; }
   .brand-logo { display: flex; justify-content: center; align-items: center; width: 100%; }
-  .quiz-ribbon-wrapper { width: min(100%, 360px); }
-  .quiz-ribbon { width: 100%; justify-content: center; padding: 0.45rem 1.5rem 0.45rem 3rem; min-height: 42px; clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%); }
-  .ribbon-text { font-size: clamp(0.68rem, 2.7vw, 0.82rem); line-height: 1.18; letter-spacing: 0.35px; text-align: center; }
-  .ribbon-icon { width: 50px; height: 50px; font-size: 1.5rem; left: -15px; }
-  .sparkle-left { left: -25px; font-size: 1.2rem; }
-  .sparkle-right { right: -10px; font-size: 0.9rem; }
+  .quiz-ribbon-wrapper {
+    width: min(calc(100% - 0.5rem), 352px);
+    padding-left: 34px;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+  .quiz-ribbon {
+    width: 100%;
+    justify-content: center;
+    padding: 0.45rem 1.1rem 0.45rem 0.9rem;
+    min-height: 42px;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%);
+  }
+  .ribbon-text {
+    max-width: 100%;
+    font-size: clamp(0.64rem, 2.7vw, 0.8rem);
+    line-height: 1.18;
+    letter-spacing: 0.25px;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  .ribbon-icon { width: 48px; height: 48px; font-size: 1.42rem; left: 0; }
+  .sparkle-left { left: -4px; font-size: 1.05rem; }
+  .sparkle-right { right: 0; font-size: 0.85rem; }
   .hero-content { padding: 1.5rem max(0.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left)); width: 100%; max-width: 100%; }
   .side-heart, .side-brain { display: none; }
   .mobile-organs-row { display: flex; justify-content: center; align-items: center; gap: 35px; margin-top: -0.8rem; margin-bottom: 0.3rem; width: 100%; }
