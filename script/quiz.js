@@ -103,6 +103,7 @@ const questionTitle = document.getElementById('questionTitle');
 const questionCard = questionTitle.closest('.question-card');
 const characterOptions = document.getElementById('characterOptions');
 const optionsStopwatchVideo = document.getElementById('optionsStopwatchVideo');
+const timerAudio = document.getElementById('timerAudio');
 const btnYes = document.getElementById('btnYes');
 const btnNo = document.getElementById('btnNo');
 const modalBefastItems = document.querySelectorAll('.modal-befast-item');
@@ -128,7 +129,9 @@ let videoUnlockBound = false;
 let currentVideoMuted = false;
 let optionsVideoStartTimer = null;
 let optionsVideoUnlockBound = false;
+let timerAudioUnlockBound = false;
 const OPTIONS_VIDEO_PLAYBACK_RATE = 0.35;
+const TIMER_AUDIO_PLAYBACK_RATE = 1;
 const totalSteps = quizLevels.length;
 
 // ===== Render Current Question =====
@@ -162,7 +165,7 @@ function renderLevel(index) {
   } else {
     emergencyImage.hidden = true;
     quizVideo.hidden = false;
-    loadQuestionVideo(level.video, level.muted === true);
+    loadQuestionVideo(level.video);
   }
 
   nextLevelText.innerText = 'Next Level';
@@ -204,9 +207,10 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
 
   optionsStopwatchVideo.src = level.optionsVideo;
   optionsStopwatchVideo.loop = false;
-  optionsStopwatchVideo.muted = false;
-  optionsStopwatchVideo.defaultMuted = false;
-  optionsStopwatchVideo.volume = 1;
+  optionsStopwatchVideo.muted = true;
+  optionsStopwatchVideo.defaultMuted = true;
+  optionsStopwatchVideo.volume = 0;
+  optionsStopwatchVideo.setAttribute('muted', '');
   optionsStopwatchVideo.defaultPlaybackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
   optionsStopwatchVideo.playbackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
   optionsStopwatchVideo.currentTime = 0;
@@ -221,15 +225,15 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
 }
 
 function playOptionsVideo() {
-  optionsStopwatchVideo.muted = false;
-  optionsStopwatchVideo.defaultMuted = false;
-  optionsStopwatchVideo.volume = 1;
+  optionsStopwatchVideo.muted = true;
+  optionsStopwatchVideo.defaultMuted = true;
+  optionsStopwatchVideo.volume = 0;
   optionsStopwatchVideo.playbackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
 
   const playPromise = optionsStopwatchVideo.play();
   if (playPromise !== undefined) {
     playPromise.catch(error => {
-      console.log('Stopwatch autoplay with audio was prevented:', error);
+      console.log('Muted stopwatch autoplay was prevented:', error);
       bindOptionsVideoUnlock();
     });
   }
@@ -256,13 +260,18 @@ function stopOptionsVideoPlayback(resetTime = true) {
 
   document.removeEventListener('pointerdown', unlockOptionsVideoPlayback, true);
   document.removeEventListener('keydown', unlockOptionsVideoPlayback, true);
+  document.removeEventListener('pointerdown', unlockTimerAudioPlayback, true);
+  document.removeEventListener('keydown', unlockTimerAudioPlayback, true);
   optionsVideoUnlockBound = false;
+  timerAudioUnlockBound = false;
   optionsStopwatchVideo.pause();
+  stopTimerAudio();
 
   if (resetTime) optionsStopwatchVideo.currentTime = 0;
 }
 
 function handleOptionsVideoEnded() {
+  stopTimerAudio();
   const level = quizLevels[currentLevelIndex];
   if (!level || !level.autoAdvanceAfterOptionsVideo || isAnswered) return;
 
@@ -271,6 +280,45 @@ function handleOptionsVideoEnded() {
 }
 
 optionsStopwatchVideo.addEventListener('ended', handleOptionsVideoEnded);
+optionsStopwatchVideo.addEventListener('play', startTimerAudio);
+optionsStopwatchVideo.addEventListener('pause', stopTimerAudio);
+
+function startTimerAudio() {
+  if (!timerAudio || isAnswered || optionsStopwatchVideo.hidden) return;
+
+  timerAudio.loop = true;
+  timerAudio.defaultPlaybackRate = TIMER_AUDIO_PLAYBACK_RATE;
+  timerAudio.playbackRate = TIMER_AUDIO_PLAYBACK_RATE;
+  timerAudio.volume = 1;
+  timerAudio.currentTime = 0;
+
+  const playPromise = timerAudio.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log('Timer audio autoplay was prevented:', error);
+      bindTimerAudioUnlock();
+    });
+  }
+}
+
+function stopTimerAudio() {
+  if (!timerAudio) return;
+  timerAudio.pause();
+  timerAudio.currentTime = 0;
+}
+
+function bindTimerAudioUnlock() {
+  if (timerAudioUnlockBound) return;
+  timerAudioUnlockBound = true;
+  document.addEventListener('pointerdown', unlockTimerAudioPlayback, { once: true, capture: true });
+  document.addEventListener('keydown', unlockTimerAudioPlayback, { once: true, capture: true });
+}
+
+function unlockTimerAudioPlayback() {
+  timerAudioUnlockBound = false;
+  if (isAnswered || optionsStopwatchVideo.hidden || optionsStopwatchVideo.paused || optionsStopwatchVideo.ended) return;
+  startTimerAudio();
+}
 
 function loadEmergencyImage(imageSrc) {
   quizVideo.pause();
@@ -283,22 +331,18 @@ function loadEmergencyImage(imageSrc) {
   }
 }
 
-function loadQuestionVideo(videoSrc, shouldMute = false) {
+function loadQuestionVideo(videoSrc) {
   quizVideo.pause();
-  currentVideoMuted = shouldMute;
+  currentVideoMuted = true;
   quizVideo.autoplay = true;
   quizVideo.loop = true;
-  quizVideo.muted = shouldMute;
-  quizVideo.defaultMuted = shouldMute;
-  quizVideo.volume = shouldMute ? 0 : 1;
+  quizVideo.muted = true;
+  quizVideo.defaultMuted = true;
+  quizVideo.volume = 0;
   quizVideo.setAttribute('autoplay', '');
   quizVideo.setAttribute('loop', '');
   quizVideo.setAttribute('playsinline', '');
-  if (shouldMute) {
-    quizVideo.setAttribute('muted', '');
-  } else {
-    quizVideo.removeAttribute('muted');
-  }
+  quizVideo.setAttribute('muted', '');
 
   if (quizVideoSource) {
     quizVideoSource.src = videoSrc;

@@ -92,7 +92,7 @@
         </div>
 
         <div class="video-stage">
-          <video id="quizVideo" autoplay loop playsinline preload="auto">
+          <video id="quizVideo" autoplay loop muted playsinline preload="auto">
             <source id="quizVideoSource" src="media/balance.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
@@ -109,10 +109,13 @@
 
         <!-- Question-specific option media with the existing Yes/No overlay -->
         <div class="character-options-container" id="characterOptions">
-          <video class="stopwatch-options-video" id="optionsStopwatchVideo" playsinline preload="auto" aria-label="Stopwatch animation">
+          <video class="stopwatch-options-video" id="optionsStopwatchVideo" muted playsinline preload="auto" aria-label="Stopwatch animation">
             <source src="media/stopwatch_sample.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <audio id="timerAudio" preload="auto" loop aria-hidden="true">
+            <source src="media/timer.mp3" type="audio/mpeg" />
+          </audio>
           <div class="speech-bubble-overlay">
             <button class="speech-bubble-btn btn-bubble-yes" id="btnYes" type="button" aria-label="Yes - Needs Urgent Medical Attention">
               <i class="fas fa-check-circle"></i>
