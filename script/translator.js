@@ -84,6 +84,14 @@
     return Boolean(combo && combo.value === language && htmlIsTranslated);
   }
 
+  function updatePageSpecificLocalizedText(language) {
+    const useGujaratiLetters = language === 'gu';
+    document.querySelectorAll('[data-letter-default][data-letter-gu]').forEach(letter => {
+      letter.textContent = useGujaratiLetters ? letter.dataset.letterGu : letter.dataset.letterDefault;
+      letter.lang = useGujaratiLetters ? 'gu' : 'en';
+    });
+  }
+
   function finishTranslationWait(state) {
     if (!state || translationWaitState !== state) return;
 
@@ -91,6 +99,7 @@
     window.clearInterval(state.pollTimer);
     window.clearTimeout(state.fallbackTimer);
     translationWaitState = null;
+    updatePageSpecificLocalizedText(state.language);
     document.documentElement.removeAttribute(TRANSLATION_PENDING_ATTRIBUTE);
 
     if (window.AOS) window.AOS.refresh();
@@ -220,6 +229,7 @@
   function applyLanguage(language, options = {}) {
     const normalizedLanguage = normalizeLanguage(language);
     saveLanguage(normalizedLanguage);
+    updatePageSpecificLocalizedText(normalizedLanguage);
     document.documentElement.lang = normalizedLanguage;
     document.documentElement.dir = normalizedLanguage === 'ur' ? 'rtl' : 'ltr';
 
@@ -266,6 +276,7 @@
   };
 
   const savedLanguage = getSavedLanguage();
+  updatePageSpecificLocalizedText(savedLanguage);
   watchForGoogleUi();
   if (savedLanguage !== SOURCE_LANGUAGE) {
     beginTranslationWait(savedLanguage);
