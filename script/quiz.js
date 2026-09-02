@@ -56,6 +56,8 @@ const quizLevels = [
     title: 'SPEECH DIFFICULTY',
     text: 'Difficulty in Speaking or slurring of speech',
     video: 'media/uneven speak.mp4',
+    questionVideoMuted: false,
+    timerAudioVolume: 0.5,
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mrs. Sandhya suddenly experienced ',
@@ -165,7 +167,7 @@ function renderLevel(index) {
   } else {
     emergencyImage.hidden = true;
     quizVideo.hidden = false;
-    loadQuestionVideo(level.video);
+    loadQuestionVideo(level.video, level.questionVideoMuted !== false);
   }
 
   nextLevelText.innerText = 'Next Level';
@@ -286,10 +288,12 @@ optionsStopwatchVideo.addEventListener('pause', stopTimerAudio);
 function startTimerAudio() {
   if (!timerAudio || isAnswered || optionsStopwatchVideo.hidden) return;
 
+  const level = quizLevels[currentLevelIndex];
+  const requestedVolume = Number.isFinite(level?.timerAudioVolume) ? level.timerAudioVolume : 1;
   timerAudio.loop = true;
   timerAudio.defaultPlaybackRate = TIMER_AUDIO_PLAYBACK_RATE;
   timerAudio.playbackRate = TIMER_AUDIO_PLAYBACK_RATE;
-  timerAudio.volume = 1;
+  timerAudio.volume = Math.min(1, Math.max(0, requestedVolume));
   timerAudio.currentTime = 0;
 
   const playPromise = timerAudio.play();
@@ -331,18 +335,22 @@ function loadEmergencyImage(imageSrc) {
   }
 }
 
-function loadQuestionVideo(videoSrc) {
+function loadQuestionVideo(videoSrc, shouldMute = true) {
   quizVideo.pause();
-  currentVideoMuted = true;
+  currentVideoMuted = shouldMute;
   quizVideo.autoplay = true;
   quizVideo.loop = true;
-  quizVideo.muted = true;
-  quizVideo.defaultMuted = true;
-  quizVideo.volume = 0;
+  quizVideo.muted = shouldMute;
+  quizVideo.defaultMuted = shouldMute;
+  quizVideo.volume = shouldMute ? 0 : 1;
   quizVideo.setAttribute('autoplay', '');
   quizVideo.setAttribute('loop', '');
   quizVideo.setAttribute('playsinline', '');
-  quizVideo.setAttribute('muted', '');
+  if (shouldMute) {
+    quizVideo.setAttribute('muted', '');
+  } else {
+    quizVideo.removeAttribute('muted');
+  }
 
   if (quizVideoSource) {
     quizVideoSource.src = videoSrc;
