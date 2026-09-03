@@ -361,6 +361,7 @@ html[data-translation-pending="true"] body::after {
 .quiz-progress-track { display: none; }
 .progress-track { width: 100%; max-width: 500px; height: 6px; background: rgba(225, 19, 68, 0.1); border-radius: 10px; margin: 0 auto; overflow: hidden; }
 .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-red), var(--orange-dots)); border-radius: 10px; transition: width 0.5s ease; }
+.scroll-to-bottom-btn { display: none; }
 
 .quiz-content-wrapper { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: clamp(1.2rem, 3vw, 3.2rem); align-items: center; padding: 0 max(clamp(1.5rem, 4vw, 4rem), env(safe-area-inset-right)) max(clamp(1rem, 2vh, 2rem), env(safe-area-inset-bottom)) max(clamp(1.5rem, 4vw, 4rem), env(safe-area-inset-left)); position: relative; z-index: 1; min-height: 0; width: 100%; max-width: 100%; overflow: visible; }
 .left-stage { display: flex; flex-direction: column; align-items: stretch; gap: clamp(1rem, 2.4vh, 1.8rem) !important; justify-self: end; min-width: 0; width: min(100%, 430px); max-width: 100%; }
@@ -989,7 +990,7 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .modal-content-box { width: min(93vw, 420px); min-height: 375px; padding: 6.2rem 0.85rem 1rem; border-radius: 24px; }
   .modal-content-box::before { inset: 0; border-width: 5px; border-radius: 24px; box-shadow: 0 0 0 6px var(--modal-main), inset 0 0 0 2px rgba(255,255,255,0.65), inset 0 0 0 12px color-mix(in srgb, var(--modal-main) 6%, transparent); clip-path: polygon(4% 5%, 50% 8%, 96% 5%, 100% 18%, 97% 90%, 86% 90%, 82% 98%, 50% 96%, 18% 98%, 14% 91%, 4% 91%, 0 20%); }
   .modal-beacon { width: 68px; height: 68px; top: 8%; transform: translate(-50%, -67%); }
-  .modal-character-img { left: -0.8rem; bottom: 0.4rem; width: 72px; opacity: 0.85; z-index: 1; }
+  .modal-character-img { left: -0.8rem; bottom: 0.4rem; width: clamp(80px, 23vw, 92px); opacity: 0.85; z-index: 1; }
   .modal-ribbon { left: 0.9rem; right: 0.9rem; top: 2.75rem; min-height: 46px; padding: 0 1.8rem 0 1.25rem; border-radius: 9px; }
   .modal-ribbon h3 { font-size: clamp(1.08rem, 6.5vw, 1.52rem); text-shadow: 0 2px 0 rgba(74,0,22,0.25); }
   .modal-icon { right: 0.38rem; width: 32px; font-size: 1.25rem; }
@@ -1027,7 +1028,7 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   }
   .modal-befast-item.active { transform: none; }
   .modal-befast-item.active .modal-befast-letter { transform: scale(1.12) translateY(-2px); }
-  .modal-shield { right: -0.1rem; bottom: 0.05rem; width: 50px; font-size: 1.45rem; }
+  .modal-shield { right: -0.1rem; bottom: 0.05rem; width: clamp(56px, 16vw, 66px); font-size: clamp(1.6rem, 4.8vw, 1.9rem); }
   .thanks-home-btn {
     min-width: min(100%, 260px);
     max-width: 300px;
@@ -1137,6 +1138,10 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   html[data-page="quiz"] {
     background: #fff0eb;
   }
+  .home-page #startQuizBtn {
+    overflow: hidden;
+    isolation: isolate;
+  }
   body.quiz-page,
   body.quiz-page .main-wrapper {
     background: #fff0eb !important;
@@ -1144,18 +1149,59 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   body.quiz-page .bg-shapes {
     display: none;
   }
+  .scroll-to-bottom-btn {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 2px solid rgba(255, 255, 255, 0.92);
+    border-radius: 50%;
+    color: #fff;
+    background: linear-gradient(180deg, #ff3354 0%, #d80b3c 100%);
+    box-shadow: 0 8px 20px rgba(135, 0, 34, 0.32), inset 0 3px 4px rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.22s ease, visibility 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .scroll-to-bottom-btn i {
+    font-size: 1.15rem;
+    line-height: 1;
+    animation: scroll-down-nudge 1.4s ease-in-out infinite;
+  }
+  .scroll-to-bottom-btn:active {
+    transform: scale(0.94);
+    box-shadow: 0 4px 12px rgba(135, 0, 34, 0.28), inset 0 3px 5px rgba(80, 0, 24, 0.2);
+  }
+  .scroll-to-bottom-btn.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px) scale(0.88);
+  }
   html, body, .main-wrapper { overflow-y: auto; height: auto; max-height: none; }
-  .quiz-content-wrapper { grid-template-columns: 1fr; gap: 1.35rem; padding: 0.85rem max(1rem, env(safe-area-inset-right)) max(1.7rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); justify-items: center; max-height: none; overflow: visible; width: 100%; max-width: 100%; }
+  .quiz-content-wrapper { grid-template-columns: 1fr; gap: 1.1rem; padding: 0.75rem max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); justify-items: center; max-height: none; overflow: visible; width: 100%; max-width: 100%; }
   .quiz-page .top-bar { display: none; }
   .center-stage { display: contents; }
   .quiz-header { order: -3; justify-self: center; width: min(calc(100vw - 2rem), 360px); margin-bottom: 0.25rem; }
+  .quiz-page .quiz-level-ribbon { display: none; }
   .quiz-stepper { width: min(calc(100vw - 2rem), 330px); }
   .left-stage { order: 1; }
   .video-stage { order: 2; justify-self: center; }
   .quiz-actions { order: 3; }
-  .left-stage { width: 100%; max-width: 330px; align-items: center; justify-self: center; }
+  .left-stage { width: 100%; max-width: 315px; align-items: center; justify-self: center; }
   .balance-loss-card { max-width: 100%; width: 100%; }
-  .quiz-pad-card { width: min(100%, 320px); margin-inline: auto; padding: 2.7rem 1.05rem 0.95rem; border-radius: 22px; border-width: 2px; box-shadow: -6px 9px 0 #d80b3c, -10px 18px 24px rgba(225,19,68,0.14), 0 18px 28px rgba(225,19,68,0.18), inset 0 0 0 5px rgba(255, 226, 225, 0.72), inset 0 0 0 8px rgba(255,255,255,0.78); transform: translateX(6px) perspective(900px) rotateZ(-1.8deg) rotateY(3deg); }
+  .quiz-pad-card .symptom-badge-wrap { display: none; }
+  .quiz-pad-card { width: min(100%, 305px); margin-inline: auto; padding: 2.55rem 0.9rem 0.8rem; border-radius: 22px; border-width: 2px; box-shadow: -6px 9px 0 #d80b3c, -10px 18px 24px rgba(225,19,68,0.14), 0 18px 28px rgba(225,19,68,0.18), inset 0 0 0 5px rgba(255, 226, 225, 0.72), inset 0 0 0 8px rgba(255,255,255,0.78); transform: translateX(6px) perspective(900px) rotateZ(-1.8deg) rotateY(3deg); }
+  .quiz-pad-card .question-card { padding: 0.82rem 0.85rem; margin-bottom: 0.75rem; border-radius: 16px; }
   .quiz-pad-card::before { inset: 9px; border-radius: 18px; }
   .quiz-pad-card::after { left: 14px; right: 14px; bottom: 8px; height: 9px; }
   .pad-clip { top: -21px; width: 104px; height: 42px; border-radius: 17px 17px 12px 12px; }
@@ -1164,7 +1210,7 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .balance-loss-card h4 { font-size: 1.18rem; margin-bottom: 0; line-height: 1.12; }
   .pad-divider { width: min(100%, 180px); height: 12px; margin-bottom: 0.4rem; }
   .balance-loss-card p { font-size: 0.82rem; line-height: 1.34; max-width: 235px; margin-bottom: 0.35rem; }
-  .video-stage { width: clamp(205px, 66vw, 250px); max-width: 100%; }
+  .video-stage { width: clamp(165px, 50vw, 200px); max-width: 100%; margin-top: 0.55rem; }
   body.emergency-active .video-stage {
     width: min(78vw, 280px) !important;
     height: min(78vw, 280px) !important;
@@ -1284,6 +1330,19 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .bg-wave-right { right: -15px; }
   .certificate-download-btn { width: min(100%, 342px); }
   .emergency-info { flex-direction: column; text-align: center; gap: 0.4rem; padding: 1rem; border-radius: 15px; }
+}
+
+@keyframes scroll-down-nudge {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-bottom-btn,
+  .scroll-to-bottom-btn i {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* Tablet */

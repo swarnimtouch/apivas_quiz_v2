@@ -28,9 +28,43 @@ document.addEventListener('mousemove', (e) => {
 
 // ===== Button Ripple Effect =====
 const startBtn = document.getElementById('startQuizBtn');
+const QUIZ_START_TRACKING_ENDPOINT = 'api/track-quiz-start.php';
+let isQuizStarting = false;
+
+function trackQuizStart() {
+  const body = 'event=quiz_started';
+
+  if (typeof navigator.sendBeacon === 'function') {
+    const payload = new Blob([body], {
+      type: 'application/x-www-form-urlencoded;charset=UTF-8'
+    });
+
+    if (navigator.sendBeacon(QUIZ_START_TRACKING_ENDPOINT, payload)) {
+      return;
+    }
+  }
+
+  fetch(QUIZ_START_TRACKING_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    },
+    body,
+    keepalive: true,
+    credentials: 'same-origin'
+  }).catch(() => {
+    // Tracking must never prevent the visitor from starting the quiz.
+  });
+}
 
 if (startBtn) {
   startBtn.addEventListener('click', function (e) {
+    if (isQuizStarting) return;
+    isQuizStarting = true;
+    this.disabled = true;
+
+    trackQuizStart();
+
     // Ripple Creation
     const ripple = document.createElement('span');
     ripple.style.cssText = `

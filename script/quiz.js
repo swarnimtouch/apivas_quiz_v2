@@ -124,6 +124,7 @@ const modalTitle = document.getElementById('modalTitle');
 const modalText = document.getElementById('modalText');
 const nextLevelBtn = document.getElementById('nextLevelBtn');
 const nextLevelText = nextLevelBtn.querySelector('.btn-text');
+const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
 
 let currentLevelIndex = 0;
 let isAnswered = false;
@@ -133,6 +134,55 @@ let optionsVideoStartTimer = null;
 let optionsVideoUnlockBound = false;
 let timerAudioUnlockBound = false;
 const OPTIONS_VIDEO_PLAYBACK_RATE = 0.35;
+
+function initScrollToBottomButton() {
+  if (!scrollToBottomBtn) return;
+
+  const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
+  let updateFrame = null;
+
+  function updateButtonVisibility() {
+    updateFrame = null;
+
+    const pageHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const remainingScroll = pageHeight - viewportHeight - scrollTop;
+    const shouldShow = mobileMediaQuery.matches
+      && pageHeight > viewportHeight + 24
+      && remainingScroll > 24;
+
+    scrollToBottomBtn.classList.toggle('is-hidden', !shouldShow);
+    scrollToBottomBtn.tabIndex = shouldShow ? 0 : -1;
+    scrollToBottomBtn.setAttribute('aria-hidden', String(!shouldShow));
+  }
+
+  function scheduleVisibilityUpdate() {
+    if (updateFrame !== null) return;
+    updateFrame = window.requestAnimationFrame(updateButtonVisibility);
+  }
+
+  scrollToBottomBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
+  });
+
+  window.addEventListener('scroll', scheduleVisibilityUpdate, { passive: true });
+  window.addEventListener('resize', scheduleVisibilityUpdate, { passive: true });
+  window.addEventListener('load', scheduleVisibilityUpdate, { once: true });
+  mobileMediaQuery.addEventListener('change', scheduleVisibilityUpdate);
+
+  if (typeof ResizeObserver === 'function') {
+    const pageResizeObserver = new ResizeObserver(scheduleVisibilityUpdate);
+    pageResizeObserver.observe(document.body);
+  }
+
+  scheduleVisibilityUpdate();
+}
+
+initScrollToBottomButton();
 const TIMER_AUDIO_PLAYBACK_RATE = 1;
 const totalSteps = quizLevels.length;
 
