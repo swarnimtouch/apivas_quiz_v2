@@ -186,6 +186,14 @@ initScrollToBottomButton();
 const TIMER_AUDIO_PLAYBACK_RATE = 1;
 const totalSteps = quizLevels.length;
 
+function resetMobileQuizScroll() {
+  if (!window.matchMedia('(max-width: 767px)').matches) return;
+
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
 // ===== Render Current Question =====
 function renderLevel(index) {
   const level = quizLevels[index];
@@ -225,6 +233,8 @@ function renderLevel(index) {
   if (window.refreshGoogleWebsiteTranslation) {
     window.refreshGoogleWebsiteTranslation();
   }
+
+  resetMobileQuizScroll();
 }
 
 function renderQuestion(level) {
