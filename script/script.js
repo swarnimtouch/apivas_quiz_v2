@@ -113,8 +113,8 @@ window.addEventListener('load', () => {
   
   if (!line1El || !line2El) return; // Only runs on index.html
 
-  const text1 = "Observe each situation carefully and";
-  const text2 = "choose the appropriate option";
+  let text1 = 'Observe each situation carefully and';
+  let text2 = 'choose the appropriate option';
   
   let i = 0;
   let j = 0;
@@ -141,9 +141,6 @@ window.addEventListener('load', () => {
       if (plusIcon) {
         plusIcon.classList.add('show-icon');
       }
-      if (window.refreshGoogleWebsiteTranslation) {
-        window.refreshGoogleWebsiteTranslation();
-      }
     }
   }
 
@@ -151,15 +148,19 @@ window.addEventListener('load', () => {
     if (typewriterStarted) return;
     typewriterStarted = true;
 
-    const selectedLanguage = langSelect ? langSelect.value : 'en';
+    if (window.appI18n) {
+      text1 = window.appI18n.t('home.heroLine1', text1);
+      text2 = window.appI18n.t('home.heroLine2', text2);
+    }
+
+    const selectedLanguage = window.appI18n
+      ? window.appI18n.getLanguage()
+      : (langSelect ? langSelect.value : 'en');
     if (selectedLanguage !== 'en') {
       line1El.textContent = text1;
       line2El.textContent = text2;
       const plusIcon = document.querySelector('.bg-icon-plus');
       if (plusIcon) plusIcon.classList.add('show-icon');
-      if (window.refreshGoogleWebsiteTranslation) {
-        window.refreshGoogleWebsiteTranslation();
-      }
       return;
     }
 
@@ -167,11 +168,13 @@ window.addEventListener('load', () => {
   }
 
   if (langOverlay && confirmLangBtn) {
-    confirmLangBtn.addEventListener('click', () => {
+    confirmLangBtn.addEventListener('click', async () => {
       const selectedLang = langSelect ? langSelect.value : 'en';
-      try {
-        sessionStorage.setItem('preferred_language', selectedLang);
-      } catch (e) {}
+      confirmLangBtn.disabled = true;
+
+      if (window.appI18n) {
+        await window.appI18n.setLanguage(selectedLang);
+      }
 
       // Fade out language overlay
       langOverlay.classList.add('lang-fade-out');

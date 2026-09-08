@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "homeTitle": "Microlabs - Stroke Awareness Quiz",
+    "quizTitle": "Microlabs - Stroke Awareness Quiz",
+    "thanksTitle": "Microlabs - Thanks for Participation"
+  },
+  "common": {
+    "awareness": "Content for patient awareness",
+    "videoUnsupported": "Your browser does not support the video tag."
+  },
+  "language": {
+    "select": "Select Language",
+    "continue": "CONTINUE"
+  },
+  "home": {
+    "ribbon": "How Well Do You Know the Signs of Stroke? Play & Find Out!",
+    "heroLine1": "Observe each situation carefully and",
+    "heroLine2": "choose the appropriate option",
+    "situations": "SITUATIONS",
+    "choices": "CHOICES",
+    "disclaimer": "This is a public awareness tool that helps to recognize, when emergency action may be needed. It does not provide a medical diagnosis. During an emergency situation immediately call <strong>112/108</strong>.",
+    "playQuiz": "PLAY QUIZ",
+    "initiatedBy": "Initiated by"
+  },
+  "quiz": {
+    "level": "Level {current} of {total}",
+    "progress": "Quiz progress",
+    "emergencyImageAlt": "Emergency service awareness",
+    "stopwatchLabel": "Stopwatch animation",
+    "yes": "Yes",
+    "no": "No",
+    "yesAria": "Yes - Needs Urgent Medical Attention",
+    "noAria": "No - No Urgent Medical Attention",
+    "prompt": "Need Urgent<br />Medical Attention?",
+    "finish": "Finish",
+    "nextLevel": "Next Level",
+    "scrollBottom": "Scroll to bottom",
+    "befastAria": "BEFAST stroke awareness signs",
+    "feedback": {
+      "correctTitle": "Absolutely Right!",
+      "incorrectTitle": "Incorrect Choice!"
+    },
+    "befast": {
+      "balance": "Balance Loss",
+      "eye": "Eye (Vision)<br />Changes",
+      "face": "Face drooping",
+      "arm": "Arm Weakness",
+      "speech": "Speech<br />Difficulty",
+      "time": "Time to call<br />emergency service<br />(112/108)"
+    },
+    "levels": {
+      "balance": {
+        "title": "BALANCE LOSS",
+        "text": "Sudden loss of balance, dizziness or coordination",
+        "questionLead": "Mr. Ramesh suddenly experienced ",
+        "questionEmphasis": "loss of balance, dizziness or difficulty coordinating his movements.",
+        "incorrectText": "Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke. Look for urgent medical attention",
+        "successText": "Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke."
+      },
+      "eye": {
+        "title": "Eye (Vision) Changes",
+        "text": "Sudden trouble seeing in one or both eyes",
+        "questionLead": "Mrs. Meena suddenly experienced ",
+        "questionEmphasis": "blurred or double vision, or difficulty seeing",
+        "questionTail": " through one or both eyes.",
+        "incorrectText": "Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke. Look for urgent medical attention",
+        "successText": "Sudden blurred or double vision, or difficulty seeing in one or both eyes can be a warning sign of stroke."
+      },
+      "face": {
+        "title": "FACE DROOPING",
+        "text": "Sudden weakness or numbness of the face or uneven face.",
+        "questionLead": "Mr. Rajesh face appears ",
+        "questionEmphasis": "uneven on one sided.",
+        "incorrectText": "Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention",
+        "successText": "Sudden drooping or weakness on one side of the face can be a warning sign of stroke."
+      },
+      "arm": {
+        "title": "ARM WEAKNESS",
+        "text": "Sudden weakness numbness in one or both arms",
+        "questionLead": "Mr. Raj noticed ",
+        "questionEmphasis": "weakness or numbness in one arm this morning.",
+        "incorrectText": "Sudden weakness or numbness in one arm can be a warning sign of stroke. Look for urgent medical attention",
+        "successText": "Sudden weakness or numbness in one arm can be a warning sign of stroke."
+      },
+      "speech": {
+        "title": "SPEECH DIFFICULTY",
+        "text": "Difficulty in Speaking or slurring of speech",
+        "questionLead": "Mrs. Sandhya suddenly experienced ",
+        "questionEmphasis": "difficulty speaking or slurred speech.",
+        "incorrectText": "Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention",
+        "successText": "Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke."
+      },
+      "emergency": {
+        "title": "TIME TO CALL EMERGENCY SERVICE",
+        "text": "",
+        "prompt": "Act fast",
+        "question": "Time is Gold.\nCall emergency services immediately.",
+        "message": "Every minute matters. Recognize even one sign of stroke and call 112/108 immediately. The sooner treatment begins, the greater the chance of survival and the lower the risk of lasting disability."
+      }
+    }
+  },
+  "thanks": {
+    "heading": "Thanks for your Participation!",
+    "message": "You’ve taken an important step towards a <strong>stroke-free tomorrow.</strong>",
+    "strokeImageAlt": "A Stroke Awareness Initiative",
+    "disclaimerTitle": "Disclaimer:",
+    "disclaimer1": "This initiative and its gamification tool are intended solely for stroke awareness and educational purposes.",
+    "disclaimer2": "The tool is designed to help participants learn and remember common warning signs of stroke and does not constitute medical advice, diagnosis, or treatment.",
+    "disclaimer3": "It is not intended to replace evaluation by a qualified healthcare professional.",
+    "disclaimer4": "If you or someone else experiences symptoms suggestive of a stroke, seek immediate emergency medical assistance and consult a qualified healthcare professional.",
+    "disclaimer5": "Do not rely on this educational tool to diagnose or rule out a stroke.",
+    "availableAt": "*Available at: American Stroke Association. B.E.F.A.S.T. warning signs. Stroke.org.",
+    "accessedOn": "[Accessed on: 12th Aug 2026]",
+    "backHome": "Back To Home"
+  }
+}

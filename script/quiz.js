@@ -1,6 +1,7 @@
 // ===== Quiz Data =====
 const quizLevels = [
   {
+    translationKey: 'quiz.levels.balance',
     icon: 'B',
     title: 'BALANCE LOSS',
     text: 'Sudden loss of balance, dizziness or coordination',
@@ -14,6 +15,7 @@ const quizLevels = [
     successText: 'Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke.'
   },
   {
+    translationKey: 'quiz.levels.eye',
     icon: 'E',
     title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
@@ -28,6 +30,7 @@ const quizLevels = [
     successText: 'Sudden blurred or double vision, or difficulty seeing in one or both eyes can be a warning sign of stroke.'
   },
   {
+    translationKey: 'quiz.levels.face',
     icon: 'F',
     title: 'FACE DROOPING',
     text: 'Sudden weakness or numbness of the face or uneven face.',
@@ -40,6 +43,7 @@ const quizLevels = [
     successText: 'Sudden drooping or weakness on one side of the face can be a warning sign of stroke.'
   },
   {
+    translationKey: 'quiz.levels.arm',
     icon: 'A',
     title: 'ARM WEAKNESS',
     text: 'Sudden weakness numbness in one or both arms',
@@ -52,6 +56,7 @@ const quizLevels = [
     successText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke.'
   },
   {
+    translationKey: 'quiz.levels.speech',
     icon: 'S',
     title: 'SPEECH DIFFICULTY',
     text: 'Difficulty in Speaking or slurring of speech',
@@ -66,6 +71,7 @@ const quizLevels = [
     successText: 'Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.'
   },
   {
+    translationKey: 'quiz.levels.emergency',
     type: 'emergency',
     icon: 'T',
     title: 'TIME TO CALL EMERGENCY SERVICE',
@@ -186,6 +192,19 @@ initScrollToBottomButton();
 const TIMER_AUDIO_PLAYBACK_RATE = 1;
 const totalSteps = quizLevels.length;
 
+function translate(key, fallback = '', replacements) {
+  return window.appI18n
+    ? window.appI18n.t(key, fallback, replacements)
+    : fallback;
+}
+
+function getLocalizedLevel(level) {
+  const localizedCopy = translate(level.translationKey, null);
+  return localizedCopy && typeof localizedCopy === 'object'
+    ? { ...level, ...localizedCopy }
+    : level;
+}
+
 function resetMobileQuizScroll() {
   if (!window.matchMedia('(max-width: 767px)').matches) return;
 
@@ -196,14 +215,17 @@ function resetMobileQuizScroll() {
 
 // ===== Render Current Question =====
 function renderLevel(index) {
-  const level = quizLevels[index];
+  const level = getLocalizedLevel(quizLevels[index]);
   const isEmergencyLevel = level.type === 'emergency';
 
   currentLevelIndex = index;
   isAnswered = false;
   document.body.classList.toggle('emergency-active', isEmergencyLevel);
 
-  levelBadge.innerText = `Level ${index + 1} of ${totalSteps}`;
+  levelBadge.innerText = translate('quiz.level', 'Level {current} of {total}', {
+    current: index + 1,
+    total: totalSteps
+  });
   progressBarFill.style.width = `${((index + 1) / totalSteps) * 100}%`;
   stepDots.forEach((dot, dotIndex) => {
     dot.classList.toggle('active', dotIndex === index);
@@ -218,7 +240,9 @@ function renderLevel(index) {
   renderOptionsMedia(level, index, isEmergencyLevel);
   emergencyMessageCard.hidden = !isEmergencyLevel;
   finishEmergencyBtn.hidden = !isEmergencyLevel;
-  promptBannerText.innerHTML = level.prompt ? level.prompt : 'Need Urgent<br />Medical Attention?';
+  promptBannerText.innerHTML = level.prompt
+    ? level.prompt
+    : translate('quiz.prompt', 'Need Urgent<br />Medical Attention?');
 
   if (isEmergencyLevel) {
     loadEmergencyImage(level.image);
@@ -228,11 +252,7 @@ function renderLevel(index) {
     loadQuestionVideo(level.video, level.questionVideoMuted !== false);
   }
 
-  nextLevelText.innerText = 'Next Level';
-
-  if (window.refreshGoogleWebsiteTranslation) {
-    window.refreshGoogleWebsiteTranslation();
-  }
+  nextLevelText.innerText = translate('quiz.nextLevel', 'Next Level');
 
   resetMobileQuizScroll();
 }
@@ -450,10 +470,15 @@ function bindVideoUnlock() {
 }
 
 // ===== Autoplay Video on DOM Ready =====
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => renderLevel(0), { once: true });
-} else {
+async function startQuizPage() {
+  if (window.appI18n) await window.appI18n.ready;
   renderLevel(0);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startQuizPage, { once: true });
+} else {
+  startQuizPage();
 }
 
 // ===== Parallax Mouse Movement on Background Shapes =====
@@ -478,7 +503,8 @@ if (btnYes) {
     quizVideo.pause();
     quizVideo.removeAttribute('loop');
     // Yes -> Correct choice (stroke symptoms need urgent medical attention)
-    showModal('success', 'Absolutely Right!', quizLevels[currentLevelIndex].successText);
+    const level = getLocalizedLevel(quizLevels[currentLevelIndex]);
+    showModal('success', translate('quiz.feedback.correctTitle', 'Absolutely Right!'), level.successText);
   });
 }
 
@@ -489,11 +515,11 @@ if (btnNo) {
     isAnswered = true;
     stopOptionsVideoPlayback(false);
 
-    const level = quizLevels[currentLevelIndex];
+    const level = getLocalizedLevel(quizLevels[currentLevelIndex]);
     quizVideo.pause();
     quizVideo.removeAttribute('loop');
     // No -> Incorrect choice (stroke symptoms must not be ignored)
-    showModal('error', 'Incorrect Choice!', level.incorrectText);
+    showModal('error', translate('quiz.feedback.incorrectTitle', 'Incorrect Choice!'), level.incorrectText);
   });
 }
 
@@ -537,9 +563,6 @@ function showModal(type, title, text) {
   if (modalText) modalText.innerText = text || '';
   if (feedbackModal) feedbackModal.classList.add('show');
 
-  if (window.refreshGoogleWebsiteTranslation) {
-    window.refreshGoogleWebsiteTranslation();
-  }
 }
 
 nextLevelBtn.addEventListener('click', () => {

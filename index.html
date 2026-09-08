@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page-title-key="meta.homeTitle">
 
 <head>
   <meta charset="UTF-8" />
@@ -53,7 +53,7 @@
     <div class="top-bar">
       <div class="awareness-tag">
         <i class="fas fa-circle-info"></i>
-        <span>Content for patient awareness</span>
+        <span data-i18n="common.awareness">Content for patient awareness</span>
       </div>
     </div>
 
@@ -64,14 +64,14 @@
           <div class="lang-logo-wrap">
             <img src="media/microlab.png" alt="Micro Labs" class="lang-logo-img" />
           </div>
-          <h2 class="lang-title">Select Language</h2>
+          <h2 class="lang-title" data-i18n="language.select">Select Language</h2>
         </div>
 
         <div class="lang-selector-wrap">
           <div class="custom-lang-select-box">
-            <select id="languageSelect" class="form-select lang-dropdown" aria-label="Select Language">
-              <option value="en" selected>English</option>
+            <select id="languageSelect" class="form-select lang-dropdown" aria-label="Select Language" data-i18n-aria-label="language.select">
               <option value="hi">हिन्दी (Hindi)</option>
+              <option value="en" selected>English</option>
               <option value="bn">বাংলা (Bengali)</option>
               <option value="mr">मराठी (Marathi)</option>
               <option value="te">తెలుగు (Telugu)</option>
@@ -89,7 +89,7 @@
 
         <div class="lang-actions">
           <button type="button" class="btn-start-quiz lang-confirm-btn" id="confirmLangBtn">
-            <span class="btn-text">CONTINUE</span>
+            <span class="btn-text" data-i18n="language.continue">CONTINUE</span>
             <div class="icon-circle">
               <i class="fas fa-arrow-right"></i>
             </div>
@@ -119,7 +119,7 @@
 
         <div class="quiz-ribbon">
           <!-- Ribbon Text -->
-          <span class="ribbon-text">How Well Do You Know the Signs of Stroke? Play &amp; Find Out!</span>
+          <span class="ribbon-text" data-i18n="home.ribbon">How Well Do You Know the Signs of Stroke? Play &amp; Find Out!</span>
         </div>
         
         <!-- Golden Sparkles (Right) -->
@@ -155,7 +155,7 @@
           <!-- Item 1 -->
           <div class="info-item">
             <span class="info-num">5</span>
-            <span class="info-label">SITUATIONS</span>
+            <span class="info-label" data-i18n="home.situations">SITUATIONS</span>
             <div class="badge-wrapper">
               <div class="bottom-badge icon-pink">
                 <i class="fas fa-book-open"></i>
@@ -169,7 +169,7 @@
           <!-- Item 2 -->
           <div class="info-item">
             <span class="info-num">2</span>
-            <span class="info-label">CHOICES</span>
+            <span class="info-label" data-i18n="home.choices">CHOICES</span>
             <div class="badge-wrapper multi-badge">
               <div class="bottom-badge icon-green">
                 <i class="fas fa-check"></i>
@@ -185,14 +185,14 @@
       </div>
 
       <!-- Disclaimer Text -->
-      <p class="disclaimer-text" data-aos="fade-up" data-aos-delay="500">
+      <p class="disclaimer-text" data-aos="fade-up" data-aos-delay="500" data-i18n-html="home.disclaimer">
         This is a public awareness tool that helps to recognize, when emergency action may be needed. It does not provide a medical diagnosis. During an emergency situation immediately call <strong>112/108</strong>.
       </p>
 
       <!-- CTA Button -->
       <div class="cta-wrapper" data-aos="fade-up" data-aos-delay="700">
         <button class="btn-start-quiz" id="startQuizBtn">
-          <span class="btn-text">PLAY QUIZ</span>
+          <span class="btn-text" data-i18n="home.playQuiz">PLAY QUIZ</span>
           <!-- NAYA: Play icon ek circle me wrapped hai screenshot jaisa -->
           <div class="icon-circle">
             <i class="fas fa-play"></i>
@@ -205,13 +205,11 @@
     <!-- ===== Footer ===== -->
     <footer class="footer-section">
       <div class="footer-center">
-        <span>Initiated by</span>
+        <span data-i18n="home.initiatedBy">Initiated by</span>
         <img src="media/microlab.png" alt="Micro Labs" class="footer-logo-img" />
       </div>
     </footer>
   </div>
-
-  <div id="google_translate_element" class="google-translate-host" aria-hidden="true"></div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -219,7 +217,6 @@
   <script src="script/viewport.js"></script>
   <script src="script/translator.js"></script>
   <script src="script/script.js"></script>
-  <script async src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 
 </html>
