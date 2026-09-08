@@ -1334,6 +1334,10 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
 }
 
 @media (min-width: 1025px) {
+  .home-page .side-brain {
+    top: 54%;
+  }
+
   html,
   body {
     height: 100vh;
