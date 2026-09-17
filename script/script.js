@@ -28,7 +28,7 @@ document.addEventListener('mousemove', (e) => {
 
 // ===== Button Ripple Effect =====
 const startBtn = document.getElementById('startQuizBtn');
-const QUIZ_START_TRACKING_ENDPOINT = 'api/track-quiz-start.php';
+const QUIZ_START_TRACKING_ENDPOINT = 'http://3.108.198.49/api/track-quiz-start.php';
 let isQuizStarting = false;
 
 function trackQuizStart() {
