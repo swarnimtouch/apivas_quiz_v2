@@ -40,5 +40,12 @@
     return;
   }
 
+  if (document.documentElement.dataset.page === 'quiz') {
+    document.documentElement.classList.add('quiz-initializing');
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) window.location.reload();
+    });
+  }
+
   applyDocumentLanguage(getSavedLanguage());
 }());

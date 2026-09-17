@@ -143,28 +143,46 @@ let optionsVideoUnlockBound = false;
 let timerAudioUnlockBound = false;
 const OPTIONS_VIDEO_PLAYBACK_RATE = 0.35;
 
-function preloadAllQuizAssets() {
-  quizLevels.forEach(level => {
-    if (level.video) {
-      const v = document.createElement('video');
-      v.preload = 'auto';
-      v.muted = true;
-      v.src = level.video;
-      v.load();
-    }
-    if (level.optionsVideo) {
-      const sw = document.createElement('video');
-      sw.preload = 'auto';
-      sw.muted = true;
-      sw.src = level.optionsVideo;
-      sw.load();
-    }
-    if (level.image) {
-      const img = new Image();
-      img.src = level.image;
-    }
+const preloadedVideoElements = new Map();
+const preloadedAssetUrls = new Set();
+
+function preloadAsset(url, type = 'video') {
+  if (!url || preloadedAssetUrls.has(url)) return;
+  preloadedAssetUrls.add(url);
+
+  if (type === 'video') {
+    const v = document.createElement('video');
+    v.preload = 'auto';
+    v.muted = true;
+    v.playsInline = true;
+    v.src = url;
+    v.load();
+    preloadedVideoElements.set(url, v);
+  } else if (type === 'image') {
+    const img = new Image();
+    img.src = url;
+  }
+}
+
+function preloadNextLevelAssets(targetIndex) {
+  if (targetIndex < 0 || targetIndex >= quizLevels.length) return;
+  const level = quizLevels[targetIndex];
+  if (!level) return;
+
+  if (level.video) {
+    preloadAsset(level.video, 'video');
+  }
+  if (level.image) {
+    preloadAsset(level.image, 'image');
+  }
+}
+
+function preloadInitialStaticAssets() {
+  ['media/clock.png', 'media/popup.png', 'media/emergency.png'].forEach(imgSrc => {
+    preloadAsset(imgSrc, 'image');
   });
 }
+
 
 function initScrollToBottomButton() {
   if (!scrollToBottomBtn) return;
@@ -323,7 +341,9 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
 
   if (!showStopwatchVideo) return;
 
-  const needsSourceChange = !optionsStopwatchVideo.src || !optionsStopwatchVideo.src.endsWith(level.optionsVideo);
+  const currentStopwatchSrc = optionsStopwatchVideo.currentSrc || optionsStopwatchVideo.src || (optionsStopwatchVideo.querySelector('source')?.src || '');
+  const cleanOptionsSrc = (level.optionsVideo || '').replace(/^\.?\//, '');
+  const needsSourceChange = !currentStopwatchSrc || !currentStopwatchSrc.endsWith(cleanOptionsSrc);
   if (needsSourceChange) {
     optionsStopwatchVideo.src = level.optionsVideo;
   }
@@ -458,16 +478,33 @@ function loadEmergencyImage(imageSrc) {
   }
 }
 
+function isSameVideoSource(videoElement, sourceElement, targetSrc) {
+  if (!targetSrc) return false;
+  const cleanTarget = targetSrc.replace(/^\.?\//, '');
+  const elementSrc = (videoElement.src || '').replace(/^\.?\//, '');
+  const currentSrc = (videoElement.currentSrc || '').replace(/^\.?\//, '');
+  const sourceSrc = (sourceElement?.src || '').replace(/^\.?\//, '');
+
+  return (
+    elementSrc.endsWith(cleanTarget) ||
+    currentSrc.endsWith(cleanTarget) ||
+    sourceSrc.endsWith(cleanTarget)
+  );
+}
+
 function loadQuestionVideo(videoSrc, shouldMute = true) {
-  if (currentQuestionVideoSrc === videoSrc && quizVideo.src) {
+  const isAlreadyLoadedSource = isSameVideoSource(quizVideo, quizVideoSource, videoSrc);
+
+  if (currentQuestionVideoSrc === videoSrc && isAlreadyLoadedSource) {
     quizVideo.currentTime = 0;
     playQuizVideo();
+    preloadNextLevelAssets(currentLevelIndex + 1);
     return;
   }
 
   currentQuestionVideoSrc = videoSrc;
   currentVideoMuted = shouldMute;
-  quizVideo.classList.add('is-switching');
+
   quizVideo.autoplay = true;
   quizVideo.loop = true;
   quizVideo.muted = shouldMute;
@@ -482,20 +519,48 @@ function loadQuestionVideo(videoSrc, shouldMute = true) {
     quizVideo.removeAttribute('muted');
   }
 
+  if (isAlreadyLoadedSource) {
+    quizVideo.classList.remove('is-switching');
+    if (quizVideo.readyState >= 2) {
+      playQuizVideo();
+    } else {
+      const onInitialReady = () => {
+        quizVideo.removeEventListener('loadeddata', onInitialReady);
+        quizVideo.removeEventListener('canplay', onInitialReady);
+        playQuizVideo();
+      };
+      quizVideo.addEventListener('loadeddata', onInitialReady, { once: true });
+      quizVideo.addEventListener('canplay', onInitialReady, { once: true });
+    }
+    setTimeout(() => {
+      preloadNextLevelAssets(currentLevelIndex + 1);
+    }, 600);
+    return;
+  }
+
+  quizVideo.classList.add('is-switching');
   if (quizVideoSource) {
     quizVideoSource.src = videoSrc;
   }
   quizVideo.src = videoSrc;
 
+  let readyHandled = false;
   const onVideoReady = () => {
+    if (readyHandled) return;
+    readyHandled = true;
     quizVideo.removeEventListener('loadeddata', onVideoReady);
     quizVideo.removeEventListener('canplay', onVideoReady);
+    quizVideo.removeEventListener('playing', onVideoReady);
     quizVideo.classList.remove('is-switching');
     playQuizVideo();
+    setTimeout(() => {
+      preloadNextLevelAssets(currentLevelIndex + 1);
+    }, 400);
   };
 
   quizVideo.addEventListener('loadeddata', onVideoReady, { once: true });
   quizVideo.addEventListener('canplay', onVideoReady, { once: true });
+  quizVideo.addEventListener('playing', onVideoReady, { once: true });
 
   quizVideo.load();
 
@@ -530,12 +595,18 @@ function bindVideoUnlock() {
   document.addEventListener('keydown', unlockVideo, { once: true, capture: true });
 }
 
-// ===== Autoplay Video on DOM Ready =====
 async function startQuizPage() {
   if (window.appI18n) await window.appI18n.ready;
-  preloadAllQuizAssets();
+  preloadInitialStaticAssets();
   renderLevel(0);
+  document.documentElement.classList.remove('quiz-initializing');
 }
+
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    window.location.reload();
+  }
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', startQuizPage, { once: true });
@@ -623,8 +694,8 @@ function showModal(type, title, text) {
 
   if (modalTitle) modalTitle.innerText = title || '';
   if (modalText) modalText.innerText = text || '';
+  preloadNextLevelAssets(currentLevelIndex + 1);
   if (feedbackModal) feedbackModal.classList.add('show');
-
 }
 
 nextLevelBtn.addEventListener('click', () => {

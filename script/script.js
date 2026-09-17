@@ -198,3 +198,40 @@ window.addEventListener('load', () => {
     setTimeout(triggerTypewriter, 800);
   }
 });
+
+// ===== Idle Prefetch Quiz Initial Assets =====
+let quizAssetsPrefetched = false;
+function prefetchInitialQuizAssets() {
+  if (quizAssetsPrefetched) return;
+  quizAssetsPrefetched = true;
+
+  const initialAssets = ['media/balance.mp4', 'media/stopwatch_sample.mp4'];
+  initialAssets.forEach(url => {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'video';
+    link.href = url;
+    document.head.appendChild(link);
+
+    const v = document.createElement('video');
+    v.preload = 'auto';
+    v.muted = true;
+    v.playsInline = true;
+    v.src = url;
+    v.load();
+  });
+}
+
+if (startBtn) {
+  startBtn.addEventListener('pointerenter', prefetchInitialQuizAssets, { once: true, passive: true });
+  startBtn.addEventListener('touchstart', prefetchInitialQuizAssets, { once: true, passive: true });
+}
+
+window.addEventListener('load', () => {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(prefetchInitialQuizAssets, { timeout: 3000 });
+  } else {
+    setTimeout(prefetchInitialQuizAssets, 1500);
+  }
+}, { once: true });
+

@@ -1250,25 +1250,34 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
     height: 100% !important;
     object-fit: cover !important;
   }
+  body.emergency-active .quiz-content-wrapper {
+    justify-content: space-evenly !important;
+    gap: 0 !important;
+    padding-top: max(clamp(0.6rem, 1.5vh, 1.2rem), env(safe-area-inset-top)) !important;
+    padding-bottom: max(clamp(0.6rem, 1.5vh, 1.2rem), env(safe-area-inset-bottom)) !important;
+  }
+  body.emergency-active .left-stage {
+    margin: 0 auto !important;
+  }
   body.emergency-active .video-stage {
     aspect-ratio: 1 / 1 !important;
-    height: clamp(140px, 28vh, 225px) !important;
+    height: clamp(155px, 28vh, 235px) !important;
     max-height: 28vh !important;
     width: auto !important;
-    max-width: min(62vw, 225px) !important;
-    margin: 0.2rem auto 0 !important;
+    max-width: min(66vw, 235px) !important;
+    margin: 0 auto !important;
   }
   body.emergency-active .emergency-continue-btn:not([hidden]),
   body.emergency-active #finishEmergencyBtn:not([hidden]) {
     min-width: clamp(180px, 48vw, 230px) !important;
     max-width: 240px !important;
-    padding: clamp(0.42rem, 1vh, 0.58rem) 1.1rem !important;
-    font-size: clamp(0.88rem, 2.2vw, 1.02rem) !important;
+    padding: clamp(0.44rem, 1.1vh, 0.6rem) 1.2rem !important;
+    font-size: clamp(0.9rem, 2.3vw, 1.05rem) !important;
     margin: 0 auto !important;
   }
   .emergency-message-card {
-    max-width: min(100%, clamp(280px, 84vw, 360px)) !important;
-    padding: clamp(0.7rem, 1.5vh, 1rem) clamp(0.8rem, 2.2vw, 1.15rem) !important;
+    max-width: min(100%, clamp(285px, 86vw, 360px)) !important;
+    padding: clamp(0.7rem, 1.5vh, 1rem) clamp(0.85rem, 2.4vw, 1.2rem) !important;
     border-radius: 14px !important;
   }
   .emergency-message-card p {
@@ -1303,9 +1312,9 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   }
   body.emergency-active .quiz-actions {
     padding-top: 0 !important;
-    gap: clamp(0.5rem, 1.4vh, 0.9rem) !important;
-    max-width: min(100%, clamp(280px, 86vw, 360px)) !important;
-    margin: clamp(0.3rem, 1vh, 0.6rem) auto clamp(0.4rem, 1.2vh, 0.8rem) !important;
+    gap: clamp(0.5rem, 1.4vh, 0.85rem) !important;
+    max-width: min(100%, clamp(285px, 86vw, 360px)) !important;
+    margin: 0 auto !important;
   }
   body.emergency-active .center-stage { display: contents !important; }
   body.quiz-page .options-prompt-banner {
@@ -2741,4 +2750,24 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
 
 /* Large Desktop */
 @media (min-width: 1400px) {
+}
+
+/* ===== Quiz Initialization: Prevent Flash of Untranslated / Old Content ===== */
+html.quiz-initializing #questionTitle,
+html.quiz-initializing #symptomTitle,
+html.quiz-initializing #symptomText,
+html.quiz-initializing #levelBadge,
+html.quiz-initializing .options-prompt-banner,
+html.quiz-initializing .speech-bubble-overlay {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+#questionTitle,
+#symptomTitle,
+#symptomText,
+#levelBadge,
+.options-prompt-banner,
+.speech-bubble-overlay {
+  transition: opacity 0.14s ease-out;
 }

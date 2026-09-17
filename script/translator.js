@@ -22,6 +22,29 @@
   let currentLanguage = getSavedLanguage();
   let messages = {};
 
+  function getCachedDictionary(language) {
+    try {
+      const raw = sessionStorage.getItem('cached_dict_' + language);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+    } catch (error) {}
+    return null;
+  }
+
+  function saveCachedDictionary(language, dict) {
+    try {
+      sessionStorage.setItem('cached_dict_' + language, JSON.stringify(dict));
+    } catch (error) {}
+  }
+
+  const initialCached = getCachedDictionary(currentLanguage);
+  if (initialCached) {
+    messages = initialCached;
+    dictionaries.set(currentLanguage, initialCached);
+  }
+
   function normalizeLanguage(language) {
     return SUPPORTED_LANGUAGES.has(language) ? language : SOURCE_LANGUAGE;
   }
@@ -65,11 +88,18 @@
   async function loadDictionary(language) {
     if (dictionaries.has(language)) return dictionaries.get(language);
 
-    const response = await fetch(`locales/${LANGUAGE_FILES[language]}.json`, { cache: 'no-cache' });
+    const cached = getCachedDictionary(language);
+    if (cached) {
+      dictionaries.set(language, cached);
+      return cached;
+    }
+
+    const response = await fetch(`locales/${LANGUAGE_FILES[language]}.json`);
     if (!response.ok) throw new Error(`Unable to load ${language} translations (${response.status})`);
 
     const dictionary = await response.json();
     dictionaries.set(language, dictionary);
+    saveCachedDictionary(language, dictionary);
     return dictionary;
   }
 
@@ -143,5 +173,11 @@
   };
 
   window.appI18n = api;
-  api.ready = setLanguage(currentLanguage, { persist: false });
+
+  if (initialCached) {
+    applyDocumentTranslations();
+    api.ready = Promise.resolve(currentLanguage);
+  } else {
+    api.ready = setLanguage(currentLanguage, { persist: false });
+  }
 }());
