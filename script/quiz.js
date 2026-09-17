@@ -78,8 +78,8 @@ const quizLevels = [
     text: '',
     image: 'media/emergency.png',
     prompt: 'Act fast',
-    question: 'Time is Gold.\nCall emergency services immediately.',
-    message: 'Every minute matters. Recognize even one sign of stroke and call 112/108 immediately. The sooner treatment begins, the greater the chance of survival and the lower the risk of lasting disability.'
+    question: 'Time is Gold. If you come across any single or multiple warning signs of stroke. Call emergency services immediately',
+    message: 'Every minute matters. Recognize even one sign of stroke and get Immediate Medical Help. The sooner treatment begins, the greater is the chance of survival and the lower is the risk of lasting disability.'
   }
 ];
 
@@ -115,6 +115,7 @@ const timerAudio = document.getElementById('timerAudio');
 const btnYes = document.getElementById('btnYes');
 const btnNo = document.getElementById('btnNo');
 const modalBefastItems = document.querySelectorAll('.modal-befast-item');
+const promptBanner = document.querySelector('.options-prompt-banner');
 const promptBannerText = document.querySelector('.options-prompt-banner span');
 const emergencyImage = document.getElementById('emergencyImage');
 const emergencyMessageCard = document.getElementById('emergencyMessageCard');
@@ -136,10 +137,34 @@ let currentLevelIndex = 0;
 let isAnswered = false;
 let videoUnlockBound = false;
 let currentVideoMuted = false;
+let currentQuestionVideoSrc = '';
 let optionsVideoStartTimer = null;
 let optionsVideoUnlockBound = false;
 let timerAudioUnlockBound = false;
 const OPTIONS_VIDEO_PLAYBACK_RATE = 0.35;
+
+function preloadAllQuizAssets() {
+  quizLevels.forEach(level => {
+    if (level.video) {
+      const v = document.createElement('video');
+      v.preload = 'auto';
+      v.muted = true;
+      v.src = level.video;
+      v.load();
+    }
+    if (level.optionsVideo) {
+      const sw = document.createElement('video');
+      sw.preload = 'auto';
+      sw.muted = true;
+      sw.src = level.optionsVideo;
+      sw.load();
+    }
+    if (level.image) {
+      const img = new Image();
+      img.src = level.image;
+    }
+  });
+}
 
 function initScrollToBottomButton() {
   if (!scrollToBottomBtn) return;
@@ -205,12 +230,10 @@ function getLocalizedLevel(level) {
     : level;
 }
 
-function resetMobileQuizScroll() {
-  if (!window.matchMedia('(max-width: 767px)').matches) return;
-
+function resetQuizScroll() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
-  window.scrollTo(0, 0);
 }
 
 // ===== Render Current Question =====
@@ -235,14 +258,27 @@ function renderLevel(index) {
   symptomTitle.innerText = level.title;
   symptomText.innerText = level.text;
   renderQuestion(level);
+
+  if (questionCard) {
+    questionCard.classList.remove('question-refresh');
+    void questionCard.offsetWidth;
+    questionCard.classList.add('question-refresh');
+  }
+
   questionCard.hidden = false;
   if (characterOptions) characterOptions.hidden = isEmergencyLevel;
+  if (promptBanner) promptBanner.hidden = isEmergencyLevel;
   renderOptionsMedia(level, index, isEmergencyLevel);
   emergencyMessageCard.hidden = !isEmergencyLevel;
   finishEmergencyBtn.hidden = !isEmergencyLevel;
-  promptBannerText.innerHTML = level.prompt
-    ? level.prompt
-    : translate('quiz.prompt', 'Need Urgent<br />Medical Attention?');
+  if (emergencyMessageText && level.message) {
+    emergencyMessageText.textContent = level.message;
+  }
+  if (promptBannerText) {
+    promptBannerText.innerHTML = level.prompt
+      ? level.prompt
+      : translate('quiz.prompt', 'Need Urgent<br />Medical Attention?');
+  }
 
   if (isEmergencyLevel) {
     loadEmergencyImage(level.image);
@@ -254,7 +290,7 @@ function renderLevel(index) {
 
   nextLevelText.innerText = translate('quiz.nextLevel', 'Next Level');
 
-  resetMobileQuizScroll();
+  resetQuizScroll();
 }
 
 function renderQuestion(level) {
@@ -287,7 +323,10 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
 
   if (!showStopwatchVideo) return;
 
-  optionsStopwatchVideo.src = level.optionsVideo;
+  const needsSourceChange = !optionsStopwatchVideo.src || !optionsStopwatchVideo.src.endsWith(level.optionsVideo);
+  if (needsSourceChange) {
+    optionsStopwatchVideo.src = level.optionsVideo;
+  }
   optionsStopwatchVideo.loop = false;
   optionsStopwatchVideo.muted = true;
   optionsStopwatchVideo.defaultMuted = true;
@@ -296,9 +335,11 @@ function renderOptionsMedia(level, index, isEmergencyLevel) {
   optionsStopwatchVideo.defaultPlaybackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
   optionsStopwatchVideo.playbackRate = OPTIONS_VIDEO_PLAYBACK_RATE;
   optionsStopwatchVideo.currentTime = 0;
-  optionsStopwatchVideo.load();
+  if (needsSourceChange) {
+    optionsStopwatchVideo.load();
+  }
 
-  const delayMs = Number.isFinite(level.optionsVideoDelayMs) ? level.optionsVideoDelayMs : 1000;
+  const delayMs = Number.isFinite(level.optionsVideoDelayMs) ? level.optionsVideoDelayMs : 250;
   optionsVideoStartTimer = window.setTimeout(() => {
     optionsVideoStartTimer = null;
     if (currentLevelIndex !== index || isAnswered || optionsStopwatchVideo.hidden) return;
@@ -405,9 +446,11 @@ function unlockTimerAudioPlayback() {
 }
 
 function loadEmergencyImage(imageSrc) {
+  currentQuestionVideoSrc = '';
   quizVideo.pause();
   quizVideo.hidden = true;
   quizVideo.removeAttribute('loop');
+  quizVideo.classList.remove('is-switching');
   currentVideoMuted = false;
   if (emergencyImage) {
     emergencyImage.src = imageSrc;
@@ -416,8 +459,15 @@ function loadEmergencyImage(imageSrc) {
 }
 
 function loadQuestionVideo(videoSrc, shouldMute = true) {
-  quizVideo.pause();
+  if (currentQuestionVideoSrc === videoSrc && quizVideo.src) {
+    quizVideo.currentTime = 0;
+    playQuizVideo();
+    return;
+  }
+
+  currentQuestionVideoSrc = videoSrc;
   currentVideoMuted = shouldMute;
+  quizVideo.classList.add('is-switching');
   quizVideo.autoplay = true;
   quizVideo.loop = true;
   quizVideo.muted = shouldMute;
@@ -434,20 +484,31 @@ function loadQuestionVideo(videoSrc, shouldMute = true) {
 
   if (quizVideoSource) {
     quizVideoSource.src = videoSrc;
-    quizVideo.removeAttribute('src');
-  } else {
-    quizVideo.src = videoSrc;
   }
+  quizVideo.src = videoSrc;
+
+  const onVideoReady = () => {
+    quizVideo.removeEventListener('loadeddata', onVideoReady);
+    quizVideo.removeEventListener('canplay', onVideoReady);
+    quizVideo.classList.remove('is-switching');
+    playQuizVideo();
+  };
+
+  quizVideo.addEventListener('loadeddata', onVideoReady, { once: true });
+  quizVideo.addEventListener('canplay', onVideoReady, { once: true });
 
   quizVideo.load();
-  quizVideo.addEventListener('canplay', playQuizVideo, { once: true });
-  playQuizVideo();
+
+  if (quizVideo.readyState >= 2) {
+    onVideoReady();
+  }
 }
 
 function playQuizVideo() {
   const playPromise = quizVideo.play();
   if (playPromise !== undefined) {
     playPromise.catch(e => {
+      if (e && e.name === 'AbortError') return;
       console.log('Autoplay prevented:', e);
       bindVideoUnlock();
     });
@@ -472,6 +533,7 @@ function bindVideoUnlock() {
 // ===== Autoplay Video on DOM Ready =====
 async function startQuizPage() {
   if (window.appI18n) await window.appI18n.ready;
+  preloadAllQuizAssets();
   renderLevel(0);
 }
 
@@ -568,15 +630,18 @@ function showModal(type, title, text) {
 nextLevelBtn.addEventListener('click', () => {
   feedbackModal.classList.remove('show');
 
+  const nextIndex = currentLevelIndex + 1;
+  if (nextIndex < quizLevels.length) {
+    setTimeout(() => {
+      renderLevel(nextIndex);
+    }, 100);
+  }
+
   setTimeout(() => {
     feedbackModal.classList.remove('modal-success', 'modal-error');
 
-    const nextIndex = currentLevelIndex + 1;
-    if (nextIndex < quizLevels.length) {
-      renderLevel(nextIndex);
-      return;
+    if (nextIndex >= quizLevels.length) {
+      window.location.href = 'thanks.html';
     }
-
-    window.location.href = 'thanks.html';
   }, 300);
 });

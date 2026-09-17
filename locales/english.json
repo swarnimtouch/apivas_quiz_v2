@@ -13,12 +13,12 @@
     "continue": "CONTINUE"
   },
   "home": {
-    "ribbon": "How Well Do You Know the Signs of Stroke? Play & Find Out!",
+    "ribbon": "Become a Stroke Hero. Know the signs. Help save a life.",
     "heroLine1": "Observe each situation carefully and",
     "heroLine2": "choose the appropriate option",
     "situations": "SITUATIONS",
     "choices": "CHOICES",
-    "disclaimer": "This is a public awareness tool that helps to recognize, when emergency action may be needed. It does not provide a medical diagnosis. During an emergency situation immediately call <strong>112/108</strong>.",
+    "disclaimer": "This tool is intended for patient education purposes only and should not be considered a substitute for professional medical advice. In case of an emergency, please consult your nearest healthcare provider immediately.",
     "playQuiz": "PLAY QUIZ",
     "initiatedBy": "Initiated by"
   },
@@ -46,7 +46,7 @@
       "face": "Face drooping",
       "arm": "Arm Weakness",
       "speech": "Speech<br />Difficulty",
-      "time": "Time to call<br />emergency service<br />(112/108)"
+      "time": "Time to call<br />emergency service"
     },
     "levels": {
       "balance": {
@@ -94,8 +94,8 @@
         "title": "TIME TO CALL EMERGENCY SERVICE",
         "text": "",
         "prompt": "Act fast",
-        "question": "Time is Gold.\nCall emergency services immediately.",
-        "message": "Every minute matters. Recognize even one sign of stroke and call 112/108 immediately. The sooner treatment begins, the greater the chance of survival and the lower the risk of lasting disability."
+        "question": "Time is Gold. If you come across any single or multiple warning signs of stroke. Call emergency services immediately",
+        "message": "Every minute matters. Recognize even one sign of stroke and get Immediate Medical Help. The sooner treatment begins, the greater is the chance of survival and the lower is the risk of lasting disability."
       }
     }
   },

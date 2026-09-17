@@ -17,6 +17,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <!-- AOS Animations -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- Preload Critical Quiz Media for Fast Transition -->
+  <link rel="preload" href="media/balance.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/trouble in seeing.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/weakness on face.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/arm pain.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/uneven speak.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/stopwatch_sample.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/emergency.png" as="image" />
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style/style.css" />
 </head>
@@ -129,7 +139,7 @@
         </div>
 
         <div class="emergency-message-card" id="emergencyMessageCard" hidden>
-          <p id="emergencyMessageText">Every minute matters. Recognize even one sign of stroke and call <strong>112/108</strong> immediately. The sooner treatment begins, the greater the chance of survival and the lower the risk of lasting disability.</p>
+          <p id="emergencyMessageText" data-i18n="quiz.levels.emergency.message">Every minute matters. Recognize even one sign of stroke and get Immediate Medical Help. The sooner treatment begins, the greater is the chance of survival and the lower is the risk of lasting disability.</p>
         </div>
 
         <a href="thanks.html" class="btn-start-quiz emergency-continue-btn" id="finishEmergencyBtn" hidden>
@@ -194,7 +204,7 @@
         </div>
         <div class="modal-befast-item" data-index="5">
           <div class="modal-befast-letter befast-red notranslate" translate="no" lang="en">T</div>
-          <span class="modal-befast-name" data-i18n-html="quiz.befast.time">Time to call<br />emergency service<br />(112/108)</span>
+          <span class="modal-befast-name" data-i18n-html="quiz.befast.time">Time to call<br />emergency service</span>
         </div>
       </div>
 
