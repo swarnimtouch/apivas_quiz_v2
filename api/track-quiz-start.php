@@ -21,7 +21,7 @@ if (!is_file($configFile)) {
     exit;
 }
 
-$database = require $configFile;
+$database = ['host'=>'localhost','port'=>3306,'database'=>'microlabs_quiz','username'=>'microlabs_quiz','password'=>'micro@123'];
 $requiredKeys = ['host', 'port', 'database', 'username', 'password'];
 
 foreach ($requiredKeys as $key) {
@@ -32,7 +32,7 @@ foreach ($requiredKeys as $key) {
         exit;
     }
 }
-
+//echo '<pre>';print_r($database);exit;
 if ($database['username'] === 'CHANGE_ME' || $database['password'] === 'CHANGE_ME') {
     error_log('Quiz tracking database credentials have not been configured.');
     http_response_code(500);
