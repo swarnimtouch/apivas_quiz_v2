@@ -51,9 +51,20 @@
 
     <!-- ===== Top Bar ===== -->
     <div class="top-bar">
-      <div class="awareness-tag">
-        <i class="fas fa-circle-info"></i>
-        <span data-i18n="common.awareness">Content for patient awareness</span>
+      <!-- Sirf Mobile/Tablet view ke liye top-left Clot -->
+      <div class="mobile-clot-wrap">
+        <img src="media/clot.png" alt="Clot" class="mobile-clot-img" />
+      </div>
+
+      <div class="awareness-container">
+        <div class="awareness-tag">
+          <i class="fas fa-circle-info"></i>
+          <span data-i18n="common.awareness">Content for public awareness</span>
+        </div>
+        <!-- Desktop view ke liye awareness tag ke niche Clot -->
+        <div class="desktop-clot-wrap">
+          <img src="media/clot.png" alt="Clot" class="desktop-clot-img" />
+        </div>
       </div>
     </div>
 
@@ -101,9 +112,9 @@
     <!-- ===== Hero Content ===== -->
     <div class="hero-content text-center hero-pending" id="heroContent">
       
-      <!-- Sirf Mobile view ke liye chota Clock (Desktop pe hide rahega) -->
+      <!-- Sirf Mobile/Tablet view ke liye chota Logo (Desktop pe hide rahega) -->
       <div class="mobile-organs-row">
-        <img src="media/clock.png" alt="Clock" class="mobile-organ-img" />
+        <img src="media/microlab.png" alt="Micro Labs" class="mobile-organ-img" />
         <!-- <img src="media/heart.png" alt="Heart" class="mobile-organ-img" /> -->
       </div>
 
@@ -119,7 +130,7 @@
 
         <div class="quiz-ribbon">
           <!-- Ribbon Text -->
-          <span class="ribbon-text" data-i18n="home.ribbon">Become a Stroke Hero. Know the signs. Help save a life.</span>
+          <span class="ribbon-text" data-i18n="home.ribbon">BECOME A STROKE WARRIOR. Know the signs. Help save a life.</span>
         </div>
         
         <!-- Golden Sparkles (Right) -->
@@ -172,12 +183,19 @@
             <span class="info-label" data-i18n="home.choices">CHOICES</span>
             <div class="badge-wrapper multi-badge">
               <div class="bottom-badge icon-green">
+                <span class="choice-badge-label label-yes" data-i18n="quiz.yes">Yes</span>
                 <i class="fas fa-check"></i>
               </div>
               <div class="bottom-badge icon-red">
+                <span class="choice-badge-label label-no" data-i18n="quiz.no">No</span>
                 <i class="fas fa-xmark"></i>
               </div>
             </div>
+          </div>
+
+          <!-- Clock (Mobile & Tablet View Only) -->
+          <div class="info-card-clock-wrap">
+            <img src="media/clock.png" alt="Clock" class="info-card-clock-img" />
           </div>
 
         </div>
@@ -186,13 +204,13 @@
 
       <!-- Disclaimer Text -->
       <p class="disclaimer-text" data-aos="fade-up" data-aos-delay="500" data-i18n-html="home.disclaimer">
-        This tool is intended for patient education purposes only and should not be considered a substitute for professional medical advice. In case of an emergency, please consult your nearest healthcare provider immediately.
+        This tool is intended for public awareness purposes only and should not be considered a substitute for professional medical advice. In case of an emergency, please consult nearest healthcare provider immediately.
       </p>
 
       <!-- CTA Button -->
       <div class="cta-wrapper" data-aos="fade-up" data-aos-delay="700">
         <button class="btn-start-quiz" id="startQuizBtn">
-          <span class="btn-text" data-i18n="home.playQuiz">PLAY QUIZ</span>
+          <span class="btn-text" data-i18n="home.playQuiz">PLAY GAME</span>
           <!-- NAYA: Play icon ek circle me wrapped hai screenshot jaisa -->
           <div class="icon-circle">
             <i class="fas fa-play"></i>

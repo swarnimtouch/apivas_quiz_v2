@@ -9,7 +9,7 @@ const quizLevels = [
     optionsVideo: 'media/stopwatch_sample.mp4',
     optionsVideoDelayMs: 1000,
     autoAdvanceAfterOptionsVideo: true,
-    questionLead: 'Mr. Ramesh suddenly experienced ',
+    questionLead: 'Mr. A suddenly experienced ',
     questionEmphasis: 'loss of balance, dizziness or difficulty coordinating his movements.',
     incorrectText: 'Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke. Look for urgent medical attention',
     successText: 'Sudden loss of balance or poor coordination, dizziness or trouble in walking can be a warning sign of stroke.'
@@ -23,7 +23,7 @@ const quizLevels = [
     muted: true,
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
-    questionLead: 'Mrs. Meena suddenly experienced ',
+    questionLead: 'Mrs. B suddenly experienced ',
     questionEmphasis: 'blurred or double vision, or difficulty seeing',
     questionTail: ' through one or both eyes.',
     incorrectText: 'Sudden blurred/double vision or difficulty seeing can be a warning sign of stroke. Look for urgent medical attention',
@@ -37,7 +37,7 @@ const quizLevels = [
     video: 'media/weakness on face.mp4',
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
-    questionLead: "Mr. Rajesh face appears ",
+    questionLead: "Mr. X face appears ",
     questionEmphasis: 'uneven on one sided.',
     incorrectText: 'Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention',
     successText: 'Sudden drooping or weakness on one side of the face can be a warning sign of stroke.'
@@ -50,8 +50,8 @@ const quizLevels = [
     video: 'media/arm pain.mp4',
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
-    questionLead: 'Mr. Raj noticed ',
-    questionEmphasis: 'weakness or numbness in one arm this morning.',
+    questionLead: 'Mr. Y noticed ',
+    questionEmphasis: 'weakness or numbness in the arms this morning.',
     incorrectText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke. Look for urgent medical attention',
     successText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke.'
   },
@@ -65,7 +65,7 @@ const quizLevels = [
     timerAudioVolume: 0.5,
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
-    questionLead: 'Mrs. Sandhya suddenly experienced ',
+    questionLead: 'Mrs. A suddenly experienced ',
     questionEmphasis: 'difficulty speaking or slurred speech.',
     incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention',
     successText: 'Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.'
@@ -78,7 +78,7 @@ const quizLevels = [
     text: '',
     image: 'media/emergency.png',
     prompt: 'Act fast',
-    question: 'Time is Gold. If you come across any single or multiple warning signs of stroke. Call emergency services immediately',
+    question: 'The Golden hour (first 60 mins) after a stroke is the most critical window to start emergency treatment to prevent brain damage & save lives. If you come across any single or multiple warning signs of stroke. Call emergency services immediately',
     message: 'Every minute matters. Recognize even one sign of stroke and get Immediate Medical Help. The sooner treatment begins, the greater is the chance of survival and the lower is the risk of lasting disability.'
   }
 ];
