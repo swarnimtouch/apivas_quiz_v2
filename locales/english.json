@@ -88,7 +88,24 @@
         "questionLead": "Mrs. A suddenly experienced ",
         "questionEmphasis": "difficulty speaking or slurred speech.",
         "incorrectText": "Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention",
-        "successText": "Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke."
+        "successText": "Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.",
+        "subtitles": [
+          {
+            "start": 0.0,
+            "end": 5.5,
+            "text": "I won, won, won, won't go."
+          },
+          {
+            "start": 5.5,
+            "end": 7.5,
+            "text": "Can you understand what I am saying?"
+          },
+          {
+            "start": 7.5,
+            "end": 10.5,
+            "text": "Hi, hi, he..."
+          }
+        ]
       },
       "emergency": {
         "title": "TIME TO CALL EMERGENCY SERVICE",

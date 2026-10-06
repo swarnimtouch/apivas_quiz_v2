@@ -68,7 +68,12 @@ const quizLevels = [
     questionLead: 'Mrs. A suddenly experienced ',
     questionEmphasis: 'difficulty speaking or slurred speech.',
     incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention',
-    successText: 'Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.'
+    successText: 'Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.',
+    subtitles: [
+      { start: 0.0, end: 5.5, text: "I won, won, won, won't go." },
+      { start: 5.5, end: 7.5, text: 'Can you understand what I am saying?' },
+      { start: 7.5, end: 10.5, text: 'Hi, hi, he...' }
+    ]
   },
   {
     translationKey: 'quiz.levels.emergency',
@@ -132,9 +137,12 @@ const modalText = document.getElementById('modalText');
 const nextLevelBtn = document.getElementById('nextLevelBtn');
 const nextLevelText = nextLevelBtn.querySelector('.btn-text');
 const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+const videoSubtitleOverlay = document.getElementById('videoSubtitleOverlay');
+const videoSubtitleText = document.getElementById('videoSubtitleText');
 
 let currentLevelIndex = 0;
 let isAnswered = false;
+let currentLevelSubtitles = null;
 let videoUnlockBound = false;
 let currentVideoMuted = false;
 let currentQuestionVideoSrc = '';
@@ -261,6 +269,8 @@ function renderLevel(index) {
 
   currentLevelIndex = index;
   isAnswered = false;
+  currentLevelSubtitles = Array.isArray(level.subtitles) ? level.subtitles : null;
+  updateVideoSubtitles();
   document.body.classList.toggle('emergency-active', isEmergencyLevel);
 
   levelBadge.innerText = translate('quiz.level', 'Level {current} of {total}', {
@@ -467,6 +477,8 @@ function unlockTimerAudioPlayback() {
 
 function loadEmergencyImage(imageSrc) {
   currentQuestionVideoSrc = '';
+  currentLevelSubtitles = null;
+  updateVideoSubtitles();
   quizVideo.pause();
   quizVideo.hidden = true;
   quizVideo.removeAttribute('loop');
@@ -595,6 +607,48 @@ function bindVideoUnlock() {
   document.addEventListener('keydown', unlockVideo, { once: true, capture: true });
 }
 
+// ===== Video Subtitles Management =====
+function updateVideoSubtitles() {
+  if (!videoSubtitleOverlay || !videoSubtitleText) return;
+
+  if (
+    !currentLevelSubtitles ||
+    !currentLevelSubtitles.length ||
+    quizVideo.hidden ||
+    document.body.classList.contains('emergency-active') ||
+    (feedbackModal && feedbackModal.classList.contains('show'))
+  ) {
+    videoSubtitleOverlay.hidden = true;
+    return;
+  }
+
+  const currentTime = quizVideo.currentTime || 0;
+  const activeCue = currentLevelSubtitles.find(
+    cue => currentTime >= cue.start && currentTime < cue.end
+  );
+
+  if (activeCue && activeCue.text) {
+    if (videoSubtitleText.textContent !== activeCue.text) {
+      videoSubtitleText.textContent = activeCue.text;
+    }
+    videoSubtitleOverlay.hidden = false;
+  } else {
+    videoSubtitleOverlay.hidden = true;
+  }
+}
+
+quizVideo.addEventListener('timeupdate', updateVideoSubtitles);
+quizVideo.addEventListener('seeking', updateVideoSubtitles);
+quizVideo.addEventListener('seeked', updateVideoSubtitles);
+quizVideo.addEventListener('play', updateVideoSubtitles);
+quizVideo.addEventListener('pause', updateVideoSubtitles);
+
+window.addEventListener('app-language-change', () => {
+  const level = getLocalizedLevel(quizLevels[currentLevelIndex]);
+  currentLevelSubtitles = Array.isArray(level.subtitles) ? level.subtitles : null;
+  updateVideoSubtitles();
+});
+
 async function startQuizPage() {
   if (window.appI18n) await window.appI18n.ready;
   preloadInitialStaticAssets();
@@ -695,6 +749,7 @@ function showModal(type, title, text) {
   if (modalTitle) modalTitle.innerText = title || '';
   if (modalText) modalText.innerText = text || '';
   preloadNextLevelAssets(currentLevelIndex + 1);
+  updateVideoSubtitles();
   if (feedbackModal) feedbackModal.classList.add('show');
 }
 
