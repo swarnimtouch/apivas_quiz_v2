@@ -1563,7 +1563,7 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .info-card {
     padding: 1.2rem 1rem 2.8rem 1rem;
     width: 100%;
-    max-width: min(100%, 350px);
+    max-width: min(100%, 355px);
     margin: 0 auto 3.5rem;
     position: relative;
   }
@@ -1571,10 +1571,13 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .info-row {
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: clamp(1rem, 3.8vw, 1.6rem);
+    gap: clamp(0.7rem, 2.6vw, 1.2rem);
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding-left: clamp(54px, 15vw, 68px);
+    padding-right: clamp(4px, 1.2vw, 10px);
+    box-sizing: border-box;
   }
   .info-item {
     min-width: auto;
@@ -1584,8 +1587,9 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   }
   .info-card-clock-wrap {
     position: absolute;
-    right: clamp(6px, 2.2vw, 14px);
-    top: 40%;
+    left: clamp(8px, 2.2vw, 14px);
+    right: auto;
+    top: 50%;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
@@ -1594,8 +1598,9 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
     z-index: 3;
   }
   .info-card-clock-img {
-    width: clamp(56px, 15vw, 74px);
+    width: clamp(58px, 16vw, 70px);
     height: auto;
+    max-height: 60px;
     object-fit: contain;
     filter: drop-shadow(0 4px 12px rgba(225, 19, 68, 0.22));
   }
@@ -2028,12 +2033,31 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   .side-heart, .side-brain { display: none; }
   .mobile-organs-row { display: flex; justify-content: center; align-items: center; gap: clamp(40px, 8vw, 80px); margin: -0.4rem 0 0.5rem; width: 100%; }
   .mobile-organ-img { width: clamp(100px, 15vw, 135px); }
-  .info-card { padding: 1.5rem 1.8rem; margin-bottom: 3.5rem; max-width: min(100%, 460px); position: relative; }
-  .info-row { gap: clamp(1.2rem, 3vw, 2.2rem); align-items: center; justify-content: center; width: 100%; }
+  .info-card {
+    padding: 1.5rem 1.8rem 1.6rem;
+    min-height: 118px;
+    margin-bottom: 3.5rem;
+    width: min(92vw, 560px);
+    max-width: min(92vw, 560px);
+    position: relative;
+  }
+  .info-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: clamp(1.3rem, 3vw, 2.2rem);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-left: clamp(84px, 13vw, 110px);
+    padding-right: clamp(10px, 2vw, 20px);
+    box-sizing: border-box;
+  }
   .info-card-clock-wrap {
     position: absolute;
-    right: clamp(10px, 2.5vw, 20px);
-    top: 40%;
+    left: clamp(16px, 2.6vw, 26px);
+    right: auto;
+    top: 50%;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
@@ -2042,8 +2066,9 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
     z-index: 3;
   }
   .info-card-clock-img {
-    width: clamp(72px, 10vw, 96px);
+    width: clamp(80px, 11vw, 100px);
     height: auto;
+    max-height: 86px;
     object-fit: contain;
     filter: drop-shadow(0 6px 16px rgba(225, 19, 68, 0.22));
   }
