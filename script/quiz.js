@@ -6,6 +6,7 @@ const quizLevels = [
     title: 'BALANCE LOSS',
     text: 'Sudden loss of balance, dizziness or coordination',
     video: 'media/balance.mp4',
+    poster: 'media/balance_poster.png',
     optionsVideo: 'media/stopwatch_sample.mp4',
     optionsVideoDelayMs: 1000,
     autoAdvanceAfterOptionsVideo: true,
@@ -20,6 +21,7 @@ const quizLevels = [
     title: 'Eye (Vision) Changes',
     text: 'Sudden trouble seeing in one or both eyes',
     video: 'media/trouble in seeing.mp4',
+    poster: 'media/seeing_poster.png',
     muted: true,
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
@@ -35,6 +37,7 @@ const quizLevels = [
     title: 'FACE DROOPING',
     text: 'Sudden weakness or numbness of the face or uneven face.',
     video: 'media/weakness on face.mp4',
+    poster: 'media/face_poster.png',
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: "Mr. X face appears ",
@@ -48,6 +51,7 @@ const quizLevels = [
     title: 'ARM WEAKNESS',
     text: 'Sudden weakness numbness in one or both arms',
     video: 'media/arm pain.mp4',
+    poster: 'media/arm_poster.png',
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mr. Y noticed ',
@@ -61,6 +65,7 @@ const quizLevels = [
     title: 'SPEECH DIFFICULTY',
     text: 'Difficulty in Speaking or slurring of speech',
     video: 'media/uneven speak.mp4',
+    poster: 'media/speak_poster.png',
     questionVideoMuted: false,
     timerAudioVolume: 0.5,
     optionsVideo: 'media/stopwatch_sample.mp4',
@@ -106,6 +111,7 @@ window.addEventListener('load', initAOS, { once: true });
 // ===== Element Selectors =====
 const quizVideo = document.getElementById('quizVideo');
 const quizVideoSource = document.getElementById('quizVideoSource');
+const quizVideoPoster = document.getElementById('quizVideoPoster');
 const levelBadge = document.getElementById('levelBadge');
 const progressBarFill = document.getElementById('progressBarFill');
 const stepDots = document.querySelectorAll('.step-dot');
@@ -177,6 +183,9 @@ function preloadNextLevelAssets(targetIndex) {
   const level = quizLevels[targetIndex];
   if (!level) return;
 
+  if (level.poster) {
+    preloadAsset(level.poster, 'image');
+  }
   if (level.video) {
     preloadAsset(level.video, 'video');
   }
@@ -186,7 +195,18 @@ function preloadNextLevelAssets(targetIndex) {
 }
 
 function preloadInitialStaticAssets() {
-  ['media/clock.png', 'media/popup.png', 'media/emergency.png'].forEach(imgSrc => {
+  [
+    'media/balance_poster.png',
+    'media/seeing_poster.png',
+    'media/face_poster.png',
+    'media/arm_poster.png',
+    'media/speak_poster.png',
+    'media/stopwatch_poster.png',
+    'media/clock.png',
+    'media/popup.png',
+    'media/emergency.png',
+    'media/microlab.png'
+  ].forEach(imgSrc => {
     preloadAsset(imgSrc, 'image');
   });
 }
@@ -313,7 +333,8 @@ function renderLevel(index) {
   } else {
     emergencyImage.hidden = true;
     quizVideo.hidden = false;
-    loadQuestionVideo(level.video, level.questionVideoMuted !== false);
+    if (quizVideoPoster) quizVideoPoster.hidden = false;
+    loadQuestionVideo(level.video, level.questionVideoMuted !== false, level.poster || '');
   }
 
   nextLevelText.innerText = translate('quiz.nextLevel', 'Next Level');
@@ -483,6 +504,10 @@ function loadEmergencyImage(imageSrc) {
   quizVideo.hidden = true;
   quizVideo.removeAttribute('loop');
   quizVideo.classList.remove('is-switching');
+  if (quizVideoPoster) {
+    quizVideoPoster.classList.remove('is-active');
+    quizVideoPoster.hidden = true;
+  }
   currentVideoMuted = false;
   if (emergencyImage) {
     emergencyImage.src = imageSrc;
@@ -504,10 +529,13 @@ function isSameVideoSource(videoElement, sourceElement, targetSrc) {
   );
 }
 
-function loadQuestionVideo(videoSrc, shouldMute = true) {
+function loadQuestionVideo(videoSrc, shouldMute = true, posterSrc = '') {
   const isAlreadyLoadedSource = isSameVideoSource(quizVideo, quizVideoSource, videoSrc);
 
   if (currentQuestionVideoSrc === videoSrc && isAlreadyLoadedSource) {
+    if (quizVideoPoster) {
+      quizVideoPoster.classList.remove('is-active');
+    }
     quizVideo.currentTime = 0;
     playQuizVideo();
     preloadNextLevelAssets(currentLevelIndex + 1);
@@ -516,6 +544,16 @@ function loadQuestionVideo(videoSrc, shouldMute = true) {
 
   currentQuestionVideoSrc = videoSrc;
   currentVideoMuted = shouldMute;
+
+  if (quizVideoPoster && posterSrc) {
+    quizVideoPoster.hidden = false;
+    quizVideoPoster.src = posterSrc;
+    quizVideoPoster.classList.add('is-active');
+  }
+
+  if (posterSrc) {
+    quizVideo.poster = posterSrc;
+  }
 
   quizVideo.autoplay = true;
   quizVideo.loop = true;
@@ -534,15 +572,19 @@ function loadQuestionVideo(videoSrc, shouldMute = true) {
   if (isAlreadyLoadedSource) {
     quizVideo.classList.remove('is-switching');
     if (quizVideo.readyState >= 2) {
+      if (quizVideoPoster) quizVideoPoster.classList.remove('is-active');
       playQuizVideo();
     } else {
       const onInitialReady = () => {
         quizVideo.removeEventListener('loadeddata', onInitialReady);
         quizVideo.removeEventListener('canplay', onInitialReady);
+        quizVideo.removeEventListener('playing', onInitialReady);
+        if (quizVideoPoster) quizVideoPoster.classList.remove('is-active');
         playQuizVideo();
       };
       quizVideo.addEventListener('loadeddata', onInitialReady, { once: true });
       quizVideo.addEventListener('canplay', onInitialReady, { once: true });
+      quizVideo.addEventListener('playing', onInitialReady, { once: true });
     }
     setTimeout(() => {
       preloadNextLevelAssets(currentLevelIndex + 1);
@@ -550,7 +592,6 @@ function loadQuestionVideo(videoSrc, shouldMute = true) {
     return;
   }
 
-  quizVideo.classList.add('is-switching');
   if (quizVideoSource) {
     quizVideoSource.src = videoSrc;
   }
@@ -563,22 +604,33 @@ function loadQuestionVideo(videoSrc, shouldMute = true) {
     quizVideo.removeEventListener('loadeddata', onVideoReady);
     quizVideo.removeEventListener('canplay', onVideoReady);
     quizVideo.removeEventListener('playing', onVideoReady);
+    quizVideo.removeEventListener('timeupdate', onVideoReady);
     quizVideo.classList.remove('is-switching');
+    if (quizVideoPoster) {
+      quizVideoPoster.classList.remove('is-active');
+    }
     playQuizVideo();
     setTimeout(() => {
       preloadNextLevelAssets(currentLevelIndex + 1);
     }, 400);
   };
 
-  quizVideo.addEventListener('loadeddata', onVideoReady, { once: true });
-  quizVideo.addEventListener('canplay', onVideoReady, { once: true });
   quizVideo.addEventListener('playing', onVideoReady, { once: true });
+  quizVideo.addEventListener('timeupdate', onVideoReady, { once: true });
+  quizVideo.addEventListener('canplay', () => {
+    if (!quizVideo.paused && quizVideo.currentTime > 0) {
+      onVideoReady();
+    }
+  });
 
   quizVideo.load();
+  playQuizVideo();
 
-  if (quizVideo.readyState >= 2) {
-    onVideoReady();
-  }
+  setTimeout(() => {
+    if (!readyHandled && quizVideo.readyState >= 2) {
+      onVideoReady();
+    }
+  }, 1000);
 }
 
 function playQuizVideo() {

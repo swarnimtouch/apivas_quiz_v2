@@ -25,6 +25,12 @@
   <link rel="preload" href="media/arm pain.mp4" as="video" type="video/mp4" />
   <link rel="preload" href="media/uneven speak.mp4" as="video" type="video/mp4" />
   <link rel="preload" href="media/stopwatch_sample.mp4" as="video" type="video/mp4" />
+  <link rel="preload" href="media/balance_poster.png" as="image" />
+  <link rel="preload" href="media/seeing_poster.png" as="image" />
+  <link rel="preload" href="media/face_poster.png" as="image" />
+  <link rel="preload" href="media/arm_poster.png" as="image" />
+  <link rel="preload" href="media/speak_poster.png" as="image" />
+  <link rel="preload" href="media/stopwatch_poster.png" as="image" />
   <link rel="preload" href="media/emergency.png" as="image" />
 
   <!-- Custom CSS -->
@@ -100,10 +106,11 @@
         </div>
 
         <div class="video-stage">
-          <video id="quizVideo" autoplay loop muted playsinline preload="auto">
+          <video id="quizVideo" autoplay loop muted playsinline preload="auto" poster="media/balance_poster.png">
             <source id="quizVideoSource" src="media/balance.mp4" type="video/mp4" />
             <span data-i18n="common.videoUnsupported">Your browser does not support the video tag.</span>
           </video>
+          <img id="quizVideoPoster" class="quiz-video-poster" src="media/balance_poster.png" alt="" aria-hidden="true" />
           <div class="video-subtitle-overlay" id="videoSubtitleOverlay" hidden aria-live="polite">
             <span class="video-subtitle-text" id="videoSubtitleText"></span>
           </div>
@@ -120,7 +127,7 @@
 
         <!-- Question-specific option media with the existing Yes/No overlay -->
         <div class="character-options-container" id="characterOptions">
-          <video class="stopwatch-options-video" id="optionsStopwatchVideo" muted playsinline preload="auto" aria-label="Stopwatch animation" data-i18n-aria-label="quiz.stopwatchLabel">
+          <video class="stopwatch-options-video" id="optionsStopwatchVideo" muted playsinline preload="auto" poster="media/stopwatch_poster.png" aria-label="Stopwatch animation" data-i18n-aria-label="quiz.stopwatchLabel">
             <source src="media/stopwatch_sample.mp4" type="video/mp4" />
             <span data-i18n="common.videoUnsupported">Your browser does not support the video tag.</span>
           </video>
