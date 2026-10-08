@@ -26,10 +26,17 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
-// ===== Button Ripple Effect =====
+// ===== Game Intro Modal & Start Quiz =====
 const startBtn = document.getElementById('startQuizBtn');
+const gameIntroModal = document.getElementById('gameIntroModal');
+const confirmPlayGameBtn = document.getElementById('confirmPlayGameBtn');
 const QUIZ_START_TRACKING_ENDPOINT = 'http://3.108.198.49/api/track-quiz-start.php';
 let isQuizStarting = false;
+
+// Clear previous intro session flag when arriving at index.html
+try {
+  sessionStorage.removeItem('gameIntroSeen');
+} catch (e) {}
 
 function trackQuizStart() {
   const body = 'event=quiz_started';
@@ -57,15 +64,36 @@ function trackQuizStart() {
   });
 }
 
-if (startBtn) {
-  startBtn.addEventListener('click', function (e) {
-    if (isQuizStarting) return;
-    isQuizStarting = true;
-    this.disabled = true;
+function openGameIntroModal() {
+  if (!gameIntroModal) {
+    proceedToQuiz(startBtn);
+    return;
+  }
+  gameIntroModal.classList.add('show');
+  gameIntroModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
 
-    trackQuizStart();
+function closeGameIntroModal() {
+  if (!gameIntroModal) return;
+  gameIntroModal.classList.remove('show');
+  gameIntroModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
 
-    // Ripple Creation
+function proceedToQuiz(sourceBtn) {
+  if (isQuizStarting) return;
+  isQuizStarting = true;
+  if (confirmPlayGameBtn) confirmPlayGameBtn.disabled = true;
+  if (startBtn) startBtn.disabled = true;
+
+  try {
+    sessionStorage.setItem('gameIntroSeen', 'true');
+  } catch (e) {}
+
+  trackQuizStart();
+
+  if (sourceBtn) {
     const ripple = document.createElement('span');
     ripple.style.cssText = `
       position: absolute;
@@ -82,14 +110,40 @@ if (startBtn) {
       animation: rippleExpand 0.6s ease-out;
       z-index: 0;
     `;
-
-    this.appendChild(ripple);
+    sourceBtn.appendChild(ripple);
     setTimeout(() => ripple.remove(), 600);
+  }
 
-    // Redirect to quiz page after ripple animation
-    setTimeout(() => {
-      window.location.href = "quiz.html";
-    }, 400);
+  setTimeout(() => {
+    window.location.href = "quiz.html";
+  }, 250);
+}
+
+if (startBtn) {
+  startBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    openGameIntroModal();
+  });
+}
+
+if (confirmPlayGameBtn) {
+  confirmPlayGameBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    proceedToQuiz(this);
+  });
+}
+
+if (gameIntroModal) {
+  gameIntroModal.addEventListener('click', function (e) {
+    if (!e.target.closest('.modal-content-box')) {
+      closeGameIntroModal();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && gameIntroModal.classList.contains('show')) {
+      closeGameIntroModal();
+    }
   });
 }
 

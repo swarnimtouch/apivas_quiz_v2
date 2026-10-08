@@ -145,6 +145,8 @@ const nextLevelText = nextLevelBtn.querySelector('.btn-text');
 const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
 const videoSubtitleOverlay = document.getElementById('videoSubtitleOverlay');
 const videoSubtitleText = document.getElementById('videoSubtitleText');
+const quizGameIntroModal = document.getElementById('quizGameIntroModal');
+const quizConfirmPlayBtn = document.getElementById('quizConfirmPlayBtn');
 
 let currentLevelIndex = 0;
 let isAnswered = false;
@@ -704,8 +706,47 @@ window.addEventListener('app-language-change', () => {
 async function startQuizPage() {
   if (window.appI18n) await window.appI18n.ready;
   preloadInitialStaticAssets();
+
+  let introSeen = false;
+  try {
+    introSeen = sessionStorage.getItem('gameIntroSeen') === 'true';
+  } catch (e) {}
+
+  if (introSeen || !quizGameIntroModal) {
+    renderLevel(0);
+    document.documentElement.classList.remove('quiz-initializing');
+    return;
+  }
+
+  // Pre-render Level 0 visuals but keep stopwatch video and audio held back until user begins
   renderLevel(0);
+  stopOptionsVideoPlayback();
+
+  quizGameIntroModal.classList.add('show');
+  quizGameIntroModal.setAttribute('aria-hidden', 'false');
   document.documentElement.classList.remove('quiz-initializing');
+
+  let introDismissed = false;
+  function dismissQuizIntro() {
+    if (introDismissed) return;
+    introDismissed = true;
+    quizGameIntroModal.classList.remove('show');
+    quizGameIntroModal.setAttribute('aria-hidden', 'true');
+    try {
+      sessionStorage.setItem('gameIntroSeen', 'true');
+    } catch (e) {}
+    const level = quizLevels[0];
+    renderOptionsMedia(level, 0, false);
+    playQuizVideo();
+  }
+
+  quizConfirmPlayBtn?.addEventListener('click', dismissQuizIntro, { once: true });
+
+  quizGameIntroModal.addEventListener('click', (e) => {
+    if (!e.target.closest('.modal-content-box')) {
+      dismissQuizIntro();
+    }
+  });
 }
 
 window.addEventListener('pageshow', (event) => {

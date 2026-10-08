@@ -229,6 +229,34 @@
     </footer>
   </div>
 
+  <!-- ===== Game Intro Modal ===== -->
+  <div class="feedback-modal modal-golden" id="gameIntroModal" aria-hidden="true">
+    <div class="modal-content-box game-intro-modal-box">
+      <div class="modal-beacon" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div class="modal-ribbon game-intro-ribbon">
+        <h3><i class="fas fa-gamepad ribbon-game-icon" aria-hidden="true"></i> <span data-i18n="gameIntro.title">LET'S PLAY THE GAME!</span></h3>
+      </div>
+
+      <div class="modal-message-wrap game-intro-message-wrap">
+        <p class="game-intro-time"><i class="fas fa-stopwatch intro-icon-stopwatch" aria-hidden="true"></i> <span data-i18n="gameIntro.timer">You have 30 seconds to answer each question.</span></p>
+        <p class="game-intro-sub" data-i18n="gameIntro.sub">Think fast, choose your answer, and have fun!</p>
+        <p class="game-intro-ready"><i class="fas fa-rocket intro-icon-rocket" aria-hidden="true"></i> <span data-i18n="gameIntro.ready">Are you ready?</span></p>
+      </div>
+
+      <button class="btn-start-quiz modal-next-btn game-intro-start-btn" id="confirmPlayGameBtn" type="button">
+        <span class="btn-text" data-i18n="gameIntro.startBtn">LET'S BEGIN</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <div class="modal-shield" aria-hidden="true">
+        <i class="fas fa-gamepad"></i>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>

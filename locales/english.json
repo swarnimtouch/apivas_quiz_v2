@@ -12,6 +12,14 @@
     "select": "Select Language",
     "continue": "CONTINUE"
   },
+  "gameIntro": {
+    "title": "LET'S PLAY THE GAME!",
+    "timer": "You have 30 seconds to answer each question.",
+    "sub": "Think fast, choose your answer, and have fun!",
+    "ready": "Are you ready?",
+    "startBtn": "LET'S BEGIN",
+    "closeAria": "Close intro"
+  },
   "home": {
     "ribbon": "BECOME A STROKE WARRIOR. Know the signs. Help save a life.",
     "heroLine1": "Observe each situation carefully and",
@@ -91,7 +99,7 @@
         "successText": "Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.",
         "subtitles": [
           {
-            "start": 0.0,
+            "start": 0,
             "end": 5.5,
             "text": "I won, won, won, won't go."
           },

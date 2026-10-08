@@ -880,6 +880,7 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
 
 .feedback-modal { --modal-main: #e11344; --modal-dark: #9f052d; --modal-soft: #fff0ef; --modal-glow: rgba(225,19,68,0.42); position: fixed; inset: 0; background: rgba(22, 9, 16, 0.76); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: max(1.2rem, env(safe-area-inset-top)) max(1.2rem, env(safe-area-inset-right)) max(1.2rem, env(safe-area-inset-bottom)) max(1.2rem, env(safe-area-inset-left)); overflow-x: hidden; overflow-y: auto; }
 .feedback-modal.modal-success { --modal-main: #28a745; --modal-dark: #0c7b29; --modal-soft: #effff3; --modal-glow: rgba(40,167,69,0.42); }
+.feedback-modal.modal-golden { --modal-main: #ff9d00; --modal-dark: #b94a00; --modal-soft: #fffdf2; --modal-glow: rgba(255,157,0,0.48); }
 .feedback-modal.show { opacity: 1; visibility: visible; }
 .modal-content-box { position: relative; isolation: isolate; width: min(88vw, 880px); min-height: clamp(500px, 72vh, 640px); padding: clamp(8.4rem, 16vh, 10.4rem) clamp(2.5rem, 5vw, 4.2rem) clamp(1.4rem, 2.8vh, 2rem); text-align: center; color: #45131d; background: transparent; transform: scale(0.86) translateY(18px); transition: transform 0.42s cubic-bezier(0.175, 0.885, 0.32, 1.18); filter: drop-shadow(0 26px 48px rgba(0,0,0,0.28)); }
 .modal-content-box::before { content: ''; position: absolute; inset: 0; z-index: -1; border: 8px solid #fff7f3; border-radius: 36px; background: linear-gradient(180deg, rgba(255,255,255,0.98), var(--modal-soft)); box-shadow: 0 0 0 8px var(--modal-main), inset 0 0 0 2px rgba(255,255,255,0.65), inset 0 0 0 18px color-mix(in srgb, var(--modal-main) 7%, transparent); pointer-events: none; clip-path: polygon(5% 6%, 50% 9%, 94% 5%, 100% 18%, 97% 87%, 88% 87%, 84% 96%, 50% 94%, 16% 96%, 12% 88%, 4% 88%, 0 20%); }
@@ -907,6 +908,105 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
 .modal-next-btn { position: relative; z-index: 1; margin: 0 auto; min-width: clamp(250px, 32vw, 390px); justify-content: center; background: linear-gradient(180deg, #ffd23c 0%, #ff9d00 100%); color: #5a160b; box-shadow: 0 10px 0 #b94a00, 0 18px 28px rgba(127,50,0,0.24), inset 0 5px 8px rgba(255,255,255,0.45), inset 0 -5px 8px rgba(115,45,0,0.18); }
 .modal-next-btn:hover { color: #5a160b; transform: translateY(-4px); box-shadow: 0 13px 0 #b94a00, 0 24px 34px rgba(127,50,0,0.28), inset 0 5px 8px rgba(255,255,255,0.52), inset 0 -5px 8px rgba(115,45,0,0.2); }
 .modal-next-btn .btn-text { font-size: clamp(1.4rem, 3vw, 2.2rem); color: inherit; }
+
+/* ===== Game Intro Modal Styling ===== */
+.game-intro-modal-box {
+  min-height: clamp(390px, 58vh, 500px);
+  padding: clamp(6.8rem, 13vh, 8.2rem) clamp(2rem, 5vw, 3.6rem) clamp(1.8rem, 3.5vh, 2.6rem);
+}
+
+.feedback-modal.modal-golden .game-intro-modal-box::before {
+  border-color: #fffdf5;
+  box-shadow: 0 0 0 8px var(--modal-main), 0 0 28px var(--modal-glow), inset 0 0 0 2px rgba(255, 255, 255, 0.7), inset 0 0 0 18px rgba(255, 157, 0, 0.09);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), #fffdf2);
+}
+
+.game-intro-ribbon {
+  padding: 0 clamp(1.2rem, 3.5vw, 2.8rem) !important;
+}
+
+.feedback-modal.modal-golden .game-intro-ribbon {
+  background: linear-gradient(180deg, #ffd23c 0%, #ff9d00 55%, #df6500 100%) !important;
+  box-shadow: 0 10px 18px rgba(185, 74, 0, 0.32), inset 0 4px 6px rgba(255, 255, 255, 0.55), inset 0 -5px 8px rgba(115, 45, 0, 0.25) !important;
+}
+
+.game-intro-ribbon h3 {
+  font-size: clamp(1.2rem, 2.8vw, 2.2rem) !important;
+  white-space: nowrap !important;
+}
+
+.feedback-modal.modal-golden .game-intro-ribbon h3 {
+  color: #5a160b !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45), 0 2px 4px rgba(115, 45, 0, 0.22) !important;
+  letter-spacing: 0.5px !important;
+}
+
+.ribbon-game-icon {
+  margin-right: clamp(0.35rem, 1vw, 0.6rem);
+  color: #5a160b;
+  font-size: 0.92em;
+  vertical-align: -1px;
+}
+
+.game-intro-message-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(0.7rem, 1.8vh, 1.15rem) !important;
+  margin: clamp(1.2rem, 2.6vh, 1.8rem) auto clamp(1.4rem, 2.8vh, 2rem) !important;
+  max-width: 580px !important;
+}
+
+.game-intro-message-wrap p {
+  margin: 0 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.game-intro-time {
+  font-size: clamp(1.05rem, 2vw, 1.42rem) !important;
+  font-weight: 700 !important;
+  color: #b94a00 !important;
+  line-height: 1.35 !important;
+}
+
+.intro-icon-stopwatch {
+  margin-right: 0.38rem;
+  color: #d97706;
+  font-size: 1.05em;
+  vertical-align: -1px;
+}
+
+.game-intro-sub {
+  font-size: clamp(0.96rem, 1.75vw, 1.25rem) !important;
+  font-weight: 600 !important;
+  color: #4a2c14 !important;
+  line-height: 1.4 !important;
+}
+
+.game-intro-ready {
+  font-size: clamp(1.02rem, 1.9vw, 1.35rem) !important;
+  font-weight: 800 !important;
+  color: #2b1404 !important;
+  line-height: 1.35 !important;
+}
+
+.intro-icon-rocket {
+  margin-right: 0.38rem;
+  color: #ff9d00;
+  font-size: 1.05em;
+  vertical-align: -1px;
+}
+
+.game-intro-start-btn {
+  min-width: clamp(230px, 28vw, 340px) !important;
+}
+
+.feedback-modal.modal-golden .modal-shield {
+  background: linear-gradient(160deg, #ffd23c 0%, #ff9d00 50%, #b94a00 100%) !important;
+  box-shadow: 0 14px 24px rgba(185, 74, 0, 0.32), inset 0 0 0 8px rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  text-shadow: 0 3px 0 rgba(115, 45, 0, 0.45) !important;
+}
+
 
 /* ===== BE-FAST 6-Sign Indicator Row inside Popup ===== */
 .modal-befast-row {
@@ -1037,6 +1137,37 @@ body.emergency-active #finishEmergencyBtn:not([hidden]) {
   }
   .modal-next-btn .btn-text {
     font-size: clamp(0.84rem, 3.8vw, 0.96rem) !important;
+  }
+  .game-intro-modal-box {
+    min-height: 320px !important;
+    padding: 5.4rem 0.85rem 1.2rem !important;
+  }
+  .game-intro-ribbon {
+    left: 0.6rem !important;
+    right: 0.6rem !important;
+    padding: 0 0.8rem !important;
+    top: 2.3rem !important;
+    min-height: 42px !important;
+  }
+  .game-intro-ribbon h3 {
+    font-size: clamp(0.88rem, 4.3vw, 1.15rem) !important;
+  }
+  .game-intro-message-wrap {
+    gap: 0.5rem !important;
+    margin: 0.6rem auto 1rem !important;
+  }
+  .game-intro-time {
+    font-size: clamp(0.82rem, 3.8vw, 0.98rem) !important;
+  }
+  .game-intro-sub {
+    font-size: clamp(0.76rem, 3.4vw, 0.9rem) !important;
+  }
+  .game-intro-ready {
+    font-size: clamp(0.82rem, 3.8vw, 0.96rem) !important;
+  }
+  .game-intro-start-btn {
+    min-width: min(100%, 195px) !important;
+    max-width: 220px !important;
   }
   .modal-befast-row {
     max-width: 320px;
