@@ -27,7 +27,10 @@
       const raw = sessionStorage.getItem('cached_dict_' + language);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.gameIntro) return parsed;
+        if (parsed && typeof parsed === 'object' && parsed.gameIntro) {
+          if (parsed.quiz?.levels?.face?.questionEmphasis?.includes('sided')) return null;
+          return parsed;
+        }
       }
     } catch (error) {}
     return null;

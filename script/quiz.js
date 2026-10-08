@@ -41,7 +41,7 @@ const quizLevels = [
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: "Mr. X face appears ",
-    questionEmphasis: 'uneven on one sided.',
+    questionEmphasis: 'uneven on one side.',
     incorrectText: 'Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention',
     successText: 'Sudden drooping or weakness on one side of the face can be a warning sign of stroke.'
   },

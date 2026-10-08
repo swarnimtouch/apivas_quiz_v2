@@ -78,7 +78,7 @@
         "title": "FACE DROOPING",
         "text": "Sudden weakness or numbness of the face or uneven face.",
         "questionLead": "Mr. X face appears ",
-        "questionEmphasis": "uneven on one sided.",
+        "questionEmphasis": "uneven on one side.",
         "incorrectText": "Drooping downward on one side of the face can be a sign of stroke. Look for urgent medical attention",
         "successText": "Sudden drooping or weakness on one side of the face can be a warning sign of stroke."
       },
