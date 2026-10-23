@@ -29,6 +29,7 @@
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object' && parsed.gameIntro) {
           if (parsed.quiz?.levels?.face?.questionEmphasis?.includes('sided')) return null;
+          if (!parsed.quiz?.levels?.emergency?.question?.includes('112')) return null;
           return parsed;
         }
       }

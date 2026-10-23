@@ -55,9 +55,9 @@ const quizLevels = [
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mr. Y noticed ',
-    questionEmphasis: 'weakness or numbness in the arms this morning.',
-    incorrectText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke. Look for urgent medical attention',
-    successText: 'Sudden weakness or numbness in one arm can be a warning sign of stroke.'
+    questionEmphasis: 'weakness or numbness in one arm this morning.',
+    incorrectText: 'Sudden weakness or numbness in one or both the arms can be a warning sign of stroke. Look for urgent medical attention',
+    successText: 'Sudden weakness or numbness in one or both the arms can be a warning sign of stroke.'
   },
   {
     translationKey: 'quiz.levels.speech',
@@ -71,7 +71,7 @@ const quizLevels = [
     optionsVideo: 'media/stopwatch_sample.mp4',
     autoAdvanceAfterOptionsVideo: true,
     questionLead: 'Mrs. A suddenly experienced ',
-    questionEmphasis: 'difficulty speaking or slurred speech.',
+    questionEmphasis: 'difficulty in speaking or slurring of speech.',
     incorrectText: 'Sudden trouble in speaking or understanding speech may be a sign of stroke. Look for urgent medical attention',
     successText: 'Sudden difficulty speaking, slurred speech or trouble understanding speech can be a warning sign of stroke.',
     subtitles: [
@@ -88,7 +88,7 @@ const quizLevels = [
     text: '',
     image: 'media/emergency.png',
     prompt: 'Act fast',
-    question: 'The Golden hour (first 60 mins) after a stroke is the most critical window to start emergency treatment to prevent brain damage & save lives. If you come across any single or multiple warning signs of stroke. Call emergency services immediately',
+    question: 'The Golden hour (first 60 mins) after a stroke is the most critical window to start emergency treatment to prevent brain damage & save lives. If you come across any single or multiple warning signs of stroke. Call emergency services immediately - <span class="emergency-call-highlight" style="color: #e11344; font-weight: 800;">Call 112</span>',
     message: 'Every minute matters. Recognize even one sign of stroke and get Immediate Medical Help. The sooner treatment begins, the greater is the chance of survival and the lower is the risk of lasting disability.'
   }
 ];
@@ -362,7 +362,7 @@ function renderQuestion(level) {
     return;
   }
 
-  questionTitle.textContent = level.question || '';
+  questionTitle.innerHTML = level.question || '';
 }
 
 function renderOptionsMedia(level, index, isEmergencyLevel) {
