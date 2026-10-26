@@ -64,7 +64,6 @@ function trackQuizStart() {
   });
 }
 
-/* ===== Game Intro Modal Logic (Temporarily commented out) =====
 function openGameIntroModal() {
   if (!gameIntroModal) {
     proceedToQuiz(startBtn);
@@ -81,7 +80,6 @@ function closeGameIntroModal() {
   gameIntroModal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
 }
-*/
 
 function proceedToQuiz(sourceBtn) {
   if (isQuizStarting) return;
@@ -124,11 +122,10 @@ function proceedToQuiz(sourceBtn) {
 if (startBtn) {
   startBtn.addEventListener('click', function (e) {
     e.preventDefault();
-    proceedToQuiz(this);
+    openGameIntroModal();
   });
 }
 
-/* ===== Game Intro Modal Listeners (Temporarily commented out) =====
 if (confirmPlayGameBtn) {
   confirmPlayGameBtn.addEventListener('click', function (e) {
     e.preventDefault();
@@ -149,7 +146,6 @@ if (gameIntroModal) {
     }
   });
 }
-*/
 
 // Inject Ripple Keyframe dynamically
 const style = document.createElement('style');

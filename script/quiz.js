@@ -707,10 +707,6 @@ async function startQuizPage() {
   if (window.appI18n) await window.appI18n.ready;
   preloadInitialStaticAssets();
 
-  renderLevel(0);
-  document.documentElement.classList.remove('quiz-initializing');
-
-  /* ===== Game Intro Modal Logic (Temporarily commented out) =====
   let introSeen = false;
   try {
     introSeen = sessionStorage.getItem('gameIntroSeen') === 'true';
@@ -751,7 +747,12 @@ async function startQuizPage() {
       dismissQuizIntro();
     }
   });
-  */
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && quizGameIntroModal.classList.contains('show')) {
+      dismissQuizIntro();
+    }
+  });
 }
 
 window.addEventListener('pageshow', (event) => {
