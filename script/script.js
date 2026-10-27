@@ -30,7 +30,6 @@ document.addEventListener('mousemove', (e) => {
 const startBtn = document.getElementById('startQuizBtn');
 const gameIntroModal = document.getElementById('gameIntroModal');
 const confirmPlayGameBtn = document.getElementById('confirmPlayGameBtn');
-const QUIZ_START_TRACKING_ENDPOINT = 'http://3.108.198.49/api/track-quiz-start.php';
 let isQuizStarting = false;
 
 // Clear previous intro session flag when arriving at index.html
@@ -38,31 +37,67 @@ try {
   sessionStorage.removeItem('gameIntroSeen');
 } catch (e) {}
 
-function trackQuizStart() {
-  const body = 'event=quiz_started';
+function getQuizUserId() {
+  let uid = '';
+  try {
+    if (sessionStorage.getItem('quiz_completed_session') === 'true') {
+      sessionStorage.removeItem('quiz_completed_session');
+      sessionStorage.removeItem('tracked_quiz_complete');
+      localStorage.removeItem('quiz_user_uid');
+    }
+    uid = localStorage.getItem('quiz_user_uid');
+    if (!uid) {
+      uid = 'u_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem('quiz_user_uid', uid);
+    }
+  } catch (e) {
+    uid = 'u_temp_' + Math.random().toString(36).substring(2, 9);
+  }
+  return uid;
+}
+
+function getQuizLanguage() {
+  try {
+    if (window.appI18n && typeof window.appI18n.getLanguage === 'function') {
+      return window.appI18n.getLanguage();
+    }
+    return sessionStorage.getItem('preferred_language') || 'en';
+  } catch (e) {
+    return 'en';
+  }
+}
+
+function trackQuizEvent(params) {
+  params = params || {};
+  if (!params.user_id) params.user_id = getQuizUserId();
+  if (!params.lang) params.lang = getQuizLanguage();
+
+  const formData = new URLSearchParams();
+  for (const key in params) {
+    if (params[key] !== undefined && params[key] !== null) {
+      formData.append(key, String(params[key]));
+    }
+  }
+
+  const endpoint = 'api/track.php';
+  const body = formData.toString();
 
   if (typeof navigator.sendBeacon === 'function') {
-    const payload = new Blob([body], {
-      type: 'application/x-www-form-urlencoded;charset=UTF-8'
-    });
-
-    if (navigator.sendBeacon(QUIZ_START_TRACKING_ENDPOINT, payload)) {
+    const blob = new Blob([body], { type: 'application/x-www-form-urlencoded;charset=UTF-8' });
+    if (navigator.sendBeacon(endpoint, blob)) {
       return;
     }
   }
 
-  fetch(QUIZ_START_TRACKING_ENDPOINT, {
+  fetch(endpoint, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    },
-    body,
-    keepalive: true,
-    credentials: 'same-origin'
-  }).catch(() => {
-    // Tracking must never prevent the visitor from starting the quiz.
-  });
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    body: body,
+    keepalive: true
+  }).catch(() => {});
 }
+
+// Initial visitor and language tracking is strictly recorded when the user clicks CONTINUE on the language selection screen
 
 function openGameIntroModal() {
   if (!gameIntroModal) {
@@ -91,7 +126,7 @@ function proceedToQuiz(sourceBtn) {
     sessionStorage.setItem('gameIntroSeen', 'true');
   } catch (e) {}
 
-  trackQuizStart();
+  trackQuizEvent({ event: 'lets_begin' });
 
   if (sourceBtn) {
     const ripple = document.createElement('span');
@@ -122,6 +157,7 @@ function proceedToQuiz(sourceBtn) {
 if (startBtn) {
   startBtn.addEventListener('click', function (e) {
     e.preventDefault();
+    trackQuizEvent({ event: 'play_game' });
     openGameIntroModal();
   });
 }
@@ -223,12 +259,25 @@ window.addEventListener('load', () => {
 
   if (langOverlay && confirmLangBtn) {
     confirmLangBtn.addEventListener('click', async () => {
-      const selectedLang = langSelect ? langSelect.value : 'en';
+      const selectedLang = langSelect ? langSelect.value : (getQuizLanguage() || 'en');
       confirmLangBtn.disabled = true;
+
+      const previousConfirmedLang = sessionStorage.getItem('confirmed_quiz_lang');
+      if (previousConfirmedLang && previousConfirmedLang !== selectedLang) {
+        try {
+          localStorage.removeItem('quiz_user_uid');
+        } catch (e) {}
+      }
+      try {
+        sessionStorage.setItem('confirmed_quiz_lang', selectedLang);
+      } catch (e) {}
 
       if (window.appI18n) {
         await window.appI18n.setLanguage(selectedLang);
       }
+
+      // Track user visit and selected language strictly when CONTINUE button is clicked
+      trackQuizEvent({ event: 'visitor', lang: selectedLang });
 
       // Fade out language overlay
       langOverlay.classList.add('lang-fade-out');

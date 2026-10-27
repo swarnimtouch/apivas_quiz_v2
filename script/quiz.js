@@ -148,6 +148,62 @@ const videoSubtitleText = document.getElementById('videoSubtitleText');
 const quizGameIntroModal = document.getElementById('quizGameIntroModal');
 const quizConfirmPlayBtn = document.getElementById('quizConfirmPlayBtn');
 
+
+function getQuizUserId() {
+  let uid = '';
+  try {
+    uid = localStorage.getItem('quiz_user_uid');
+    if (!uid) {
+      uid = 'u_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem('quiz_user_uid', uid);
+    }
+  } catch (e) {
+    uid = 'u_temp_' + Math.random().toString(36).substring(2, 9);
+  }
+  return uid;
+}
+
+function getQuizLanguage() {
+  try {
+    if (window.appI18n && typeof window.appI18n.getLanguage === 'function') {
+      return window.appI18n.getLanguage();
+    }
+    return sessionStorage.getItem('preferred_language') || 'en';
+  } catch (e) {
+    return 'en';
+  }
+}
+
+function trackQuizEvent(params) {
+  params = params || {};
+  if (!params.user_id) params.user_id = getQuizUserId();
+  if (!params.lang) params.lang = getQuizLanguage();
+
+  const formData = new URLSearchParams();
+  for (const key in params) {
+    if (params[key] !== undefined && params[key] !== null) {
+      formData.append(key, String(params[key]));
+    }
+  }
+
+  const endpoint = 'api/track.php';
+  const body = formData.toString();
+
+  if (typeof navigator.sendBeacon === 'function') {
+    const blob = new Blob([body], { type: 'application/x-www-form-urlencoded;charset=UTF-8' });
+    if (navigator.sendBeacon(endpoint, blob)) {
+      return;
+    }
+  }
+
+  fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    body: body,
+    keepalive: true
+  }).catch(() => {});
+}
+
 let currentLevelIndex = 0;
 let isAnswered = false;
 let currentLevelSubtitles = null;
@@ -740,7 +796,10 @@ async function startQuizPage() {
     playQuizVideo();
   }
 
-  quizConfirmPlayBtn?.addEventListener('click', dismissQuizIntro, { once: true });
+  quizConfirmPlayBtn?.addEventListener('click', () => {
+    trackQuizEvent({ event: 'lets_begin' });
+    dismissQuizIntro();
+  }, { once: true });
 
   quizGameIntroModal.addEventListener('click', (e) => {
     if (!e.target.closest('.modal-content-box')) {
@@ -786,6 +845,12 @@ if (btnYes) {
     isAnswered = true;
     stopOptionsVideoPlayback(false);
 
+    trackQuizEvent({
+      event: 'answer',
+      question: currentLevelIndex + 1,
+      choice: 'yes'
+    });
+
     quizVideo.pause();
     quizVideo.removeAttribute('loop');
     // Yes -> Correct choice (stroke symptoms need urgent medical attention)
@@ -800,6 +865,12 @@ if (btnNo) {
     if (quizLevels[currentLevelIndex].type === 'emergency') return;
     isAnswered = true;
     stopOptionsVideoPlayback(false);
+
+    trackQuizEvent({
+      event: 'answer',
+      question: currentLevelIndex + 1,
+      choice: 'no'
+    });
 
     const level = getLocalizedLevel(quizLevels[currentLevelIndex]);
     quizVideo.pause();
@@ -870,3 +941,9 @@ nextLevelBtn.addEventListener('click', () => {
     }
   }, 300);
 });
+
+if (finishEmergencyBtn) {
+  finishEmergencyBtn.addEventListener('click', () => {
+    trackQuizEvent({ event: 'finish_click' });
+  });
+}

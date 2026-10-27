@@ -124,6 +124,31 @@
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 50 });
+    try {
+      if (!sessionStorage.getItem('tracked_quiz_complete')) {
+        sessionStorage.setItem('tracked_quiz_complete', 'true');
+        const lang = (window.appI18n && typeof window.appI18n.getLanguage === 'function') ? window.appI18n.getLanguage() : (sessionStorage.getItem('preferred_language') || 'en');
+        const uid = localStorage.getItem('quiz_user_uid') || '';
+        const body = 'event=finish_click&user_id=' + encodeURIComponent(uid) + '&lang=' + encodeURIComponent(lang);
+        if (typeof navigator.sendBeacon === 'function') {
+          navigator.sendBeacon('api/track.php', new Blob([body], { type: 'application/x-www-form-urlencoded;charset=UTF-8' }));
+        } else {
+          fetch('api/track.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body, keepalive: true }).catch(() => {});
+        }
+      }
+      sessionStorage.setItem('quiz_completed_session', 'true');
+    } catch (e) {}
+
+    const backHomeBtn = document.getElementById('backToHomeBtn');
+    if (backHomeBtn) {
+      backHomeBtn.addEventListener('click', () => {
+        try {
+          sessionStorage.setItem('quiz_completed_session', 'true');
+          sessionStorage.removeItem('tracked_quiz_complete');
+          localStorage.removeItem('quiz_user_uid');
+        } catch (e) {}
+      });
+    }
     const shapes = document.querySelectorAll('.shape');
     document.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth - 0.5);

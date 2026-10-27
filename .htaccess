@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent direct access to .env
+    <Files .env>
+        Order allow,deny
+        Deny from all
+    </Files>
+
+    # Route /admin URLs cleanly
+    RewriteRule ^admin/?$ admin/index.php [L]
+    RewriteRule ^admin/login/?$ admin/login/index.php [L]
+    RewriteRule ^admin/dashboard/?$ admin/dashboard/index.php [L]
+    RewriteRule ^admin/logout/?$ admin/logout/index.php [L]
+</IfModule>
