@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $csrfToken = $_SESSION['csrf_token'] ?? '';
-$actionUrl = adminUrl('/login');
+$actionUrl = adminUrl('/login/index.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
